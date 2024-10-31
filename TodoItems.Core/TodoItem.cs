@@ -3,14 +3,16 @@
 public class TodoItem
 {
     public string Id { get; init; }
+    public DateTime DueDate { get; init; }
     public string Description { get; private set; }
-    public DateTime CreatedTime { get; private set; }
+    public DateTime CreatedTime { get; init; }
     public List<Modification> ModificationRecords { get; private set; }
 
-    public TodoItem(string description)
+    public TodoItem(string description, DateTime dueDate)
     {
         this.Description = description;
         this.Id = Guid.NewGuid().ToString();
+        this.DueDate = dueDate;
         this.CreatedTime = DateTime.Now;
         this.ModificationRecords = new List<Modification>();
     }
