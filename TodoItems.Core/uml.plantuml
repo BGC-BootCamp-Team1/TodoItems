@@ -1,0 +1,22 @@
+@startuml
+ 
+class TodoItem {
+    - id : string
+    - description : string
+    - dueDay : DateTime
+    + userId : string
+    - tags : List<string>
+    - ModificationList : List<Modification> 
+    + Modify(description: String): void
+}
+class User{
+  + userId: string
+  - name: string
+  - passWord:sting
+}
+class Modification{
+    + timestamp: DateTime
+}
+User "1" -- "0..*" TodoItem
+TodoItem "1" -- "0..*" Modification
+@enduml
