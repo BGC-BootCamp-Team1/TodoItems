@@ -31,7 +31,7 @@ public class TodoItem
         });
         if (count >= Constants.MAX_MODIFY_TIME_ONE_DAY)
         {
-            throw new NotificationException("You have reached the maximum number of modifications for today. Please try agian tomorrow.");
+            throw new MaximumModificationException("You have reached the maximum number of modifications for today. Please try agian tomorrow.");
         }
 
         if (!description.Equals(Description))

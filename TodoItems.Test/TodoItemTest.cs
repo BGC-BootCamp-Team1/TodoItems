@@ -29,7 +29,7 @@ public class TodoItemTest
         item.Modify("2");
         item.Modify("3");
 
-        Assert.Throws<NotificationException>(() =>
+        Assert.Throws<MaximumModificationException>(() =>
         {
             item.Modify("4");
         });

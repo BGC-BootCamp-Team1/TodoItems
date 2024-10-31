@@ -6,7 +6,7 @@ namespace TodoItems.Core.Service
 {
     public class TodoItemService : ITodoItemService
     {
-        private ITodosRepository _repository;
+        private readonly ITodosRepository _repository;
 
         public TodoItemService(ITodosRepository repository)
         {
@@ -17,14 +17,14 @@ namespace TodoItems.Core.Service
         {
             if(dueDay < DateOnly.FromDateTime(DateTime.Now))
             {
-                throw new NotificationException($"canot ealier than today");
+                throw new DueDayEarlyException($"canot ealier than today");
             }
 
             List<TodoItem> items= _repository.FindAllTodoItemsByUserIdAndDueDay(userId, dueDay);
                 
             if (items.Count >= Constants.MAX_DAY_SAME_DUEDAY) 
             {
-                throw new NotificationException($"too many items in same day for {userId}");
+                throw new MaximumSameDueDayException($"too many items in same day for {userId}");
             }
 
             TodoItem todoItem = new TodoItem(description, dueDay, userId); ;

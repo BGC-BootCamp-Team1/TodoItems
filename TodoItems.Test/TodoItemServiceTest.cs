@@ -92,7 +92,7 @@ public class TodoItemServiceTest
 
         _service = new TodoItemService(_mockedTodosRepository.Object);
 
-        Assert.Throws<NotificationException>(() =>
+        Assert.Throws<MaximumSameDueDayException>(() =>
         {
              _service.Create("Des", DateOnly.FromDateTime(DateTime.Now), "user1");
         });
@@ -103,7 +103,7 @@ public class TodoItemServiceTest
     [Fact]
     public void dueDay_canot_earlier_than_today()
     {
-        Assert.Throws<NotificationException>(() =>
+        Assert.Throws<DueDayEarlyException>(() =>
         {
             _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "user1");
         });
