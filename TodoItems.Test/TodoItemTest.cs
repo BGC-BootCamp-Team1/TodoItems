@@ -5,39 +5,34 @@ namespace TodoItems.Test;
 public class TodoItemTest
 {
     private readonly string _description = "this is description";
-    private readonly string _type = "this is type";
 
     [Fact]
     public void should_get_return_todo_item()
     {
-        TodoItem todoItem = new TodoItem(_description, _type);
-        Assert.Equal(_type, todoItem.Type);
+        TodoItem todoItem = new TodoItem(_description);
         Assert.Equal(_description, todoItem.Description);
     }
 
     [Fact]
     public void should_update_content_when_edit()
     {
-        TodoItem todoItem = new TodoItem(_description, _type);
+        TodoItem todoItem = new TodoItem(_description);
         string updateDesp = "new content";
-        string updateType = "new type";
         string errMsg;
-        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp);
 
-        Assert.Equal(updateType, todoItem.Type);
         Assert.Equal(updateDesp, todoItem.Description);
     }
 
     [Fact]
     public void should_record_modification_frequency()
     {
-        TodoItem todoItem = new TodoItem(_description, _type);
+        TodoItem todoItem = new TodoItem(_description);
         string updateDesp = "new content";
-        string updateType = "new type";
 
-        todoItem.ModifyItem(updateDesp, updateType);
-        todoItem.ModifyItem(updateDesp, updateType);
-        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp);
+        todoItem.ModifyItem(updateDesp);
+        todoItem.ModifyItem(updateDesp);
 
         Assert.Equal(3, todoItem.ModificationRecords.Count());
     }
@@ -45,16 +40,15 @@ public class TodoItemTest
     [Fact]
     public void should_limit_daily_modification_frequency_up_to_3()
     {
-        TodoItem todoItem = new TodoItem(_description, _type);
+        TodoItem todoItem = new TodoItem(_description);
         string updateDesp = "new content";
-        string updateType = "new type";
         string expectedErrMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
 
-        todoItem.ModifyItem(updateDesp, updateType);
-        todoItem.ModifyItem(updateDesp, updateType);
-        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp);
+        todoItem.ModifyItem(updateDesp);
+        todoItem.ModifyItem(updateDesp);
 
-        var exception = Assert.Throws<MaxModificationsReachedException>(() => todoItem.ModifyItem(updateDesp, updateType));
+        var exception = Assert.Throws<MaxModificationsReachedException>(() => todoItem.ModifyItem(updateDesp));
         Assert.Equal(expectedErrMsg, exception.Message);
     }
 }
