@@ -4,7 +4,6 @@ namespace TodoItems.Core.Model;
 
 public class TodoItem
 {
-    private const int MAX_MODIFY_TIME_ONE_DAY = 3;
     public string _id;
     public string Description { get; set; }
     public DateOnly DueDay { get; set; }
@@ -30,7 +29,7 @@ public class TodoItem
                 count++;
             }
         });
-        if (count >= MAX_MODIFY_TIME_ONE_DAY)
+        if (count >= Constants.MAX_MODIFY_TIME_ONE_DAY)
         {
             throw new NotificationException("You have reached the maximum number of modifications for today. Please try agian tomorrow.");
         }

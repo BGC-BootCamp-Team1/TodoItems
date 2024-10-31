@@ -2,9 +2,14 @@
 
 namespace TodoItems.Core.Repository
 {
-    internal class TodosRepository : ITodosRepository
+    public class TodosRepository : ITodosRepository
     {
-        public List<TodoItem> FindAllTodoItemsInToday(string userId)
+        public List<TodoItem> FindAllTodoItemsByUserIdAndDueDay(string userId, DateOnly dueDay)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Insert(TodoItem todoItem)
         {
             throw new NotImplementedException();
         }
