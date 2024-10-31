@@ -1,9 +1,4 @@
-﻿
-
-using Microsoft.VisualBasic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace TodoItems.Core
+﻿namespace TodoItems.Core
 {
     public class TodoItemService
     {
@@ -14,7 +9,7 @@ namespace TodoItems.Core
             _todosRepository = todosRepository;
         }
 
-        public int MaxItemsPerDueDate { get; init; } = 8;
+        public int MaxItemsPerDueDate { get; private set; } = 8;
 
         public TodoItem Create(string description, DateTime dueDate)
         {

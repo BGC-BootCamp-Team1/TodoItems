@@ -10,12 +10,6 @@ public class TodoItemServiceTest
     private readonly Mock<ITodosRepository> _mockRepository = new Mock<ITodosRepository>();
     private const string _description = "test description";
     private readonly DateTime _dueDate = DateTime.Today.AddDays(5);
-    //private const TodoItem item;
-
-    public TodoItemServiceTest()
-    {
-        //item = new TodoItem(_description, _dueDate);
-    }
 
     [Fact]
     public void Should_create_todo_item()
@@ -29,7 +23,7 @@ public class TodoItemServiceTest
     }
 
     [Fact]
-    public void should_throw_exception_when_exceed_due_date_limit()
+    public void Should_throw_exception_when_exceed_due_date_limit()
     {
         var todoService = new TodoItemService(_mockRepository.Object);
         var maxItemsPerDueDay = todoService.MaxItemsPerDueDate;
@@ -49,6 +43,5 @@ public class TodoItemServiceTest
         
         var exception = Assert.Throws<Exception>(() => todoService.Create(_description, earlyDueDate));
         Assert.Equal(expectedErrMsg, exception.Message);
-
     }
 }
