@@ -19,19 +19,14 @@ public class TodoItem
         this.ModificationRecords = new List<Modification>();
     }
 
-    public void EditItem(string description, string type)
-    {
-        this.Description = description;
-        this.Type = type;
-        this.ModificationRecords.Add(new Modification());
-    }
-
     public bool ModifyItem(string description, string type, out string errMsg)
     {
         var todayModifications = ModificationRecords.Where(r => r.time.Date == DateTime.Today).ToList();
         if (todayModifications.Count < 3 )
         {
-            EditItem(description, type);
+            this.Description = description;
+            this.Type = type;
+            this.ModificationRecords.Add(new Modification());
             errMsg = "";
             return true;
         }

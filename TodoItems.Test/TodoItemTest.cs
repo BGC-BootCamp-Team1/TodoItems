@@ -21,7 +21,8 @@ public class TodoItemTest
         TodoItem todoItem = new TodoItem(_description, _type);
         string updateDesp = "new content";
         string updateType = "new type";
-        todoItem.EditItem(updateDesp, updateType);
+        string errMsg;
+        todoItem.ModifyItem(updateDesp, updateType, out errMsg);
 
         Assert.Equal(updateType, todoItem.Type);
         Assert.Equal(updateDesp, todoItem.Description);
@@ -34,9 +35,10 @@ public class TodoItemTest
         string updateDesp = "new content";
         string updateType = "new type";
 
-        todoItem.EditItem(updateDesp, updateType);
-        todoItem.EditItem(updateDesp, updateType);
-        todoItem.EditItem(updateDesp, updateType);
+        string errMsg;
+        todoItem.ModifyItem(updateDesp, updateType, out errMsg);
+        todoItem.ModifyItem(updateDesp, updateType, out errMsg);
+        todoItem.ModifyItem(updateDesp, updateType, out errMsg);
 
         Assert.Equal(3, todoItem.ModificationRecords.Count());
     }
