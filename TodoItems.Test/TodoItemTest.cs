@@ -4,13 +4,27 @@ namespace TodoItems.Test;
 
 public class TodoItemTest
 {
+    private readonly string _description = "this is description";
+    private readonly string _type = "this is type";
+
     [Fact]
     public void should_get_return_todo_item()
     {
-        const string description = "this is description";
-        const string type = "this is type";
-        var todoItem = new TodoItem(description, type);
-        Assert.Equal(type, todoItem.Type);
-        Assert.Equal(description, todoItem.Description);
+        TodoItem todoItem = new TodoItem(_description, _type); 
+        Assert.Equal(_type, todoItem.Type);
+        Assert.Equal(_description, todoItem.Description);
     }
+
+    [Fact]
+    public void should_update_content_when_edit()
+    {
+        TodoItem todoItem = new TodoItem(_description, _type);
+        string updateDesp = "new content";
+        string updateType = "new type";
+        todoItem.EditItem(updateDesp, updateType);
+
+        Assert.Equal(updateType, todoItem.Type);
+        Assert.Equal(updateDesp, todoItem.Description);
+    }
+    
 }
