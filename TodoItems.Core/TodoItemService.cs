@@ -16,24 +16,22 @@ namespace TodoItems.Core
             _todosRepository = repository;
         }
         public TodoItem createItem(string description, DateTime dueDate) {
-            if (_todosRepository.FindAllTodoItemsHaveTheSameDueDate(dueDate).Count < _maxItemPerDueDate)
+            if (dueDate <= DateTime.Now.Date)
             {
-                TodoItem item = new TodoItem
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Description = description,
-                    Modifications = [],
-                    DueDate = dueDate
-                };
-                return item;
-            } 
-            else 
-            {
-                throw new Exception();
+                throw new TooEarlyDueDateException();
             }
-            
+            if (_todosRepository.FindAllTodoItemsHaveTheSameDueDate(dueDate).Count >= _maxItemPerDueDate)
+            {
+                throw new ExceedMaxTodoItemsPerDueDateException();
+            }
+            TodoItem item = new TodoItem
+            {
+                Id = Guid.NewGuid().ToString(),
+                Description = description,
+                Modifications = [],
+                DueDate = dueDate
+            };
+            return item;
         }
-
-
     }
 }

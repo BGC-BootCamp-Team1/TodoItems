@@ -8,7 +8,7 @@ namespace TodoItems.Test
         [Fact]
         public void should_throw_exception_when_create_nineth_item()
         {
-            DateTime dueDate = new DateTime(2024,10,31);
+            DateTime dueDate = DateTime.Now.AddDays(7);
             List<TodoItem> mockTodoItems = new List<TodoItem>();
             for (int i = 0; i < 8; i++)
             {
@@ -28,7 +28,7 @@ namespace TodoItems.Test
 
             var service = new TodoItemService(mockRepository.Object);
             
-            Assert.Throws<Exception>(() => service.createItem("test", dueDate));
+            Assert.Throws<ExceedMaxTodoItemsPerDueDateException>(() => service.createItem("test", dueDate));
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace TodoItems.Test
         [Fact]
         public void should_throw_exception_when_earlier_due_date()
         {
-            DateTime dueDate = new DateTime(2023, 10, 31);
+            DateTime dueDate = DateTime.Now.AddDays(-10);
             List<TodoItem> mockTodoItems = new List<TodoItem>();
 
             var mockRepository = new Mock<ITodosRepository>();
@@ -78,7 +78,7 @@ namespace TodoItems.Test
 
             var service = new TodoItemService(mockRepository.Object);
 
-            Assert.Throws<Exception>(() => service.createItem("test", dueDate));
+            Assert.Throws<TooEarlyDueDateException>(() => service.createItem("test", dueDate));
         }
     }
 }

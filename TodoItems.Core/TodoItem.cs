@@ -4,8 +4,9 @@ namespace TodoItems.Core;
 
 public class TodoItem
 {
-    public string Id { get; set; } 
+    public string Id { get; init; }
     public string Description { get; set; }
+    public DateTime CreatedTime { get; set; } = DateTime.Now;
     public IList<Modification> Modifications { get; set; }
     public DateTime DueDate { get; set; }
 
