@@ -13,9 +13,9 @@ public class TodoItemTest
 
         var Modifications3TimesInOneDay = new List<Modification>
         {
-            new Modification(DateTime.Now.AddHours(-3)),
-            new Modification(DateTime.Now.AddHours(-2)),
-            new Modification(DateTime.Now.AddHours(-1))
+            new Modification(DateTime.Now.AddHours(1)),
+            new Modification(DateTime.Now.AddHours(2)),
+            new Modification(DateTime.Now.AddHours(3))
         };
 
         var todoItem = new TodoItem("Initial Description", DateTime.Now);
