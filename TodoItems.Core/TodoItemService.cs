@@ -2,7 +2,7 @@
 
 public class TodoItemService
 {
-    ITodosRepository _todosRepository;
+    private ITodosRepository _todosRepository;
     public TodoItemService(ITodosRepository todosRepository)
     {
         TodoItems = new List<TodoItem>();
