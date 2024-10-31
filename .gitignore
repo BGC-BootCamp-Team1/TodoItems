@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/dotnetcore,macos,windows,jetbrains+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=dotnetcore,macos,windows,jetbrains+all
 
+.vs
 ### DotnetCore ###
 # .NET Core build folders
 bin/
