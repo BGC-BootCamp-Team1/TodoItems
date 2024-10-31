@@ -15,7 +15,7 @@ public class TodoItem
         this.CreatedTime = DateTime.Now;
     }
 
-    public void EditItem(string description, string type)
+    public void ModifyItem(string description, string type)
     {
         this.Description = description;
         this.Type = type;

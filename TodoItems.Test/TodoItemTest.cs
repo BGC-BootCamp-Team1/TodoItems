@@ -21,7 +21,7 @@ public class TodoItemTest
         TodoItem todoItem = new TodoItem(_description, _type);
         string updateDesp = "new content";
         string updateType = "new type";
-        todoItem.EditItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp, updateType);
 
         Assert.Equal(updateType, todoItem.Type);
         Assert.Equal(updateDesp, todoItem.Description);
