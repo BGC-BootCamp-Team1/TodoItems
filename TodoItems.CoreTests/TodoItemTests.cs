@@ -67,5 +67,7 @@ namespace TodoItems.Core.Tests
             Assert.AreEqual("Modified Description New Day", todoItem.Description);
             Assert.AreEqual(4, todoItem.ModificationHistory.Count);
         }
+
+
     }
 }
