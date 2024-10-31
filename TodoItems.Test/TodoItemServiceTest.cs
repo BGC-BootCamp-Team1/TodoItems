@@ -34,7 +34,7 @@ namespace TodoItems.Test
         [Fact]
         public void should_create_when_create_second_item()
         {
-            DateTime dueDate = new DateTime(2024, 10, 31);
+            DateTime dueDate = DateTime.Now.AddDays(7);
             List<TodoItem> mockTodoItems = new List<TodoItem>();
             for (int i = 0; i < 1; i++)
             {
@@ -64,6 +64,21 @@ namespace TodoItems.Test
 
             Assert.Equal(actualTodoItem.Description, expectedTodoItem.Description);
             Assert.Equal(actualTodoItem.DueDate, expectedTodoItem.DueDate);
+        }
+
+        [Fact]
+        public void should_throw_exception_when_earlier_due_date()
+        {
+            DateTime dueDate = new DateTime(2023, 10, 31);
+            List<TodoItem> mockTodoItems = new List<TodoItem>();
+
+            var mockRepository = new Mock<ITodosRepository>();
+            mockRepository.Setup(repo => repo.FindAllTodoItemsHaveTheSameDueDate(dueDate))
+                .Returns(mockTodoItems);
+
+            var service = new TodoItemService(mockRepository.Object);
+
+            Assert.Throws<Exception>(() => service.createItem("test", dueDate));
         }
     }
 }
