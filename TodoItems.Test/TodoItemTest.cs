@@ -18,7 +18,7 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddHours(-1))
         };
 
-        var todoItem = new TodoItem( "Initial Description",DateTime.Now);
+        var todoItem = new TodoItem("Initial Description", DateTime.Now);
         todoItem.ModificationTimestamps = Modifications3TimesInOneDay;
 
 
@@ -67,12 +67,11 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
         };
 
-
-
-        var todoItem = new TodoItem( "Initial Description", DateTime.Now);
+        var todoItem = new TodoItem("Initial Description", DateTime.Now);
         todoItem.ModificationTimestamps = ModificationsOnDifferentDay;
         //Act
         todoItem.ModifyDescription("tt");
+
         //Assert
         Assert.Equal("tt", todoItem.Description);
         Assert.Equal(5, todoItem.ModificationTimestamps.Count);
@@ -80,31 +79,34 @@ public class TodoItemTest
         Assert.Equal(DateTime.Now.Date, lastTimestamp.Date);
     }
 
-    //[Fact]
-    //public void ShouldNotAddTimestamp_WhenMoreThanThreeTimestampsInOneToday()
-    //{
-    //    // Arrange
-    //    var ModificationsOnDifferentDay = new List<Modification>
-    //    {
-    //        new Modification(DateTime.Now),
-    //        new Modification(DateTime.Now.AddSeconds(1)),
-    //        new Modification(DateTime.Now.AddSeconds(2)),
-    //        new Modification(DateTime.Now.AddDays(-1)),
-    //        new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
-    //    };
+    [Fact]
+    public void ShouldNotAddTimestamp_WhenMoreThanThreeTimestampsInOneToday()
+    {
+        // Arrange
+        var ModificationsOnDifferentDay = new List<Modification>
+        {
+            new Modification(DateTime.Now),
+            new Modification(DateTime.Now.AddSeconds(1)),
+            new Modification(DateTime.Now.AddSeconds(2)),
+            new Modification(DateTime.Now.AddDays(-1)),
+            new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
+        };
 
-    //    var latestDay = ModificationsOnDifferentDay.Max(m => m.ModificationTimestamp.Date);
+        var todoItem = new TodoItem("Initial Description", DateTime.Now.AddDays(10));
+        todoItem.ModificationTimestamps = ModificationsOnDifferentDay;
+        //Act
+        var exception = Assert.Throws<ArgumentException>(() => todoItem.ModifyDescription("bbb"));
 
-    //    var todoItem = new TodoItem( "Initial Description", ModificationsOnDifferentDay);
-    //    //Act
-    //    var exception = Assert.Throws<ArgumentException>(() => todoItem.ModifyDescription("bbb"));
+
+        //Assert
+        Assert.Equal("Initial Description", todoItem.Description);
+        Assert.Equal(5, todoItem.ModificationTimestamps.Count);
+        Assert.Equal(ModificationsOnDifferentDay, todoItem.ModificationTimestamps);
+        Assert.Equal("You have reached the maximum number of modifications for today. Please try agian tomorrow.", exception.Message);
+
+    }
 
 
-    //    //Assert
-    //    Assert.Equal("Initial Description", todoItem.Description);
-    //    Assert.Equal(5, todoItem.ModificationTimestamps.Count);
-
-    //}
 
 
 }
