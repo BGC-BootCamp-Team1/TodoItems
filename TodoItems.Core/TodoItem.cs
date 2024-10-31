@@ -5,19 +5,19 @@ public class TodoItem
 {
     public string Id { get; private set; }
     public string Description { get; private set; }
-    public List<Modification> ModificationTimestamps { get;  set; }
+    public List<Modification> ModificationTimestamps { get; set; }
     public DateTime? DueDate;
 
 
-    public TodoItem(string description,DateTime dueDate)
+    public TodoItem(string description, DateTime dueDate)
     {
-        this.Id = Guid.NewGuid().ToString();
-        this.Description = description;
-        this.ModificationTimestamps= new List<Modification>();
-        this.DueDate = dueDate;
+        Id = Guid.NewGuid().ToString();
+        Description = description;
+        ModificationTimestamps = new List<Modification>();
+        DueDate = dueDate;
     }
 
-    
+
 
     public void ModifyDescription(string newDescription)
     {
@@ -31,7 +31,8 @@ public class TodoItem
         {
             throw new ArgumentException(ErrorMessage);
         }
-        else {
+        else
+        {
             this.Description = newDescription;
             this.ModificationTimestamps.Add(new Modification(DateTime.Now));
         }
