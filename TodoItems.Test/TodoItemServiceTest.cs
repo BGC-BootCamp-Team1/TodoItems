@@ -1,31 +1,48 @@
 ﻿using TodoItems.Core;
 using Moq;
 using Moq.Protected;
+using Microsoft.VisualBasic;
 
 namespace TodoItems.Test;
 
 public class TodoItemServiceTest
 {
-    private readonly Mock<ITodosRepository> _mockRepository;
-    private readonly TodoItemService _todoService;
+    private readonly Mock<ITodosRepository> _mockRepository = new Mock<ITodosRepository>();
     private const string _description = "test description";
     private readonly DateTime _dueDate = DateTime.Today.AddDays(5);
+    //private const TodoItem item;
 
     public TodoItemServiceTest()
     {
-        _mockRepository = new Mock<ITodosRepository>();
-        _todoService = new TodoItemService(_mockRepository.Object);
-
-        //var todoItem = new TodoItem { Id = "1", Description = "Test", CreatedDate = DateTime.Now, IsDone = false };
-        //mockRepository.Setup(repo => repo.GetTodoItemById("1")).Returns(todoItem);
+        //item = new TodoItem(_description, _dueDate);
     }
 
     [Fact]
-    public void should_create_todo_item()
+    public void Should_create_todo_item()
     {
-        var newItem = _todoService.Create(_description, _dueDate);
+        var todoService = new TodoItemService(_mockRepository.Object);
+        var newItem = todoService.Create(_description, _dueDate);
 
         Assert.Equal(_description, newItem.Description);
         Assert.Equal(_dueDate, newItem.DueDate);
+        _mockRepository.Verify(repo => repo.Create(It.IsAny<TodoItem>()), Times.Once);
+    }
+
+    [Fact]
+    public void should_throw_exception_when_exceed_due_date_limit()
+    {
+        var todoService = new TodoItemService(_mockRepository.Object);
+        var maxItemsPerDueDay = todoService.MaxItemsPerDueDay;
+        _mockRepository.Setup(repo => repo.GetCountByDueDate(_dueDate)).Returns(maxItemsPerDueDay);
+        var expectedErrMsg = $"Cannot create new Todo item completed on {_dueDate}, already reach max limit({maxItemsPerDueDay})";
+
+        for (int i = 0; i < maxItemsPerDueDay; i++)
+        {
+            todoService.Create(_description, _dueDate);
+        }
+
+        var exception = Assert.Throws<Exception>(() => todoService.Create(_description, _dueDate));
+        Assert.Equal(expectedErrMsg, exception.Message);
+
     }
 }
