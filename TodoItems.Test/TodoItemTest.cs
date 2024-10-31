@@ -5,9 +5,12 @@ namespace TodoItems.Test;
 public class TodoItemTest
 {
     [Fact]
-    public void should_return_2_when_add_1_1()
+    public void should_get_return_todo_item()
     {
-        var todoItem = new TodoItem();
-        Assert.Equal("1", todoItem.GetId());
+        const string description = "this is description";
+        const string type = "this is type";
+        var todoItem = new TodoItem(description, type);
+        Assert.Equal(type, todoItem.Type);
+        Assert.Equal(description, todoItem.Description);
     }
 }

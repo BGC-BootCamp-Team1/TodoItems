@@ -2,8 +2,15 @@
 
 public class TodoItem
 {
-    public string GetId()
+    public string Id { get; init; }
+    public string Type { get; private set; }
+    public string Description { get; private set; }
+
+    public TodoItem(string description, string type)
     {
-        return "1";
+        this.Description = description;
+        this.Type = type;
+        this.Id = Guid.NewGuid().ToString();
     }
+
 }
