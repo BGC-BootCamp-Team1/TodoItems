@@ -1,5 +1,32 @@
 @startuml
-class TodoItem {
-    + GetId() : string
+package SUT{
+class User{
+    - TodoItems: List<TodoItem>
 }
+
+class TodoItem {
+    - Id: string
+    - Description: string
+    - Modifications: List<Modification> 
+    - DueDate: DateTime
+    + ModifyItem(description: string): void
+}
+
+class TodoItemService {
+    + CreateItem(description: string): TodoItem
+}
+ 
+class Modification{
+    - Timestamp: DateTime
+}
+}
+package DOC{
+interface ITodosRepository{
+    + FindAllTodoItemsHaveTheSameDueDate(DateTime dueDate): List<TodoItem>
+    }
+}
+User"1" *-- "0..*" TodoItem
+TodoItem "1" *-- "0..*" Modification
+TodoItemService --> ITodosRepository
+TodoItemService --> TodoItem
 @enduml
