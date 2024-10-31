@@ -17,6 +17,11 @@ namespace TodoItems.Core.Service
 
         public TodoItem Create(string description, DateOnly dueDay, string userId)
         {
+            if(dueDay < DateOnly.FromDateTime(DateTime.Now))
+            {
+                throw new NotificationException($"canot ealier than today");
+
+            }
             int itemCount = itemList
                 .Count(item => item.UserId == userId && item.DueDay == dueDay);
 

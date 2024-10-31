@@ -28,10 +28,10 @@ public class TodoItemServiceTest
         _service.Create("Des", DateOnly.FromDateTime(DateTime.Now), "user1");
         _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user1");
         _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(2)), "user1");
-        _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(3)), "user1");
-        _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(4)), "user1");
+        _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(3)), "user2");
+        _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(4)), "user3");
         _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(5)), "user1");
-        _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(6)), "user1");
+        _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(6)), "user4");
         _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(7)), "user1");
         _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(8)), "user1");
         _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(9)), "user1");
@@ -57,6 +57,17 @@ public class TodoItemServiceTest
         });
 
     }
+
+    [Fact]
+    public void dueDay_canot_earlier_than_today()
+    {
+        Assert.Throws<NotificationException>(() =>
+        {
+            _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "user1");
+        });
+
+    }
+
 
 
 
