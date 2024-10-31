@@ -18,13 +18,19 @@ namespace TodoItems.Core
 
         public TodoItem Create(string description, DateTime dueDate)
         {
+            var newItem = new TodoItem(description, dueDate);
+
+            if (dueDate < newItem.CreatedTime)
+            {
+                throw new Exception("Cannot create todo item that due date earlier than creation date");
+            }
+
             var itemCount = _todosRepository.GetCountByDueDate(dueDate);
 
             if (itemCount >= MaxItemsPerDueDate)
             {
                 throw new Exception($"Cannot create new Todo item completed on {dueDate}, already reach max limit({MaxItemsPerDueDate})");
             }
-            var newItem = new TodoItem(description, dueDate);
             _todosRepository.Create(newItem);
             return newItem;
         }

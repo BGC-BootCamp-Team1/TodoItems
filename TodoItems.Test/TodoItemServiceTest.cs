@@ -38,6 +38,17 @@ public class TodoItemServiceTest
 
         var exception = Assert.Throws<Exception>(() => todoService.Create(_description, _dueDate));
         Assert.Equal(expectedErrMsg, exception.Message);
+    }
+
+    [Fact]
+    public void Should_not_create_item_when_due_date_earlier_than_creation_date()
+    {
+        var todoService = new TodoItemService(_mockRepository.Object);
+        var earlyDueDate = DateTime.Today.AddDays(-5);
+        var expectedErrMsg = "Cannot create todo item that due date earlier than creation date";
+        
+        var exception = Assert.Throws<Exception>(() => todoService.Create(_description, earlyDueDate));
+        Assert.Equal(expectedErrMsg, exception.Message);
 
     }
 }
