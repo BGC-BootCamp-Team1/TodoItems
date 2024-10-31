@@ -26,5 +26,19 @@ public class TodoItemTest
         Assert.Equal(updateType, todoItem.Type);
         Assert.Equal(updateDesp, todoItem.Description);
     }
+
+    [Fact]
+    public void should_record_modification_frequency()
+    {
+        TodoItem todoItem = new TodoItem(_description, _type);
+        string updateDesp = "new content";
+        string updateType = "new type";
+
+        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp, updateType);
+
+        Assert.Equal(3, todoItem.ModificationRecords.Count());
+    }
     
 }
