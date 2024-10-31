@@ -6,7 +6,7 @@ namespace TodoItems.Test;
 public class TodoItemTest
 {
     [Fact]
-    public void AddTimestamp_ShouldNotAddTimestamp_WhenMoreThanThreeTimestampsToday()
+    public void ShouldNotAddTimestamp_WhenMoreThanThreeTimestampsToday()
 
     {
         // Arrange
@@ -33,7 +33,7 @@ public class TodoItemTest
     }
 
     [Fact]
-    public void AddTimestamp_ShouldAddTimestamp_WhenLessThanThreeTimestampsToday()
+    public void ShouldAddTimestamp_WhenLessThanThreeTimestampsToday()
     {
         // Arrange
         var ModificationsInOneDay = new List<Modification>
@@ -53,7 +53,7 @@ public class TodoItemTest
 
 
     [Fact]
-    public void AddTimestamp_ShouldAddTimestamp_WhenLessThanThreeTimestampsInOneToday()
+    public void ShouldAddTimestamp_WhenLessThanThreeTimestampsInOneToday()
     {
         // Arrange
         var ModificationsOnDifferentDay = new List<Modification>
@@ -74,6 +74,33 @@ public class TodoItemTest
         Assert.Equal(5, todoItem.ModificationTimestamps.Count);
         var lastTimestamp = todoItem.ModificationTimestamps.Last().ModificationTimestamp;
         Assert.Equal(DateTime.Now.Date, lastTimestamp.Date);
+    }
+
+    [Fact]
+    public void ShouldNotAddTimestamp_WhenMoreThanThreeTimestampsInOneToday()
+    {
+        // Arrange
+        var ModificationsOnDifferentDay = new List<Modification>
+        {
+            new Modification(DateTime.Now),
+            new Modification(DateTime.Now.AddSeconds(1)),
+            new Modification(DateTime.Now.AddSeconds(2)),
+            new Modification(DateTime.Now.AddDays(-1)),
+            new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
+        };
+
+        var latestDay = ModificationsOnDifferentDay.Max(m => m.ModificationTimestamp.Date);
+
+        var todoItem = new TodoItem("1", "Initial Description", ModificationsOnDifferentDay);
+        //Act
+        var exception = Assert.Throws<ArgumentException>(() => todoItem.ModifyDescription("bbb"));
+        
+        //todoItem.ModifyDescription("ttt");
+        //Assert
+        Assert.Equal("Initial Description", todoItem.Description);
+        Assert.Equal(5, todoItem.ModificationTimestamps.Count);
+        //var lastTimestamp = todoItem.ModificationTimestamps.Last().ModificationTimestamp;
+        //Assert.Equal(DateTime.Now.Date, latestDay);
     }
 
 
