@@ -48,16 +48,31 @@ public class User
     }
 }
 
-public class TodoItemService : ITodosRepository
+public class TodoItemService
 {
-    public List<TodoItem> TodoItems { get; set; }
-    public int CountTodoItemsByDueDate(DateTime dueDate)
+    ITodosRepository _todosRepository;
+    public TodoItemService(ITodosRepository todosRepository)
     {
-        return 8;
+        TodoItems = new List<TodoItem>();
+        _todosRepository = todosRepository;
     }
+    public List<TodoItem> TodoItems { get; set; }
     public TodoItem Create(string description, DateTimeOffset dueDate)
-    {
-        throw new Exception("to be implement");
+    {       
+        var count = _todosRepository.CountTodoItemsByDueDate(dueDate);
+        var isValidDueDate = dueDate.Date >= DateTime.UtcNow;
+        if(!isValidDueDate)
+            throw new Exception("Invalid dueDate");
+        if (count < 8)
+        {
+            var newTodoItem = new TodoItem(description, dueDate);
+            TodoItems.Add(newTodoItem);
+            return newTodoItem;
+        }
+        else
+        {
+            throw new Exception("TodoItems count limit on dueDate");
+        }
     }
 }
 
