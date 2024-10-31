@@ -3,17 +3,18 @@ namespace TodoItems.Core;
 
 public class TodoItem
 {
-    private string id;
-    public string Description { get; set; }
-    public List<Modification> ModificationTimestamps;
+    public string Id { get; private set; }
+    public string Description { get; private set; }
+    public List<Modification> ModificationTimestamps { get;  set; }
+    public DateTime? DueDate;
 
 
-
-    public TodoItem(string id, string description, List<Modification> modificationTimestamps)
+    public TodoItem(string description,DateTime dueDate)
     {
-        this.id = id;
+        this.Id = Guid.NewGuid().ToString();
         this.Description = description;
-        this.ModificationTimestamps = modificationTimestamps;
+        this.ModificationTimestamps= new List<Modification>();
+        this.DueDate = dueDate;
     }
 
     
