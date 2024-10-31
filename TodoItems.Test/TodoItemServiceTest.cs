@@ -32,14 +32,9 @@ public class TodoItemServiceTest
     public void should_throw_exception_when_exceed_due_date_limit()
     {
         var todoService = new TodoItemService(_mockRepository.Object);
-        var maxItemsPerDueDay = todoService.MaxItemsPerDueDay;
+        var maxItemsPerDueDay = todoService.MaxItemsPerDueDate;
         _mockRepository.Setup(repo => repo.GetCountByDueDate(_dueDate)).Returns(maxItemsPerDueDay);
         var expectedErrMsg = $"Cannot create new Todo item completed on {_dueDate}, already reach max limit({maxItemsPerDueDay})";
-
-        for (int i = 0; i < maxItemsPerDueDay; i++)
-        {
-            todoService.Create(_description, _dueDate);
-        }
 
         var exception = Assert.Throws<Exception>(() => todoService.Create(_description, _dueDate));
         Assert.Equal(expectedErrMsg, exception.Message);

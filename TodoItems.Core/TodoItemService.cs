@@ -14,15 +14,15 @@ namespace TodoItems.Core
             _todosRepository = todosRepository;
         }
 
-        public int MaxItemsPerDueDay { get; init; } = 8;
+        public int MaxItemsPerDueDate { get; init; } = 8;
 
         public TodoItem Create(string description, DateTime dueDate)
         {
             var itemCount = _todosRepository.GetCountByDueDate(dueDate);
 
-            if (itemCount >= MaxItemsPerDueDay)
+            if (itemCount >= MaxItemsPerDueDate)
             {
-                throw new Exception($"Cannot create new Todo item completed on {dueDate}, already reach max limit({MaxItemsPerDueDay})");
+                throw new Exception($"Cannot create new Todo item completed on {dueDate}, already reach max limit({MaxItemsPerDueDate})");
             }
             var newItem = new TodoItem(description, dueDate);
             _todosRepository.Create(newItem);
