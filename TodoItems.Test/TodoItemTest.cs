@@ -54,7 +54,7 @@ public class TodoItemTest
         todoItem.ModifyItem(updateDesp, updateType);
         todoItem.ModifyItem(updateDesp, updateType);
 
-        var exception = Assert.Throws<Exception>(() => todoItem.ModifyItem(updateDesp, updateType));
+        var exception = Assert.Throws<MaxModificationsReachedException>(() => todoItem.ModifyItem(updateDesp, updateType));
         Assert.Equal(expectedErrMsg, exception.Message);
     }
 }
