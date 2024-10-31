@@ -1,6 +1,4 @@
-﻿using System.Security.AccessControl;
-
-namespace TodoItems.Core;
+﻿namespace TodoItems.Core;
 
 public class TodoItem
 {
@@ -17,10 +15,11 @@ public class TodoItem
         this.ModificationRecords = new List<Modification>();
     }
 
-    public void  ModifyItem(string description)
+    public void ModifyItem(string description)
     {
-        var todayModifications = ModificationRecords.Where(r => r.time.Date == DateTime.Today).ToList();
-        if (todayModifications.Count < 3 )
+        var today = DateTime.Today;
+        var todayModifications = ModificationRecords.Where(r => r.time.Date == today).ToList();
+        if (todayModifications.Count < 3)
         {
             this.Description = description;
             this.ModificationRecords.Add(new Modification());
