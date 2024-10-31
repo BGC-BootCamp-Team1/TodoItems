@@ -14,7 +14,7 @@ public class TodoItem
     public void Modify(string description)
     {
         DateTime today = DateTime.Today;
-        int count = Modifications.Count(modification => modification.TimeStamp.Date == today);
+        int count = Modifications.Count(modification => modification.Timestamp.Date == today);
         if (count < _maxNumberOfModification)
         {
             Description = description;
@@ -28,9 +28,9 @@ public class TodoItem
 
 public class Modification
 {
-    public DateTime TimeStamp { get; set; }
-    public Modification(DateTime timeStamp)
+    public DateTime Timestamp { get; set; }
+    public Modification(DateTime timestamp)
     {
-        TimeStamp = timeStamp;
+        Timestamp = timestamp;
     }
 }
