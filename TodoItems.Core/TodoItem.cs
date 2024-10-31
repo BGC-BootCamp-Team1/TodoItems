@@ -18,24 +18,6 @@ public class TodoItem
 
     
 
-    public void AddTimestamp()
-    {
-        DateTime now = DateTime.Now;
-        DateTime today = now.Date;
-        
-        
-        
-        int todayCount = ModificationTimestamps.Count(ts => ts.ModificationTimestamp.Date == today);
-
-       
-        //if (todayCount >= MaximumNumberInOneDay)
-        //{
-        //    return;
-        //}
-
-    }
-
-
     public void ModifyDescription(string newDescription)
     {
         const int MaximumNumberInOneDay = 3;
@@ -46,17 +28,11 @@ public class TodoItem
 
         if (todayCount >= MaximumNumberInOneDay)
         {
-            
-
-
             throw new ArgumentException(ErrorMessage);
         }
         else {
             this.Description = newDescription;
             this.ModificationTimestamps.Add(new Modification(DateTime.Now));
         }
-        
-        
-        
     }
 }

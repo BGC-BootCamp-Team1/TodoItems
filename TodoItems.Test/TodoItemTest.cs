@@ -95,12 +95,11 @@ public class TodoItemTest
         //Act
         var exception = Assert.Throws<ArgumentException>(() => todoItem.ModifyDescription("bbb"));
         
-        //todoItem.ModifyDescription("ttt");
+       
         //Assert
         Assert.Equal("Initial Description", todoItem.Description);
         Assert.Equal(5, todoItem.ModificationTimestamps.Count);
-        //var lastTimestamp = todoItem.ModificationTimestamps.Last().ModificationTimestamp;
-        //Assert.Equal(DateTime.Now.Date, latestDay);
+       
     }
 
 
