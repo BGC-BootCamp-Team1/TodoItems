@@ -11,6 +11,7 @@ public class TodoItemTest
     {
         TodoItem todoItem = new TodoItem(_description);
         Assert.Equal(_description, todoItem.Description);
+        Assert.Empty(todoItem.ModificationRecords);
     }
 
     [Fact]
@@ -18,10 +19,10 @@ public class TodoItemTest
     {
         TodoItem todoItem = new TodoItem(_description);
         string updateDesp = "new content";
-        string errMsg;
         todoItem.ModifyItem(updateDesp);
 
         Assert.Equal(updateDesp, todoItem.Description);
+        Assert.Single(todoItem.ModificationRecords);
     }
 
     [Fact]
@@ -50,5 +51,6 @@ public class TodoItemTest
 
         var exception = Assert.Throws<MaxModificationsReachedException>(() => todoItem.ModifyItem(updateDesp));
         Assert.Equal(expectedErrMsg, exception.Message);
+        Assert.Equal(3, todoItem.ModificationRecords.Count());
     }
 }
