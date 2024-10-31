@@ -30,7 +30,7 @@ public class TodoItemServiceTest
         _mockRepository.Setup(repo => repo.GetCountByDueDate(_dueDate)).Returns(maxItemsPerDueDay);
         var expectedErrMsg = $"Cannot create new Todo item completed on {_dueDate}, already reach max limit({maxItemsPerDueDay})";
 
-        var exception = Assert.Throws<Exception>(() => todoService.Create(_description, _dueDate));
+        var exception = Assert.Throws<MaxItemsPerDueDateReachedException>(() => todoService.Create(_description, _dueDate));
         Assert.Equal(expectedErrMsg, exception.Message);
     }
 
@@ -41,7 +41,7 @@ public class TodoItemServiceTest
         var earlyDueDate = DateTime.Today.AddDays(-5);
         var expectedErrMsg = "Cannot create todo item that due date earlier than creation date";
         
-        var exception = Assert.Throws<Exception>(() => todoService.Create(_description, earlyDueDate));
+        var exception = Assert.Throws<DueDateEarlierThanCreationDateException>(() => todoService.Create(_description, earlyDueDate));
         Assert.Equal(expectedErrMsg, exception.Message);
     }
 }

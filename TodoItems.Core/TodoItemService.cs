@@ -17,14 +17,14 @@
 
             if (dueDate < newItem.CreatedTime)
             {
-                throw new Exception("Cannot create todo item that due date earlier than creation date");
+                throw new DueDateEarlierThanCreationDateException("Cannot create todo item that due date earlier than creation date");
             }
 
             var itemCount = _todosRepository.GetCountByDueDate(dueDate);
 
             if (itemCount >= MaxItemsPerDueDate)
             {
-                throw new Exception($"Cannot create new Todo item completed on {dueDate}, already reach max limit({MaxItemsPerDueDate})");
+                throw new MaxItemsPerDueDateReachedException($"Cannot create new Todo item completed on {dueDate}, already reach max limit({MaxItemsPerDueDate})");
             }
             _todosRepository.Create(newItem);
             return newItem;
