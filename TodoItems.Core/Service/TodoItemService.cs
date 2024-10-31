@@ -6,6 +6,7 @@ namespace TodoItems.Core.Service
 {
     public class TodoItemService
     {
+        private const int MAX_DAY_SAME_DUEDAY = 8;
         public List<TodoItem> itemList;
         private ITodosRepository _repository;
 
@@ -25,7 +26,7 @@ namespace TodoItems.Core.Service
             int itemCount = itemList
                 .Count(item => item.UserId == userId && item.DueDay == dueDay);
 
-            if (itemCount >= 8) 
+            if (itemCount >= MAX_DAY_SAME_DUEDAY) 
             {
                 throw new NotificationException($"too many items in same day for {userId}");
             }
