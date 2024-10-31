@@ -10,7 +10,7 @@ public class TodoItemTest
     [Fact]
     public void should_get_return_todo_item()
     {
-        TodoItem todoItem = new TodoItem(_description, _type); 
+        TodoItem todoItem = new TodoItem(_description, _type);
         Assert.Equal(_type, todoItem.Type);
         Assert.Equal(_description, todoItem.Description);
     }
@@ -22,7 +22,7 @@ public class TodoItemTest
         string updateDesp = "new content";
         string updateType = "new type";
         string errMsg;
-        todoItem.ModifyItem(updateDesp, updateType, out errMsg);
+        todoItem.ModifyItem(updateDesp, updateType);
 
         Assert.Equal(updateType, todoItem.Type);
         Assert.Equal(updateDesp, todoItem.Description);
@@ -35,10 +35,9 @@ public class TodoItemTest
         string updateDesp = "new content";
         string updateType = "new type";
 
-        string errMsg;
-        todoItem.ModifyItem(updateDesp, updateType, out errMsg);
-        todoItem.ModifyItem(updateDesp, updateType, out errMsg);
-        todoItem.ModifyItem(updateDesp, updateType, out errMsg);
+        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp, updateType);
 
         Assert.Equal(3, todoItem.ModificationRecords.Count());
     }
@@ -49,18 +48,13 @@ public class TodoItemTest
         TodoItem todoItem = new TodoItem(_description, _type);
         string updateDesp = "new content";
         string updateType = "new type";
-        string errMsg;
         string expectedErrMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
 
-        bool res = todoItem.ModifyItem(updateDesp, updateType, out errMsg);
-        res = res ? todoItem.ModifyItem(updateDesp, updateType, out errMsg) : false;
-        res = res ? todoItem.ModifyItem(updateDesp, updateType, out errMsg) : false;
+        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp, updateType);
+        todoItem.ModifyItem(updateDesp, updateType);
 
-        Assert.True(res);
-
-        res = todoItem.ModifyItem(updateDesp,updateType, out errMsg);
-        Assert.False(res);
-        Assert.Equal(expectedErrMsg, errMsg);
-    }    
-
+        var exception = Assert.Throws<Exception>(() => todoItem.ModifyItem(updateDesp, updateType));
+        Assert.Equal(expectedErrMsg, exception.Message);
+    }
 }

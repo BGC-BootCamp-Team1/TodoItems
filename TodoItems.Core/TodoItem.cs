@@ -19,7 +19,7 @@ public class TodoItem
         this.ModificationRecords = new List<Modification>();
     }
 
-    public bool ModifyItem(string description, string type, out string errMsg)
+    public void  ModifyItem(string description, string type)
     {
         var todayModifications = ModificationRecords.Where(r => r.time.Date == DateTime.Today).ToList();
         if (todayModifications.Count < 3 )
@@ -27,13 +27,11 @@ public class TodoItem
             this.Description = description;
             this.Type = type;
             this.ModificationRecords.Add(new Modification());
-            errMsg = "";
-            return true;
         }
         else
         {
-            errMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
-            return false;
+            string errMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
+            throw new Exception(errMsg);
         }
     }
 }
