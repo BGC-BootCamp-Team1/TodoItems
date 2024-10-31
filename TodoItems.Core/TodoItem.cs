@@ -48,3 +48,16 @@ public class User
     }
 }
 
+public class TodoItemService : ITodosRepository
+{
+    public List<TodoItem> TodoItems { get; set; }
+    public int CountTodoItemsByDueDate(DateTime dueDate)
+    {
+        return 8;
+    }
+    public TodoItem Create(string description, DateTimeOffset dueDate)
+    {
+        throw new Exception("to be implement");
+    }
+}
+
