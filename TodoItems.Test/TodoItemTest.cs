@@ -5,9 +5,53 @@ namespace TodoItems.Test;
 public class TodoItemTest
 {
     [Fact]
-    public void should_return_2_when_add_1_1()
+    public void should_return_false_when_fourth_modifications_for_today()
     {
-        var todoItem = new TodoItem();
-        Assert.Equal("1", todoItem.GetId());
+        DateTime today = DateTime.Today;
+        List<Modification> threeTodayModifications =
+        [
+            new Modification(today.AddHours(9)),
+            new Modification(today.AddHours(12)),
+            new Modification(today.AddHours(14))
+        ];
+        var todoItem = new TodoItem() {
+            Id = "testItem",
+            Description = "test",
+            Modifications = threeTodayModifications.ToList()
+        };
+        Assert.Throws<ExceedMaxModificationException>(() => todoItem.Modify("TEST"));
+    }
+
+    [Fact]
+    public void should_return_true_when_third_modifications()
+    {
+        DateTime today = DateTime.Today;
+        List<Modification> twoTodayModifications =
+        [
+            new Modification(today.AddDays(-1).AddHours(12)),
+            new Modification(today.AddHours(12))
+        ];
+        var todoItem = new TodoItem()
+        {
+            Id = "testItem",
+            Description = "test",
+            Modifications = twoTodayModifications.ToList()
+        };
+        todoItem.Modify("TEST");
+        Assert.Equal(twoTodayModifications.Count + 1, todoItem.Modifications.Count);
+    }
+
+    [Fact]
+    public void should_return_true_when_first_modifications()
+    {
+        List<Modification> emptyModifications = [];
+        var todoItem = new TodoItem()
+        {
+            Id = "testItem",
+            Description = "test",
+            Modifications = emptyModifications.ToList()
+        };
+        todoItem.Modify("TEST");
+        Assert.Equal(emptyModifications.Count + 1, todoItem.Modifications.Count);
     }
 }
