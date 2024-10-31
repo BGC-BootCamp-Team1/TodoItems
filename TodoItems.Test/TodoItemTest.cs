@@ -48,16 +48,16 @@ public class TodoItemTest
         string updateDesp = "new content";
         string updateType = "new type";
         string errMsg;
+        string expectedErrMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
 
-        bool res = todoItem.TriggerModification(updateDesp, updateType, out errMsg);
-        res = res ? todoItem.TriggerModification(updateDesp, updateType, out errMsg) : false;
-        res = res ? todoItem.TriggerModification(updateDesp, updateType, out errMsg) : false;
+        bool res = todoItem.ModifyItem(updateDesp, updateType, out errMsg);
+        res = res ? todoItem.ModifyItem(updateDesp, updateType, out errMsg) : false;
+        res = res ? todoItem.ModifyItem(updateDesp, updateType, out errMsg) : false;
 
         Assert.True(res);
 
-        res = todoItem.TriggerModification(updateDesp,updateType, out errMsg);
+        res = todoItem.ModifyItem(updateDesp,updateType, out errMsg);
         Assert.False(res);
-        string expectedErrMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
         Assert.Equal(expectedErrMsg, errMsg);
     }    
 

@@ -26,7 +26,7 @@ public class TodoItem
         this.ModificationRecords.Add(new Modification());
     }
 
-    public bool TriggerModification(string description, string type, out string errMsg)
+    public bool ModifyItem(string description, string type, out string errMsg)
     {
         var todayModifications = ModificationRecords.Where(r => r.time.Date == DateTime.Today).ToList();
         if (todayModifications.Count < 3 )
