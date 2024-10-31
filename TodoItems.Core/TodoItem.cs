@@ -19,11 +19,26 @@ public class TodoItem
         this.ModificationRecords = new List<Modification>();
     }
 
-    public void ModifyItem(string description, string type)
+    public void EditItem(string description, string type)
     {
         this.Description = description;
         this.Type = type;
         this.ModificationRecords.Add(new Modification());
     }
 
+    public bool TriggerModification(string description, string type, out string errMsg)
+    {
+        var todayModifications = ModificationRecords.Where(r => r.time.Date == DateTime.Today).ToList();
+        if (todayModifications.Count < 3 )
+        {
+            EditItem(description, type);
+            errMsg = "";
+            return true;
+        }
+        else
+        {
+            errMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
+            return false;
+        }
+    }
 }
