@@ -14,23 +14,32 @@ public class TodoItemService
 
     public TodoItem CreateTodoItem(string description, DateTime dueDate)
     {
-        if(dueDate < DateTime.Now)
+        ValidateDueDate(dueDate);
+        EnsureTodoItemLimitNotExceeded(dueDate);
+
+        var todoItem = new TodoItem(description, dueDate);
+        TodoItems.Add(todoItem);
+        return todoItem;
+    }
+
+    private void ValidateDueDate(DateTime dueDate)
+    {
+        if (dueDate < DateTime.Now)
         {
             throw new ArgumentException("Due date cannot be in the past.");
         }
-        var count = _repository.CountTodoItemsOnDueDate(dueDate);
-        if (count < 8) {
-            var todoItem = new TodoItem(description, dueDate);
+    }
 
-            TodoItems.Add(todoItem);
-            return todoItem;
-        }
-        else
+    private void EnsureTodoItemLimitNotExceeded(DateTime dueDate)
+    {
+        const int MaxTodoItemsPerDay = 8;
+        var count = _repository.CountTodoItemsOnDueDate(dueDate);
+        if (count >= MaxTodoItemsPerDay)
         {
             throw new ArgumentException("You have reached the maximum number of todo items for this due date.");
         }
-        
     }
 
-    
+
+
 }
