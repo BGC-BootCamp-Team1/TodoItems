@@ -13,7 +13,7 @@ class TodoItem {
 }
 
 class TodoItemService {
-    + CreateItem(description: string): TodoItem
+    + CreateItem(description: string, dueDate: DateTime): TodoItem
 }
  
 class Modification{
