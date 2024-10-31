@@ -5,7 +5,7 @@ namespace TodoItems.Test;
 public class TodoItemTest
 {
     [Fact]
-    public void should_throw_exception_when_fourth_modification()
+    public void Should_throw_exception_when_fourth_modification()
     {
         DateTime today = DateTime.Today;
         List<Modification> threeTodayModifications =
@@ -23,7 +23,7 @@ public class TodoItemTest
     }
 
     [Fact]
-    public void should_modify_when_third_modification()
+    public void Should_modify_when_third_modification()
     {
         DateTime today = DateTime.Today;
         List<Modification> twoTodayModifications =
@@ -42,7 +42,7 @@ public class TodoItemTest
     }
 
     [Fact]
-    public void should_modify_when_first_modification()
+    public void Should_modify_when_first_modification()
     {
         List<Modification> emptyModifications = [];
         var todoItem = new TodoItem()

@@ -9,10 +9,5 @@
         public ExceedMaxModificationException(): base(DefaultMessage)
         {
         }
-
-        public ExceedMaxModificationException(string message)
-            : base(message)
-        {
-        }
     }
 }

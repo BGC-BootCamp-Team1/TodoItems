@@ -9,10 +9,5 @@
         public ExceedMaxTodoItemsPerDueDateException(): base(DefaultMessage)
         {
         }
-
-        public ExceedMaxTodoItemsPerDueDateException(string message)
-            : base(message)
-        {
-        }
     }
 }

@@ -9,10 +9,5 @@
         public TooEarlyDueDateException(): base(DefaultMessage)
         {
         }
-
-        public TooEarlyDueDateException(string message)
-            : base(message)
-        {
-        }
     }
 }

@@ -15,7 +15,8 @@ namespace TodoItems.Core
         {
             _todosRepository = repository;
         }
-        public TodoItem createItem(string description, DateTime dueDate) {
+
+        public TodoItem CreateItem(string description, DateTime dueDate) {
             if (dueDate <= DateTime.Now.Date)
             {
                 throw new TooEarlyDueDateException();
