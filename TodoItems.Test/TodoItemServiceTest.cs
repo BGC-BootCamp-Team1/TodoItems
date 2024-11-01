@@ -12,8 +12,9 @@ namespace TodoItems.Test
             DateTime dueDate = DateTime.Now.AddDays(7);
 
             var mockRepository = new Mock<ITodoItemsRepository>();
-            mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(dueDate))
-                .Returns(8);
+
+            mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(It.IsAny<DateTime>()))
+                .ReturnsAsync(8);
 
             var service = new TodoItemService(mockRepository.Object);
             
@@ -26,8 +27,8 @@ namespace TodoItems.Test
             DateTime dueDate = DateTime.Now.AddDays(7);
 
             var mockRepository = new Mock<ITodoItemsRepository>();
-            mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(dueDate))
-                .Returns(1);
+            mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(It.IsAny<DateTime>()))
+                .ReturnsAsync(1);
 
             var service = new TodoItemService(mockRepository.Object);
             var actualTodoItem = service.CreateItem("test", dueDate);
@@ -42,8 +43,8 @@ namespace TodoItems.Test
             DateTime dueDate = DateTime.Now.AddDays(-10);
 
             var mockRepository = new Mock<ITodoItemsRepository>();
-            mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(dueDate))
-                .Returns(0);
+            mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(It.IsAny<DateTime>()))
+                .ReturnsAsync(0);
 
             var service = new TodoItemService(mockRepository.Object);
 

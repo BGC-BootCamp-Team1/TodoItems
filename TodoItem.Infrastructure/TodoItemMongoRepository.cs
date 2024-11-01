@@ -41,7 +41,11 @@ public class TodoItemMongoRepository: ITodoItemsRepository
         throw new NotImplementedException();
     }
 
-    public int CountTodoItemsOnTheSameDueDate(DateTime dueDate) {
-        return 8;
+    public async Task<long> CountTodoItemsOnTheSameDueDate(DateTime dueDate)
+    {
+        FilterDefinition<TodoItemPo?> filter = Builders<TodoItemPo>.Filter.Eq(x => x.DueDate, dueDate);
+        var count = await _todosCollection.CountDocumentsAsync(filter);
+
+        return count;
     }
 }

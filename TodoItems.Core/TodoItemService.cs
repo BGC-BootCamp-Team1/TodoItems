@@ -17,7 +17,8 @@ namespace TodoItems.Core
             {
                 throw new TooEarlyDueDateException();
             }
-            if (_todosRepository.CountTodoItemsOnTheSameDueDate(dueDate)>= Constants.MAX_ITEM_SAME_DUEDAY)
+            var count = _todosRepository.CountTodoItemsOnTheSameDueDate(dueDate).Result;
+            if (count >= Constants.MAX_ITEM_SAME_DUEDAY)
             {
                 throw new ExceedMaxTodoItemsPerDueDateException();
             }
