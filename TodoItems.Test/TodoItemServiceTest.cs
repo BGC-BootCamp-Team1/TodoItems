@@ -46,4 +46,14 @@ public class TodoItemServiceTest
         var exception = Assert.Throws<DueDateEarlierThanCreationDateException>(() => todoService.Create(_description, earlyDueDate, DueDateSetStrategy.Manual));
         Assert.Equal(expectedErrMsg, exception.Message);
     }
+
+    [Fact]
+    public void Should_return_item_when_due_date_is_null()
+    {
+        var todoService = new TodoItemService(_mockRepository.Object);
+        var newItem = todoService.Create(_description, null);
+
+        Assert.Equal(_description, newItem.Description);
+        Assert.Null(newItem.DueDate);
+    }
 }
