@@ -5,9 +5,18 @@ public class TodoItem
 {
     public string Id { get; init; }
     public string Description { get; set; }
-    public DateTime CreatedTime { get; set; } = DateTime.Now;
-    public IList<Modification> Modifications { get; set; }
+    public DateTime CreatedTime { get; set; }
+    private IList<Modification> Modifications { get; set; }
     public DateTime DueDate { get; set; }
+
+    public TodoItem(string description, List<Modification> modifications, DateTime dueDate)
+    {
+        Id = Guid.NewGuid().ToString();
+        Description = description;
+        CreatedTime = DateTime.Now;
+        Modifications = [.. modifications];
+        DueDate = dueDate;
+    }
 
     public void Modify(string description)
     {

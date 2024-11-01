@@ -1,4 +1,5 @@
-﻿using TodoItems.Core.ApplicationExcepetions;
+﻿using System.Collections.Generic;
+using TodoItems.Core.ApplicationExcepetions;
 
 namespace TodoItems.Core
 {
@@ -20,13 +21,7 @@ namespace TodoItems.Core
             {
                 throw new ExceedMaxTodoItemsPerDueDateException();
             }
-            TodoItem item = new TodoItem
-            {
-                Id = Guid.NewGuid().ToString(),
-                Description = description,
-                Modifications = [],
-                DueDate = dueDate
-            };
+            TodoItem item = new TodoItem(description, [], dueDate);
             return item;
         }
     }

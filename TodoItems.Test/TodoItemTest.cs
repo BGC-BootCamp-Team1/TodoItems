@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using TodoItems.Core;
 using TodoItems.Core.ApplicationExcepetions;
 
@@ -15,11 +16,7 @@ public class TodoItemTest
             new Modification(today.AddHours(12)),
             new Modification(today.AddHours(14))
         ];
-        var todoItem = new TodoItem() {
-            Id = "testItem",
-            Description = "test",
-            Modifications = threeTodayModifications.ToList()
-        };
+        TodoItem todoItem = new TodoItem("test", threeTodayModifications, today.AddDays(7));
         Assert.Throws<ExceedMaxModificationException>(() => todoItem.Modify("TEST"));
     }
 
@@ -32,27 +29,18 @@ public class TodoItemTest
             new Modification(today.AddDays(-1).AddHours(12)),
             new Modification(today.AddHours(12))
         ];
-        var todoItem = new TodoItem()
-        {
-            Id = "testItem",
-            Description = "test",
-            Modifications = twoTodayModifications.ToList()
-        };
-        todoItem.Modify("TEST");
-        Assert.Equal(twoTodayModifications.Count + 1, todoItem.Modifications.Count);
+        TodoItem todoItem = new TodoItem("test", twoTodayModifications, today.AddDays(7));
+        todoItem.Modify("TEST_MODIFY");
+        Assert.Equal("TEST_MODIFY", todoItem.Description);
     }
 
     [Fact]
     public void Should_modify_when_first_modification()
     {
         List<Modification> emptyModifications = [];
-        var todoItem = new TodoItem()
-        {
-            Id = "testItem",
-            Description = "test",
-            Modifications = emptyModifications.ToList()
-        };
-        todoItem.Modify("TEST");
-        Assert.Equal(emptyModifications.Count + 1, todoItem.Modifications.Count);
+        TodoItem todoItem = new TodoItem("test", emptyModifications, DateTime.Today.AddDays(7));
+
+        todoItem.Modify("TEST_MODIFY");
+        Assert.Equal("TEST_MODIFY", todoItem.Description);
     }
 }
