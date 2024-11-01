@@ -15,7 +15,9 @@ namespace TodoItems.Core
 
         public TodoItem Create(string description, DateTime? manualSetDueDate, DueDateSetStrategy strategy = DueDateSetStrategy.Manual)
         {
-            return TodoItemFactory.CreateItem(_todosRepository, description, manualSetDueDate, strategy);
+            var newItem = TodoItemFactory.CreateItem(_todosRepository, description, manualSetDueDate, strategy);
+            _todosRepository.Create(newItem);
+            return newItem;
         }
         
     }
