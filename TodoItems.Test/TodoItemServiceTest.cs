@@ -38,7 +38,7 @@ public class TodoItemServiceTest
     }
 
     [Fact]
-    public void Can_create_items_10_dueDay()
+    public void Can_create_items_with_dueDay()
     {
         _mockedTodosRepository.Setup(
             repository =>
