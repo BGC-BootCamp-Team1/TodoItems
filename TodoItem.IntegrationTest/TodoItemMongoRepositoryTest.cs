@@ -17,17 +17,17 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         
         mockSettings.Setup(s => s.Value).Returns(new TodoStoreDatabaseSettings
         {
-            ConnectionString = "mongodb://root:password@localhost:27017",
-            DatabaseName = "TodoTestStore",
-            TodoItemsCollectionName = "Todos"
+            ConnectionString = "mongodb://localhost:27017",
+            DatabaseName = "ToDoItems",
+            TodoItemsCollectionName = "ToDoItems"
         });
 
         // 初始化 TodoService
         _mongoRepository = new TodoItemMongoRepository(mockSettings.Object);
         
-        var mongoClient = new MongoClient("mongodb://root:password@localhost:27017");
-        var mongoDatabase = mongoClient.GetDatabase("TodoTestStore");
-        _mongoCollection = mongoDatabase.GetCollection<TodoItemPo>("Todos");
+        var mongoClient = new MongoClient("mongodb://localhost:27017");
+        var mongoDatabase = mongoClient.GetDatabase("ToDoItems");
+        _mongoCollection = mongoDatabase.GetCollection<TodoItemPo>("ToDoItems");
     }
     
     // IAsyncLifetime 中的 InitializeAsync 方法在每个测试前运行

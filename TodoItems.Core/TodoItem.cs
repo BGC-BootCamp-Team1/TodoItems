@@ -5,9 +5,15 @@ public class TodoItem
 {
     public string Id { get; init; }
     public DateTime DueDate { get; init; }
-    public string Description { get; private set; }
+    public string Description { get; set; }
     public DateTime CreatedTime { get; init; }
     public List<Modification> ModificationRecords { get; private set; }
+
+    public TodoItem()
+    {
+        this.ModificationRecords = new List<Modification>();
+        this.CreatedTime = DateTime.Now;
+    }
 
     public TodoItem(string description, DateTime dueDate)
     {

@@ -29,12 +29,12 @@ public class TodoItemMongoRepository: ITodosRepository
     {
         if (todoItemPo == null) return null;
 
-        return new TodoItems.Core.TodoItem(todoItemPo.Description, DateTime.Today.AddDays(1));
-        //return new TodoItems.Core.TodoItem
-        //{
-        //    Id = todoItemPo.Id,
-        //    Description = todoItemPo.Description
-        //};
+        return new TodoItems.Core.TodoItem()
+        {
+            // need to add created time in todoItemPo
+            Id = todoItemPo.Id,
+            Description = todoItemPo.Description
+        };
     }
 
     public void Save(TodoItems.Core.TodoItem todoItem)
