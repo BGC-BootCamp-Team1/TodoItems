@@ -1,5 +1,4 @@
-﻿using System;
-using TodoItems.Core.ApplicationExcepetions;
+﻿using TodoItems.Core.ApplicationExcepetions;
 namespace TodoItems.Core;
 
 public class TodoItem
