@@ -2,6 +2,6 @@
 {
     public interface ITodosRepository
     {
-        List<TodoItem> FindAllTodoItemsHaveTheSameDueDate(DateTime dueDate);
+        int CountTodoItemsOnTheSameDueDate(DateTime dueDate);
     }
 }
