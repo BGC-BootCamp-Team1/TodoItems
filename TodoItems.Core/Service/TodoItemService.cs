@@ -39,15 +39,30 @@ namespace TodoItems.Core.Service
 
         private TodoItem GenerateByOptionB(string description, DateOnly? dueDay, string userId)
         {
-            throw new NotImplementedException();
+            List<TodoItem> todoItems = _repository.FindTodoItemsInFiveDaysByUserId(userId);
+            var list = todoItems
+                        .GroupBy(item => item.DueDay)
+                        .Select(group => new { DueDay = group.Key, Count = group.Count() })
+                        .OrderBy(item => item.Count)
+                        .ToList();
+
+            foreach (var pair in list)
+            {
+                if (pair.Count < Constants.MAX_DAY_SAME_DUEDAY)
+                {
+                    return new TodoItem(description, (DateOnly)pair.DueDay, userId); ;
+                }
+            }
+            throw new MaximumSameDueDayException("to many dueDay in same day");
         }
 
         private TodoItem GenerateByOptionA(string description, string userId)
         {
-            List<TodoItem> todoItems = _repository.FindTodoItemsInFiveDaysByUserIdOrderByDueDay(userId);
+            List<TodoItem> todoItems = _repository.FindTodoItemsInFiveDaysByUserId(userId);
             var list = todoItems
                         .GroupBy(item => item.DueDay)
                         .Select(group => new { DueDay = group.Key, Count = group.Count() })
+                        .OrderBy(item => item.DueDay)
                         .ToList();
             foreach (var pair in list)
             {

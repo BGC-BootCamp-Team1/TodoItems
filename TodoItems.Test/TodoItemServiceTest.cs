@@ -110,7 +110,7 @@ public class TodoItemServiceTest
             .Returns(true);
         _mockedTodosRepository.Setup(
             repository =>
-            repository.FindTodoItemsInFiveDaysByUserIdOrderByDueDay(
+            repository.FindTodoItemsInFiveDaysByUserId(
                 It.IsAny<string>()
             )
         ).Returns(
@@ -155,7 +155,7 @@ public class TodoItemServiceTest
             .Returns(true);
         _mockedTodosRepository.Setup(
             repository =>
-            repository.FindTodoItemsInFiveDaysByUserIdOrderByDueDay(
+            repository.FindTodoItemsInFiveDaysByUserId(
                 It.IsAny<string>()
             )
         ).Returns(mockResList);
@@ -165,6 +165,75 @@ public class TodoItemServiceTest
         Assert.Throws<MaximumSameDueDayException>(() =>
         {
             _service.Create(OptionEnum.OptionA, "Des", null, "user1");
+        });
+    }
+    [Fact]
+    public void CreateTodoItem_GivenOptionBNoDueDay_ShouldSuccess()
+    {
+        _mockedTodosRepository = new Mock<ITodoItemsRepository>();
+        _mockedTodosRepository.Setup(
+            repository =>
+            repository.Insert(
+                It.IsAny<TodoItem>()
+            ))
+            .Returns(true);
+        _mockedTodosRepository.Setup(
+            repository =>
+            repository.FindTodoItemsInFiveDaysByUserId(
+                It.IsAny<string>()
+            )
+        ).Returns(
+            [   new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(2)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(2)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(2)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(3)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(4)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(4)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(5)), "user1"),
+            ]
+
+        );
+        _service = new TodoItemService(_mockedTodosRepository.Object);
+
+        TodoItem todoItem = _service.Create(OptionEnum.OptionB, "Des", null, "user1");
+
+        Assert.Equal(DateOnly.FromDateTime(DateTime.Now.AddDays(3)), todoItem.DueDay);
+
+    }
+    [Fact]
+    public void CreateTodoItem_GivenOptionBNoDueDay_ThrowError()
+    {
+        List<TodoItem> mockResList = new List<TodoItem>();
+
+        for (int i = 1; i <= 5; i++)
+        {
+            for (int j = 0; j < Constants.MAX_DAY_SAME_DUEDAY; j++)
+            {
+                mockResList.Add(new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(i)), "user1"));
+            }
+        }
+        _mockedTodosRepository = new Mock<ITodoItemsRepository>();
+        _mockedTodosRepository.Setup(
+            repository =>
+            repository.Insert(
+                It.IsAny<TodoItem>()
+            ))
+            .Returns(true);
+        _mockedTodosRepository.Setup(
+            repository =>
+            repository.FindTodoItemsInFiveDaysByUserId(
+                It.IsAny<string>()
+            )
+        ).Returns(mockResList);
+        _service = new TodoItemService(_mockedTodosRepository.Object);
+
+
+        Assert.Throws<MaximumSameDueDayException>(() =>
+        {
+            _service.Create(OptionEnum.OptionB, "Des", null, "user1");
         });
     }
 
