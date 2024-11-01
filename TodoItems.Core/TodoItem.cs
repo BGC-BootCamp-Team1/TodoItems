@@ -1,4 +1,5 @@
 ﻿namespace TodoItems.Core;
+using static TodoItems.Core.Constants;
 
 public class TodoItem
 {
@@ -21,7 +22,7 @@ public class TodoItem
     {
         var today = DateTime.Today;
         var todayModifications = ModificationRecords.Where(r => r.time.Date == today).ToList();
-        if (todayModifications.Count < 3)
+        if (todayModifications.Count < MAX_MODIFY_TIME_ONE_DAY)
         {
             this.Description = description;
             this.ModificationRecords.Add(new Modification());

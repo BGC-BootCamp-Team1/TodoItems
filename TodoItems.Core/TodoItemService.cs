@@ -1,4 +1,5 @@
 ﻿using TodoItems.Core.ApplicationException;
+using static TodoItems.Core.Constants;
 
 namespace TodoItems.Core
 {
@@ -11,9 +12,7 @@ namespace TodoItems.Core
             _todosRepository = todosRepository;
         }
 
-        public int MaxItemsPerDueDate { get; private set; } = 8;
-
-        public TodoItem Create(string description, DateTime dueDate)
+        public TodoItem Create(string description, DateTime dueDate, DueDateSetStrategy strategy)
         {
             var newItem = new TodoItem(description, dueDate);
 
@@ -24,9 +23,9 @@ namespace TodoItems.Core
 
             var itemCount = _todosRepository.GetCountByDueDate(dueDate);
 
-            if (itemCount >= MaxItemsPerDueDate)
+            if (itemCount >= MAX_ITEMS_PER_DUE_DATE)
             {
-                throw new MaxItemsPerDueDateReachedException(dueDate, MaxItemsPerDueDate);
+                throw new MaxItemsPerDueDateReachedException(dueDate, MAX_ITEMS_PER_DUE_DATE);
             }
             _todosRepository.Create(newItem);
             return newItem;

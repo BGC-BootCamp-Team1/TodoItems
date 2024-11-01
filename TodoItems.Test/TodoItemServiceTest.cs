@@ -3,6 +3,7 @@ using Moq;
 using Moq.Protected;
 using Microsoft.VisualBasic;
 using TodoItems.Core.ApplicationException;
+using static TodoItems.Core.Constants;
 
 namespace TodoItems.Test;
 
@@ -16,7 +17,7 @@ public class TodoItemServiceTest
     public void Should_create_todo_item()
     {
         var todoService = new TodoItemService(_mockRepository.Object);
-        var newItem = todoService.Create(_description, _dueDate);
+        var newItem = todoService.Create(_description, _dueDate, DueDateSetStrategy.Manual);
 
         Assert.Equal(_description, newItem.Description);
         Assert.Equal(_dueDate, newItem.DueDate);
@@ -27,11 +28,11 @@ public class TodoItemServiceTest
     public void Should_throw_exception_when_exceed_due_date_limit()
     {
         var todoService = new TodoItemService(_mockRepository.Object);
-        var maxItemsPerDueDay = todoService.MaxItemsPerDueDate;
+        var maxItemsPerDueDay = MAX_ITEMS_PER_DUE_DATE;
         _mockRepository.Setup(repo => repo.GetCountByDueDate(_dueDate)).Returns(maxItemsPerDueDay);
         var expectedErrMsg = $"Cannot create new Todo item completed on {_dueDate}, already reach max limit({maxItemsPerDueDay})";
 
-        var exception = Assert.Throws<MaxItemsPerDueDateReachedException>(() => todoService.Create(_description, _dueDate));
+        var exception = Assert.Throws<MaxItemsPerDueDateReachedException>(() => todoService.Create(_description, _dueDate, DueDateSetStrategy.Manual));
         Assert.Equal(expectedErrMsg, exception.Message);
     }
 
@@ -42,7 +43,7 @@ public class TodoItemServiceTest
         var earlyDueDate = DateTime.Today.AddDays(-5);
         var expectedErrMsg = "Cannot create todo item that due date earlier than creation date";
         
-        var exception = Assert.Throws<DueDateEarlierThanCreationDateException>(() => todoService.Create(_description, earlyDueDate));
+        var exception = Assert.Throws<DueDateEarlierThanCreationDateException>(() => todoService.Create(_description, earlyDueDate, DueDateSetStrategy.Manual));
         Assert.Equal(expectedErrMsg, exception.Message);
     }
 }
