@@ -1,4 +1,4 @@
-﻿namespace TodoItem.Infrastructure;
+﻿namespace TodoItems.Infrastructure;
 public class TodoStoreDatabaseSettings
 {
     public required string ConnectionString { get; set; }

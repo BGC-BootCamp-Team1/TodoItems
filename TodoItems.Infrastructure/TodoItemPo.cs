@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using TodoItems.Core.Model;
 
-namespace TodoItem.Infrastructure;
+namespace TodoItems.Infrastructure;
 public class TodoItemPo
 {
     [BsonId]
@@ -12,6 +12,5 @@ public class TodoItemPo
     public string userId{ get; set; }
     public DateTime DueDay { get; set; }
     public List<Modification> ModificationList { get; set; }
-
 
 }

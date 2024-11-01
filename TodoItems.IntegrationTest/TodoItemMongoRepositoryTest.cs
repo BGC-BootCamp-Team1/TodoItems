@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Moq;
-using TodoItem.Infrastructure;
+using TodoItems.Infrastructure;
 
-namespace TodoItem.IntegrationTest;
+namespace TodoItems.IntegrationTest;
 
 public class TodoItemMongoRepositoryTest : IAsyncLifetime
 {

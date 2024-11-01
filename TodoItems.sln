@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItems.Core", "TodoItems
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItems.Test", "TodoItems.Test\TodoItems.Test.csproj", "{812ACC5D-E44F-4BF4-918A-D7853B472150}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItem.Infrastructure", "TodoItem.Infrastructure\TodoItem.Infrastructure.csproj", "{9DF96C7F-FD49-41A5-BE98-BD13BACE1305}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItems.Infrastructure", "TodoItems.Infrastructure\TodoItems.Infrastructure.csproj", "{9DF96C7F-FD49-41A5-BE98-BD13BACE1305}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItem.IntegrationTest", "TodoItem.IntegrationTest\TodoItem.IntegrationTest.csproj", "{CDFCFBFB-B377-4F91-9F06-75EEF11270A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItems.IntegrationTest", "TodoItems.IntegrationTest\TodoItems.IntegrationTest.csproj", "{CDFCFBFB-B377-4F91-9F06-75EEF11270A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
