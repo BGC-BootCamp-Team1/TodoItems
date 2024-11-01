@@ -159,3 +159,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,macos,windows,jetbrains+all
+/design/.$TaskDiagram.drawio.bkp
