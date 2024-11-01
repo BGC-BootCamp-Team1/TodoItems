@@ -4,6 +4,7 @@ namespace TodoItems.Core;
 
 public class TodoItem
 {
+    public bool IsComplete { get; set; }
     public DateTimeOffset DueDate { get; set; }
     public string Id { get; set; }
     public string Description { get; set; }
@@ -16,6 +17,7 @@ public class TodoItem
         CreateTime = DateTimeOffset.Now;
         ModificationHistory = new List<Modification>();
         DueDate = dueDate;
+        IsComplete = false;
     }
     public void ModifyItem(string modifiedDescription)
     {

@@ -4,7 +4,7 @@ using TodoItems.Core;
 
 namespace TodoItem.Infrastructure;
 
-public class TodoItemMongoRepository: ITodoItemsRepository
+public class TodoItemMongoRepository: ITodosRepository
 {
     private readonly IMongoCollection<TodoItemPo?> _todosCollection;
     
@@ -28,15 +28,20 @@ public class TodoItemMongoRepository: ITodoItemsRepository
     private TodoItems.Core.TodoItem ConvertToTodoItem(TodoItemPo? todoItemPo)
     {
         if (todoItemPo == null) return null;
-
-        return new TodoItems.Core.TodoItem
+        return new TodoItems.Core.TodoItem(todoItemPo.Description, todoItemPo.DueDate)
         {
             Id = todoItemPo.Id,
-            Description = todoItemPo.Description
+            CreateTime = todoItemPo.CreateTime,
+            IsComplete = todoItemPo.IsComplete,
         };
     }
 
     public void Save(TodoItems.Core.TodoItem todoItem)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int CountTodoItemsByDueDate(DateTimeOffset dueDate)
     {
         throw new NotImplementedException();
     }
