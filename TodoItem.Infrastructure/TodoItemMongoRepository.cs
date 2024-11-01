@@ -32,7 +32,10 @@ public class TodoItemMongoRepository: ITodoItemsRepository
         return new TodoItems.Core.TodoItem
         {
             Id = todoItemPo.Id,
-            Description = todoItemPo.Description
+            Description = todoItemPo.Description,
+            DueDate = todoItemPo.DueDate,
+            CreatedTime = todoItemPo.CreatedTime
+
         };
     }
 
@@ -47,5 +50,19 @@ public class TodoItemMongoRepository: ITodoItemsRepository
         var count = await _todosCollection.CountDocumentsAsync(filter);
 
         return count;
+    }
+
+    public async Task<List<TodoItems.Core.TodoItem>> GetTodoItemsDueInNextFiveDays()
+    {
+        var today = DateTime.Today;
+        var futureDate = today.AddDays(5);
+
+        var filter = Builders<TodoItemPo>.Filter.And(
+            Builders<TodoItemPo>.Filter.Gte(item => item.DueDate, today),
+            Builders<TodoItemPo>.Filter.Lt(item => item.DueDate, futureDate));
+
+        var todoItemPos = await _todosCollection.Find(filter).ToListAsync();
+        var todoItems = todoItemPos.Select(ConvertToTodoItem).ToList();
+        return todoItems;
     }
 }
