@@ -18,6 +18,10 @@ public class TodoItem
         DueDate = dueDate;
     }
 
+    public TodoItem()
+    {
+    }
+
     public void Modify(string description)
     {
         DateTime today = DateTime.Today;

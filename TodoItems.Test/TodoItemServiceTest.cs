@@ -11,7 +11,7 @@ namespace TodoItems.Test
         {
             DateTime dueDate = DateTime.Now.AddDays(7);
 
-            var mockRepository = new Mock<ITodosRepository>();
+            var mockRepository = new Mock<ITodoItemsRepository>();
             mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(dueDate))
                 .Returns(8);
 
@@ -25,7 +25,7 @@ namespace TodoItems.Test
         {
             DateTime dueDate = DateTime.Now.AddDays(7);
 
-            var mockRepository = new Mock<ITodosRepository>();
+            var mockRepository = new Mock<ITodoItemsRepository>();
             mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(dueDate))
                 .Returns(1);
 
@@ -41,7 +41,7 @@ namespace TodoItems.Test
         {
             DateTime dueDate = DateTime.Now.AddDays(-10);
 
-            var mockRepository = new Mock<ITodosRepository>();
+            var mockRepository = new Mock<ITodoItemsRepository>();
             mockRepository.Setup(repo => repo.CountTodoItemsOnTheSameDueDate(dueDate))
                 .Returns(0);
 
