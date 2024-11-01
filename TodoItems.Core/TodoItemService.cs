@@ -5,7 +5,6 @@ namespace TodoItems.Core
     public class TodoItemService
     {
         private readonly ITodosRepository _todosRepository;
-        private readonly int _maxItemPerDueDate = 8;
 
         public TodoItemService(ITodosRepository repository)
         {
@@ -17,7 +16,7 @@ namespace TodoItems.Core
             {
                 throw new TooEarlyDueDateException();
             }
-            if (_todosRepository.CountTodoItemsOnTheSameDueDate(dueDate)>= _maxItemPerDueDate)
+            if (_todosRepository.CountTodoItemsOnTheSameDueDate(dueDate)>= Constants.MAX_ITEM_SAME_DUEDAY)
             {
                 throw new ExceedMaxTodoItemsPerDueDateException();
             }

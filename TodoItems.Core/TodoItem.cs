@@ -9,13 +9,11 @@ public class TodoItem
     public IList<Modification> Modifications { get; set; }
     public DateTime DueDate { get; set; }
 
-    private readonly int _maxNumberOfModification = 3;
-
     public void Modify(string description)
     {
         DateTime today = DateTime.Today;
         int count = Modifications.Count(modification => modification.Timestamp.Date == today);
-        if (count < _maxNumberOfModification)
+        if (count < Constants.MAX_DAILY_MODIFICATIONS)
         {
             Description = description;
             Modifications.Add(new Modification(DateTime.Now));
