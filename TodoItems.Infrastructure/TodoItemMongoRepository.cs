@@ -41,7 +41,11 @@ public class TodoItemMongoRepository : ITodoItemsRepository
 
     public TodoItem Save(TodoItem todoItem)
     {
-        throw new NotImplementedException();
+        _todosCollection.InsertOne(TodoMapper.ToPo(todoItem));
+        FilterDefinition<TodoItemPo?> filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, todoItem.Id);
+        TodoItemPo? todoItemPo = _todosCollection.Find(filter).FirstOrDefault();
+
+        return TodoMapper.ToItem(todoItemPo!);
     }
 
     public List<TodoItem> FindTodoItemsInFiveDaysByUserId(string userId)

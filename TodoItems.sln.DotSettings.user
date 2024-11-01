@@ -1,4 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AIMongoCollection_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003FLibrary_003FApplication_0020Support_003FJetBrains_003FRider2024_002E2_003Fresharper_002Dhost_003FSourcesCache_003F8e7ccf454bf2b696ac9f27624a83cfd4da476bebc6a7c966d7b28137e4d5813_003FIMongoCollection_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4296394a_002D087a_002D48bc_002Dba1f_002D47a70cc3a4b1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;TodoItems.Test&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::812ACC5D-E44F-4BF4-918A-D7853B472150::net8.0::TodoItems.Test.TodoItemTest&lt;/TestId&gt;
@@ -7,6 +8,7 @@
     &lt;TestId&gt;xUnit::812ACC5D-E44F-4BF4-918A-D7853B472150::net8.0::TodoItems.Test.TodoItemServiceTest.Cannot_create_items_same_dueDay&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::812ACC5D-E44F-4BF4-918A-D7853B472150::net8.0::TodoItems.Test.TodoItemServiceTest.dueDay_canot_earlier_than_today&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::CDFCFBFB-B377-4F91-9F06-75EEF11270A7::net8.0::TodoItem.IntegrationTest.TodoItemMongoRepositoryTest&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::CDFCFBFB-B377-4F91-9F06-75EEF11270A7::net8.0::TodoItems.IntegrationTest.TodoItemMongoRepositoryTest.should_Created_when_save&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

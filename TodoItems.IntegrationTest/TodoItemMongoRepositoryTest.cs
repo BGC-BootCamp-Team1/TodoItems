@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Moq;
+using TodoItems.Core.Model;
 using TodoItems.Infrastructure;
 
 namespace TodoItems.IntegrationTest;
@@ -9,8 +10,7 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
 {
     private readonly TodoItemMongoRepository _mongoRepository;
     private IMongoCollection<TodoItemPo> _mongoCollection;
-
-
+    
     public TodoItemMongoRepositoryTest()
     {
         var mockSettings = new Mock<IOptions<TodoStoreDatabaseSettings>>();
@@ -48,7 +48,7 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
         {
             Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
             Description = "Buy groceries",
-            userId = "user1",
+            UserId = "user1",
         }; ;
         await _mongoCollection.InsertOneAsync(todoItemPo);
         var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e2");
@@ -56,5 +56,18 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
         Assert.NotNull(todoItem);
         Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e2", todoItem.Id);
         Assert.Equal("Buy groceries", todoItem.Description);
+    }
+    
+    [Fact]
+    public async void should_Created_when_save()
+    {
+        var item = new TodoItem("Des", DateTime.Today.AddDays(1), "user1");
+
+        _mongoRepository.Save(item);
+        var todoItem =await _mongoRepository.FindById(item.Id);
+
+        Assert.NotNull(todoItem);
+        Assert.Equal(item.Id, todoItem.Id);
+        Assert.Equal(item.Description, todoItem.Description);
     }
 }
