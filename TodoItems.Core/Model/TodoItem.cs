@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using TodoItems.Core.BizException;
+using TodoItems.Core.AppException;
 namespace TodoItems.Core.Model;
 
 public class TodoItem

@@ -1,4 +1,4 @@
-using TodoItems.Core.BizException;
+using TodoItems.Core.AppException;
 using TodoItems.Core.Model;
 
 namespace TodoItems.Test;

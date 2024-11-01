@@ -1,4 +1,4 @@
-﻿namespace TodoItems.Core.BizException
+﻿namespace TodoItems.Core.AppException
 {
     public class MaximumModificationException(string? message) : Exception(message);
     public class DueDayEarlyException(string? message) : Exception(message);
