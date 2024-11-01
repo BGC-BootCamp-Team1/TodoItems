@@ -15,7 +15,9 @@ class TodoItem {
 class TodoItemService {
     + CreateItem(description: string, dueDate: DateTime): TodoItem
 }
- 
+class Tag{
+    - Title: string
+}
 class Modification{
     - Timestamp: DateTime
 }
@@ -27,6 +29,7 @@ interface ITodosRepository{
 }
 User"1" *-- "0..*" TodoItem
 TodoItem "1" *-- "0..*" Modification
+TodoItem "0..*" --> "0..*" Tag
 TodoItemService --> ITodosRepository
 TodoItemService --> TodoItem
 @enduml
