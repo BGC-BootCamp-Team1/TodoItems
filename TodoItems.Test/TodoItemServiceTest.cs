@@ -134,6 +134,39 @@ public class TodoItemServiceTest
         Assert.NotNull(todoItem);
 
     }
+    [Fact]
+    public void CreateTodoItem_GivenOptionANoDueDay_ThrowError()
+    {
+        List<TodoItem> mockResList = new List<TodoItem>();
+
+        for (int i = 1; i <= 5; i++)
+        {
+            for (int j = 0; j < Constants.MAX_DAY_SAME_DUEDAY; j++)
+            {
+                mockResList.Add(new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(i)), "user1"));
+            }
+        }
+        _mockedTodosRepository = new Mock<ITodoItemsRepository>();
+        _mockedTodosRepository.Setup(
+            repository =>
+            repository.Insert(
+                It.IsAny<TodoItem>()
+            ))
+            .Returns(true);
+        _mockedTodosRepository.Setup(
+            repository =>
+            repository.FindTodoItemsInFiveDaysByUserIdOrderByDueDay(
+                It.IsAny<string>()
+            )
+        ).Returns(mockResList);
+        _service = new TodoItemService(_mockedTodosRepository.Object);
+
+
+        Assert.Throws<MaximumSameDueDayException>(() =>
+        {
+            _service.Create(OptionEnum.OptionA, "Des", null, "user1");
+        });
+    }
 
 
 
