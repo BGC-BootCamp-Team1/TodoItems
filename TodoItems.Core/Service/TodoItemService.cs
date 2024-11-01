@@ -13,21 +13,21 @@ namespace TodoItems.Core.Service
             _repository = repository;
         }
 
-        public TodoItem Create(string description, DateOnly dueDay, string userId)
+        public TodoItem Create(string description, DateOnly? dueDay, string userId)
         {
             if(dueDay < DateOnly.FromDateTime(DateTime.Now))
             {
                 throw new DueDayEarlyException($"cannot earlier than today");
             }
 
-            List<TodoItem> items= _repository.FindAllTodoItemsByUserIdAndDueDay(userId, dueDay);
+            List<TodoItem> items= _repository.FindAllTodoItemsByUserIdAndDueDay(userId, (DateOnly)dueDay);
                 
             if (items.Count >= Constants.MAX_DAY_SAME_DUEDAY) 
             {
                 throw new MaximumSameDueDayException($"too many items in same day for {userId}");
             }
 
-            TodoItem todoItem = new TodoItem(description, dueDay, userId); ;
+            TodoItem todoItem = new TodoItem(description, (DateOnly)dueDay, userId); ;
             _repository.Insert(todoItem);
             return todoItem;
 
