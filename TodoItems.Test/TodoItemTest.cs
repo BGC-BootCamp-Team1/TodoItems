@@ -18,7 +18,7 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddHours(3))
         };
 
-        var todoItem = new TodoItem("Initial Description", DateTime.Now);
+        var todoItem = new TodoItems.Core.TodoItemObject("Initial Description", DateTime.Now);
         todoItem.ModificationTimestamps = Modifications3TimesInOneDay;
 
 
@@ -43,7 +43,7 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddHours(-3)),
         };
 
-        var todoItem = new TodoItem("Initial Description", DateTime.Now);
+        var todoItem = new TodoItemObject("Initial Description", DateTime.Now);
         todoItem.ModificationTimestamps = ModificationsOnceOneDay;
         //Act
         todoItem.ModifyDescription("bbb");
@@ -67,7 +67,7 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
         };
 
-        var todoItem = new TodoItem("Initial Description", DateTime.Now);
+        var todoItem = new TodoItemObject("Initial Description", DateTime.Now);
         todoItem.ModificationTimestamps = ModificationsOnDifferentDay;
         //Act
         todoItem.ModifyDescription("tt");
@@ -92,7 +92,7 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
         };
 
-        var todoItem = new TodoItem("Initial Description", DateTime.Now.AddDays(10));
+        var todoItem = new TodoItemObject("Initial Description", DateTime.Now.AddDays(10));
         todoItem.ModificationTimestamps = ModificationsOnDifferentDay;
         //Act
         var exception = Assert.Throws<ArgumentException>(() => todoItem.ModifyDescription("bbb"));
