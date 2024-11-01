@@ -4,7 +4,7 @@ using static TodoItems.Core.Constants;
 public class TodoItem
 {
     public string Id { get; init; }
-    public DateTime? DueDate { get; init; }
+    public DateTime? DueDate { get; set; }
     public string Description { get; set; }
     public DateTime CreatedTime { get; init; }
     public List<Modification> ModificationRecords { get; private set; }
@@ -19,7 +19,7 @@ public class TodoItem
     {
         this.Description = description;
         this.Id = Guid.NewGuid().ToString();
-        this.DueDate = dueDate;
+        this.DueDate = dueDate; // todo: change type to DateOnly
         this.CreatedTime = DateTime.Now;
         this.ModificationRecords = new List<Modification>();
     }
