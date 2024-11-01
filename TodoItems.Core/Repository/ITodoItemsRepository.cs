@@ -6,6 +6,6 @@ namespace TodoItems.Core.Repository
     {
         List<TodoItem> FindAllTodoItemsByUserIdAndDueDay(string userId, DateTime dueDay);
         List<TodoItem> FindTodoItemsInFiveDaysByUserId(string userId);
-        bool Insert(TodoItem todoItem);
+        TodoItem Save(TodoItem todoItem);
     }
 }

@@ -32,18 +32,13 @@ public class TodoItemMongoRepository : ITodoItemsRepository
         return new TodoItems.Core.Model.TodoItem (todoItemPo.Id,todoItemPo.Description,todoItemPo.DueDay,"user1");
 
     }
-
-    public void Save(TodoItems.Core.Model.TodoItem todoItem)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public List<TodoItems.Core.Model.TodoItem> FindAllTodoItemsByUserIdAndDueDay(string userId, DateTime dueDay)
     {
         throw new NotImplementedException();
     }
 
-    public bool Insert(TodoItems.Core.Model.TodoItem todoItem)
+    public TodoItems.Core.Model.TodoItem Save(TodoItems.Core.Model.TodoItem todoItem)
     {
         throw new NotImplementedException();
     }

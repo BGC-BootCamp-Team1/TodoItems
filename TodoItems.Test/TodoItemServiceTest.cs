@@ -25,6 +25,12 @@ public class TodoItemServiceTest
                     It.IsAny<string>(), It.IsAny<DateTime>()
                 )).Returns(
             [new TodoItem("Des", DateTime.Today, "user1")]);
+        _mockedTodosRepository.Setup(
+            repository =>
+                repository.Save(
+                    It.IsAny<TodoItem>()
+                )).Returns(new TodoItem("Des", DateTime.Today.AddDays(1), "user2"));
+
 
         var todoItem = _service.Create(OptionEnum.Manual,"Des", DateTime.Today, "user1");
 
@@ -73,9 +79,9 @@ public class TodoItemServiceTest
         ]);
         _mockedTodosRepository.Setup(
             repository =>
-                repository.Insert(
+                repository.Save(
                     It.IsAny<TodoItem>()
-                )).Returns(true);
+                )).Returns(new TodoItem("Des", DateTime.Today.AddDays(1), "user2"));
 
         _service = new TodoItemService(_mockedTodosRepository.Object);
 
@@ -103,10 +109,10 @@ public class TodoItemServiceTest
         _mockedTodosRepository = new Mock<ITodoItemsRepository>();
         _mockedTodosRepository.Setup(
             repository =>
-            repository.Insert(
+            repository.Save(
                 It.IsAny<TodoItem>()
             ))
-            .Returns(true);
+            .Returns(new TodoItem("Des", DateTime.Today.AddDays(1), "user1"));
         _mockedTodosRepository.Setup(
             repository =>
             repository.FindTodoItemsInFiveDaysByUserId(
@@ -148,10 +154,10 @@ public class TodoItemServiceTest
         _mockedTodosRepository = new Mock<ITodoItemsRepository>();
         _mockedTodosRepository.Setup(
             repository =>
-            repository.Insert(
+            repository.Save(
                 It.IsAny<TodoItem>()
             ))
-            .Returns(true);
+            .Returns(new TodoItem("Des", DateTime.Today.AddDays(1), "user2"));
         _mockedTodosRepository.Setup(
             repository =>
             repository.FindTodoItemsInFiveDaysByUserId(
@@ -172,10 +178,10 @@ public class TodoItemServiceTest
         _mockedTodosRepository = new Mock<ITodoItemsRepository>();
         _mockedTodosRepository.Setup(
             repository =>
-            repository.Insert(
+            repository.Save(
                 It.IsAny<TodoItem>()
             ))
-            .Returns(true);
+            .Returns(new TodoItem("Des", DateTime.Today.AddDays(3), "user2"));
         _mockedTodosRepository.Setup(
             repository =>
             repository.FindTodoItemsInFiveDaysByUserId(
@@ -217,10 +223,10 @@ public class TodoItemServiceTest
         _mockedTodosRepository = new Mock<ITodoItemsRepository>();
         _mockedTodosRepository.Setup(
             repository =>
-            repository.Insert(
+            repository.Save(
                 It.IsAny<TodoItem>()
             ))
-            .Returns(true);
+            .Returns(new TodoItem("Des", DateTime.Today.AddDays(1), "user2"));
         _mockedTodosRepository.Setup(
             repository =>
             repository.FindTodoItemsInFiveDaysByUserId(

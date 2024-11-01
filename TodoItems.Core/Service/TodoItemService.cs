@@ -31,9 +31,7 @@ namespace TodoItems.Core.Service
                 todoItem = GenerateByManul(description, dueDay, userId);
             }
 
-            _repository.Insert(todoItem);
-            return todoItem;
-
+            return _repository.Save(todoItem);
         }
 
         private TodoItem GenerateByOptionB(string description, DateTime? dueDay, string userId)
