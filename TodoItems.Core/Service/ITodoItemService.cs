@@ -4,5 +4,5 @@ namespace TodoItems.Core.Service;
 
 public interface ITodoItemService
 {
-    TodoItem Create(string description, DateOnly? dueDay, string userId);
+    TodoItem Create(OptionEnum option, string description, DateOnly? dueDay, string userId);
 }

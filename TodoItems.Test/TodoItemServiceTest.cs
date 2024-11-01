@@ -1,4 +1,5 @@
 ﻿using Moq;
+using TodoItems.Core;
 using TodoItems.Core.AppException;
 using TodoItems.Core.Model;
 using TodoItems.Core.Repository;
@@ -8,10 +9,11 @@ namespace TodoItems.Test;
 public class TodoItemServiceTest
 {
     private TodoItemService _service;
-    private readonly Mock<ITodoItemsRepository> _mockedTodosRepository;
+    private Mock<ITodoItemsRepository> _mockedTodosRepository;
 
     public TodoItemServiceTest() {
         _mockedTodosRepository= new Mock<ITodoItemsRepository>();
+
         _service = new TodoItemService(_mockedTodosRepository.Object);
     }
 
@@ -24,15 +26,8 @@ public class TodoItemServiceTest
                     It.IsAny<string>(), It.IsAny<DateOnly>()
                 )).Returns(
             [new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now), "user1")]);
-        _mockedTodosRepository.Setup(
-            repository =>
-                repository.Insert(
-                    It.IsAny<TodoItem>()
-                )).Returns(true);
 
-        _service = new TodoItemService(_mockedTodosRepository.Object);
-
-        var todoItem = _service.Create("Des", DateOnly.FromDateTime(DateTime.Now), "user1");
+        var todoItem = _service.Create(OptionEnum.Manual,"Des", DateOnly.FromDateTime(DateTime.Now), "user1");
 
         Assert.NotNull(todoItem);
     }
@@ -52,15 +47,8 @@ public class TodoItemServiceTest
                 new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user2"),
                 new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user2"),
             ]);
-        _mockedTodosRepository.Setup(
-            repository =>
-                repository.Insert(
-                    It.IsAny<TodoItem>()
-                )).Returns(true);
 
-        _service = new TodoItemService(_mockedTodosRepository.Object);
-
-        var todoItem = _service.Create("Des", DateOnly.FromDateTime(DateTime.Now), "user1");
+        var todoItem = _service.Create(OptionEnum.Manual, "Des", DateOnly.FromDateTime(DateTime.Now), "user1");
 
         Assert.NotNull(todoItem);
     }
@@ -94,7 +82,7 @@ public class TodoItemServiceTest
 
         Assert.Throws<MaximumSameDueDayException>(() =>
         {
-             _service.Create("Des", DateOnly.FromDateTime(DateTime.Now), "user1");
+             _service.Create(OptionEnum.Manual, "Des", DateOnly.FromDateTime(DateTime.Now), "user1");
         });
 
         
@@ -105,10 +93,49 @@ public class TodoItemServiceTest
     {
         Assert.Throws<DueDayEarlyException>(() =>
         {
-            _service.Create("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "user1");
+            _service.Create(OptionEnum.Manual, "Des", DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), "user1");
         });
 
     }
+
+    [Fact]
+    public void CreateTodoItem_GivenOptionANoDueDay_ShouldSuccess()
+    {
+        _mockedTodosRepository = new Mock<ITodoItemsRepository>();
+        _mockedTodosRepository.Setup(
+            repository =>
+            repository.Insert(
+                It.IsAny<TodoItem>()
+            ))
+            .Returns(true);
+        _mockedTodosRepository.Setup(
+            repository =>
+            repository.FindTodoItemsInFiveDaysByUserIdOrderByDueDay(
+                It.IsAny<string>()
+            )
+        ).Returns(
+            [   new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(1)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(2)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(2)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(2)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(3)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(4)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(4)), "user1"),
+                new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now.AddDays(5)), "user1"),
+            ]
+
+        );
+        _service = new TodoItemService(_mockedTodosRepository.Object);
+
+        TodoItem todoItem = _service.Create(OptionEnum.OptionA, "Des",null,"user1");
+
+        Assert.NotNull(todoItem);
+
+    }
+
+
 
 
 

@@ -13,24 +13,67 @@ namespace TodoItems.Core.Service
             _repository = repository;
         }
 
-        public TodoItem Create(string description, DateOnly? dueDay, string userId)
+        public TodoItem Create(OptionEnum option,string description, DateOnly? dueDay, string userId)
         {
-            if(dueDay < DateOnly.FromDateTime(DateTime.Now))
+            TodoItem todoItem = null;
+            if (dueDay is null)
+            {
+                if (option == OptionEnum.OptionA)
+                {
+                    todoItem = GenerateByOptionA(description, userId);
+                }
+                else if (option == OptionEnum.OptionB) 
+                {
+                    todoItem = GenerateByOptionB(description, dueDay, userId);
+                }
+            }
+            else
+            {
+                todoItem = GenerateByManul(description, dueDay, userId);
+            }
+
+            _repository.Insert(todoItem);
+            return todoItem;
+
+        }
+
+        private TodoItem GenerateByOptionB(string description, DateOnly? dueDay, string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        private TodoItem GenerateByOptionA(string description, string userId)
+        {
+            List<TodoItem> todoItems = _repository.FindTodoItemsInFiveDaysByUserIdOrderByDueDay(userId);
+            var list = todoItems
+                        .GroupBy(item => item.DueDay)
+                        .Select(group => new { DueDay = group.Key, Count = group.Count() })
+                        .ToList();
+            foreach (var pair in list)
+            {
+                if (pair.Count < Constants.MAX_DAY_SAME_DUEDAY)
+                {
+                    return new TodoItem(description, (DateOnly)pair.DueDay, userId); ;
+                }
+            }
+            throw new MaximumSameDueDayException("to many dueDay in same day");
+        }
+
+        private TodoItem GenerateByManul(string description, DateOnly? dueDay, string userId)
+        {
+            if (dueDay < DateOnly.FromDateTime(DateTime.Now))
             {
                 throw new DueDayEarlyException($"cannot earlier than today");
             }
 
-            List<TodoItem> items= _repository.FindAllTodoItemsByUserIdAndDueDay(userId, (DateOnly)dueDay);
-                
-            if (items.Count >= Constants.MAX_DAY_SAME_DUEDAY) 
+            List<TodoItem> items = _repository.FindAllTodoItemsByUserIdAndDueDay(userId, (DateOnly)dueDay);
+
+            if (items.Count >= Constants.MAX_DAY_SAME_DUEDAY)
             {
                 throw new MaximumSameDueDayException($"too many items in same day for {userId}");
             }
-
             TodoItem todoItem = new TodoItem(description, (DateOnly)dueDay, userId); ;
-            _repository.Insert(todoItem);
             return todoItem;
-
         }
 
     }

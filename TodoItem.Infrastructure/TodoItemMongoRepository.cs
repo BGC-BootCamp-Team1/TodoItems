@@ -52,4 +52,9 @@ public class TodoItemMongoRepository : ITodoItemsRepository
     {
         throw new NotImplementedException();
     }
+
+    public List<TodoItems.Core.Model.TodoItem> FindTodoItemsInFiveDaysByUserIdOrderByDueDay(string userId)
+    {
+        throw new NotImplementedException();
+    }
 }
