@@ -1,0 +1,60 @@
+@startuml
+package SUT{
+class User{
+    - TodoItems: List<TodoItem>
+}
+
+class TodoItem {
+    - Id: string
+    - Description: string
+    - Modifications: List<Modification> 
+    - DueDate: DateTime
+    - UserId: string
+    + ModifyItem(description: string): void
+}
+
+class TodoItemService {
+    + CreateItem(description: string, dueDate: DateTime): TodoItem
+}
+class Tag{
+    - Title: string
+}
+class Modification{
+    - Timestamp: DateTime
+}
+interface IDueDateSetter{
+    + SetDueDate(List<TodoItem>): TodoItem
+    }
+class UserSpecify{
+    + SetDueDate(List<TodoItem>): TodoItem
+}
+class SelectAvailableDueDateWithinFiveDays{
+    + SetDueDate(List<TodoItem>): TodoItem
+}
+class SelectLeastItemsDueDate{
+    + SetDueDate(List<TodoItem>): TodoItem
+}
+enum DueDateSetStrategy{
+    + UserSpecify
+    + SelectAvailableDueDateWithinFiveDays
+    + SelectLeastItemsDueDate
+    }
+}
+package DOC{
+interface ITodosRepository{
+    + CountTodoItemsOnTheSameDueDate(dueDate: DateTime): int
+    + Save(Description: string): TodoItem
+    + FindTodoItemsInNextFiveDays(): List<TodoItem>
+    }
+}
+
+User"1" -- "0..*" TodoItem
+TodoItem "1" *-- "0..*" Modification
+TodoItem "0..*" -- "0..*" Tag
+TodoItemService --> ITodosRepository
+TodoItemService --> TodoItem
+TodoItem --> IDueDateSetter
+IDueDateSetter <|.. UserSpecify
+IDueDateSetter <|.. SelectAvailableDueDateWithinFiveDays
+IDueDateSetter <|.. SelectLeastItemsDueDate
+@enduml

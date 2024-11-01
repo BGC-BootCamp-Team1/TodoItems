@@ -1,0 +1,21 @@
+@startuml
+actor User
+participant TodoItemService
+participant ITodosRepository
+participant TodoItem
+participant IDueDateSetter
+
+User -> TodoItemService: CreateItem(description: string, dueDate: DateTime)
+TodoItemService-> ITodosRepository: FindTodoItemsInNextFiveDays()
+TodoItemService<- ITodosRepository: List<TodoItem>
+TodoItemService-> TodoItem: SetDueDate(List<TodoItem>)
+
+TodoItem-> IDueDateSetter: SetDueDate(List<TodoItem>)
+TodoItem<- IDueDateSetter: TodoItem
+TodoItemService<- TodoItem: TodoItem
+
+TodoItemService -> ITodosRepository: Save(TodoItem)
+TodoItemService <- ITodosRepository: TodoItem
+User <- TodoItemService: TodoItem
+
+@enduml
