@@ -20,10 +20,10 @@ public class TodoItemTest
     public void should_update_content_when_edit()
     {
         TodoItem todoItem = new TodoItem(_description, _dueDate);
-        string updateDesp = "new content";
-        todoItem.ModifyItem(updateDesp);
+        string updateDespcription = "new content";
+        todoItem.ModifyItem(updateDespcription);
 
-        Assert.Equal(updateDesp, todoItem.Description);
+        Assert.Equal(updateDespcription, todoItem.Description);
         Assert.Single(todoItem.ModificationRecords);
     }
 
@@ -31,11 +31,11 @@ public class TodoItemTest
     public void should_record_modification_frequency()
     {
         TodoItem todoItem = new TodoItem(_description, _dueDate);
-        string updateDesp = "new content";
+        string updateDescription = "new content";
 
-        todoItem.ModifyItem(updateDesp);
-        todoItem.ModifyItem(updateDesp);
-        todoItem.ModifyItem(updateDesp);
+        todoItem.ModifyItem(updateDescription);
+        todoItem.ModifyItem(updateDescription);
+        todoItem.ModifyItem(updateDescription);
 
         Assert.Equal(3, todoItem.ModificationRecords.Count());
     }
@@ -44,14 +44,14 @@ public class TodoItemTest
     public void should_limit_daily_modification_frequency_up_to_3()
     {
         TodoItem todoItem = new TodoItem(_description, _dueDate);
-        string updateDesp = "new content";
+        string updateDescription = "new content";
         string expectedErrMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
 
-        todoItem.ModifyItem(updateDesp);
-        todoItem.ModifyItem(updateDesp);
-        todoItem.ModifyItem(updateDesp);
+        todoItem.ModifyItem(updateDescription);
+        todoItem.ModifyItem(updateDescription);
+        todoItem.ModifyItem(updateDescription);
 
-        var exception = Assert.Throws<MaxModificationsReachedException>(() => todoItem.ModifyItem(updateDesp));
+        var exception = Assert.Throws<MaxModificationsReachedException>(() => todoItem.ModifyItem(updateDescription));
         Assert.Equal(expectedErrMsg, exception.Message);
         Assert.Equal(3, todoItem.ModificationRecords.Count());
     }
