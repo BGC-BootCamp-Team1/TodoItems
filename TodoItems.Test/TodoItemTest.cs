@@ -1,4 +1,5 @@
 using TodoItems.Core;
+using TodoItems.Core.ApplicationExcepetions;
 
 namespace TodoItems.Test;
 

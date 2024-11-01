@@ -1,5 +1,6 @@
 ﻿using TodoItems.Core;
 using Moq;
+using TodoItems.Core.ApplicationExcepetions;
 
 namespace TodoItems.Test
 {

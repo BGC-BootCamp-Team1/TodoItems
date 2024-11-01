@@ -1,4 +1,4 @@
-﻿namespace TodoItems.Core
+﻿namespace TodoItems.Core.ApplicationExcepetions
 {
     public class ExceedMaxTodoItemsPerDueDateException : Exception
     {
@@ -6,7 +6,7 @@
             "You have reached the maximum number of todo items for one due date. " +
             "Please try again.";
 
-        public ExceedMaxTodoItemsPerDueDateException(): base(DefaultMessage)
+        public ExceedMaxTodoItemsPerDueDateException() : base(DefaultMessage)
         {
         }
     }

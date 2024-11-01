@@ -1,4 +1,4 @@
-﻿namespace TodoItems.Core
+﻿namespace TodoItems.Core.ApplicationExcepetions
 {
     public class TooEarlyDueDateException : Exception
     {
@@ -6,7 +6,7 @@
             "The due date is too early. " +
             "Please try again.";
 
-        public TooEarlyDueDateException(): base(DefaultMessage)
+        public TooEarlyDueDateException() : base(DefaultMessage)
         {
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace TodoItems.Core
+﻿namespace TodoItems.Core.ApplicationExcepetions
 {
     public class ExceedMaxModificationException : Exception
     {
@@ -6,7 +6,7 @@
             "You have reached the maximum number of modifications for today. " +
             "Please try again tomorrow.";
 
-        public ExceedMaxModificationException(): base(DefaultMessage)
+        public ExceedMaxModificationException() : base(DefaultMessage)
         {
         }
     }
