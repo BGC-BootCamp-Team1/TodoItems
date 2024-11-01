@@ -14,3 +14,26 @@ public class TodoItemPo
     public List<Modification> ModificationList { get; set; }
 
 }
+
+public static class TodoMapper
+{
+    public static TodoItemPo ToPo(TodoItem item)
+    {
+        return new TodoItemPo()
+        {
+            Id = item.Id,
+            Description = item.Description,
+            userId = item.UserId,
+            DueDay = item.DueDay,
+            ModificationList = item.ModificationList
+        };
+    }
+    
+    public static TodoItem ToItem(TodoItem po)
+    {
+        return new TodoItem(po.Id,po.Description,po.DueDay,po.UserId,po.ModificationList);
+    }
+    
+    
+    
+}

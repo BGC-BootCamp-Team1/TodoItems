@@ -26,6 +26,14 @@ public class TodoItem
         UserId = userId;
         ModificationList = new List<Modification>();
     }
+    public TodoItem(string id,string description, DateTime dueDay, string userId,List<Modification> modificationList)
+    {
+        Id = id;
+        Description = description;
+        DueDay = dueDay;
+        UserId = userId;
+        ModificationList = modificationList;
+    }
 
 
     public void Modify(string description)
