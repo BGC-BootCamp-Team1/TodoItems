@@ -1,5 +1,4 @@
-﻿using TodoItems.Core.AppException;
-using TodoItems.Core.Model;
+﻿using TodoItems.Core.Model;
 using TodoItems.Core.Repository;
 
 namespace TodoItems.Core.Service

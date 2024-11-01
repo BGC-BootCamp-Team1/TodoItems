@@ -6,6 +6,7 @@
     &lt;TestId&gt;xUnit::812ACC5D-E44F-4BF4-918A-D7853B472150::net8.0::TodoItems.Test.TodoItemServiceTest.Can_create_items_10_dueDay&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::812ACC5D-E44F-4BF4-918A-D7853B472150::net8.0::TodoItems.Test.TodoItemServiceTest.Cannot_create_items_same_dueDay&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::812ACC5D-E44F-4BF4-918A-D7853B472150::net8.0::TodoItems.Test.TodoItemServiceTest.dueDay_canot_earlier_than_today&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::CDFCFBFB-B377-4F91-9F06-75EEF11270A7::net8.0::TodoItem.IntegrationTest.TodoItemMongoRepositoryTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>
