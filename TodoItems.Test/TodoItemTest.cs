@@ -8,7 +8,7 @@ public class TodoItemTest
     [Fact]
     public void should_return_todoItem_when_create()
     {
-        TodoItem item = new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now),"user1");
+        TodoItem item = new TodoItem("Des", DateTime.Today,"user1");
         Assert.NotNull(item.Id);
         Assert.NotNull(item.Description);
         Assert.NotNull(item.ModificationList);
@@ -16,7 +16,7 @@ public class TodoItemTest
     [Fact]
     public void should_contain_1_modification_when_modify()
     {
-        TodoItem item = new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now), "user1");
+        TodoItem item = new TodoItem("Des", DateTime.Today, "user1");
         item.Modify("newDes");
         Assert.Single(item.ModificationList);
     }
@@ -24,7 +24,7 @@ public class TodoItemTest
     [Fact]
     public void should_throw_exception_when_more_than_3_today()
     {
-        TodoItem item = new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now), "user1");
+        TodoItem item = new TodoItem("Des", DateTime.Today, "user1");
         item.Modify("1");
         item.Modify("2");
         item.Modify("3");
@@ -38,7 +38,7 @@ public class TodoItemTest
     [Fact]
     public void should_not_throw_exception_when_less_than_3_today()
     {
-        TodoItem item = new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now), "user1");
+        TodoItem item = new TodoItem("Des", DateTime.Today, "user1");
         item.Modify("1");
         item.Modify("2");
         item.Modify("3");

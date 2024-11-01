@@ -6,11 +6,11 @@ public class TodoItem
 {
     public string Id;
     public string Description { get; set; }
-    public DateOnly DueDay { get; set; }
+    public DateTime DueDay { get; set; }
     public string UserId { get; set; }
     public List<Modification> ModificationList { get; set; }
 
-    public TodoItem(string description, DateOnly dueDay, string userId)
+    public TodoItem(string description, DateTime dueDay, string userId)
     {
         Id = Guid.NewGuid().ToString();
         Description = description;
@@ -18,7 +18,7 @@ public class TodoItem
         UserId = userId;
         ModificationList = new List<Modification>();
     }
-    public TodoItem(string id,string description, DateOnly dueDay, string userId)
+    public TodoItem(string id,string description, DateTime dueDay, string userId)
     {
         Id = id;
         Description = description;

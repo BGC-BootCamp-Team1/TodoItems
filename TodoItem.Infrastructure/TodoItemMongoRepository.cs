@@ -30,12 +30,7 @@ public class TodoItemMongoRepository : ITodoItemsRepository
         if (todoItemPo == null) return null;
 
         return new TodoItems.Core.Model.TodoItem (todoItemPo.Id,todoItemPo.Description,todoItemPo.DueDay,"user1");
-        //return new TodoItems.Core.Model.TodoItem
-        //{
-        //    Description = todoItemPo.Description,
-        //    DueDay = todoItemPo.DueDay,
-        //    UserId = ""
-        //};
+
     }
 
     public void Save(TodoItems.Core.Model.TodoItem todoItem)
@@ -43,7 +38,7 @@ public class TodoItemMongoRepository : ITodoItemsRepository
         throw new NotImplementedException();
     }
 
-    public List<TodoItems.Core.Model.TodoItem> FindAllTodoItemsByUserIdAndDueDay(string userId, DateOnly dueDay)
+    public List<TodoItems.Core.Model.TodoItem> FindAllTodoItemsByUserIdAndDueDay(string userId, DateTime dueDay)
     {
         throw new NotImplementedException();
     }

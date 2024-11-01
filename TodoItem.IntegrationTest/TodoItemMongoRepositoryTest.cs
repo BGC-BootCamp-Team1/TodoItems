@@ -48,7 +48,7 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
         {
             Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
             Description = "Buy groceries",
-            IsComplete = false
+            userId = "user1",
         }; ;
         await _mongoCollection.InsertOneAsync(todoItemPo);
         var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e2");
