@@ -1,0 +1,43 @@
+@startuml
+
+class TodoItemService {
+    - _todosRepository: ITodosRepository
+    - MaxItemsPerDueDate: int
+    + TodoItemService(todosRepository: ITodosRepository)
+    + Create(description: string, dueDate: DateTime): TodoItem
+}
+
+class TodoItem {
+    + Id: string
+    + DueDate: DateTime
+    + Description: string
+    + CreatedTime: DateTime
+    + ModificationRecords: List<Modification>
+    + TodoItem(description: string, dueDate: DateTime)
+    + ModifyItem(description: string)
+}
+
+interface ITodosRepository {
+    + Create(item: TodoItem): TodoItem
+    + GetCountByDueDate(date: DateTime): int
+}
+
+class Modification {
+    + time: DateTime
+}
+
+class User {
+    + id: string
+}
+
+class Tag {
+    + description: string
+}
+
+TodoItemService --> ITodosRepository
+TodoItemService --> TodoItem
+TodoItem "1" --* "0..*" Modification 
+TodoItem "0..*" --> "0..*" Tag 
+User "1" <-- "0..*" TodoItem 
+
+@enduml
