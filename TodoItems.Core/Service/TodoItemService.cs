@@ -17,7 +17,7 @@ namespace TodoItems.Core.Service
         {
             if(dueDay < DateOnly.FromDateTime(DateTime.Now))
             {
-                throw new DueDayEarlyException($"canot ealier than today");
+                throw new DueDayEarlyException($"cannot earlier than today");
             }
 
             List<TodoItem> items= _repository.FindAllTodoItemsByUserIdAndDueDay(userId, dueDay);
