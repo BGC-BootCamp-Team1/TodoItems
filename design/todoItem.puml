@@ -1,4 +1,4 @@
-@startuml
+@startuml TodoItem
  
 class TodoItem {
     - id : string
@@ -12,11 +12,22 @@ class TodoItem {
 class User{
   + userId: string
   - name: string
-  - passWord:sting
 }
 class Modification{
     + timestamp: DateTime
 }
+class TodosRepository
+{
+    + FindAllTodoItemsByUserIdAndDueDay(string userId,DateOnly dueDay) : List<TodoItem>;
+    + Insert(TodoItem todoItem):TodoItem;
+}
+
+class TodoItemService
+{
+    - _repository : ITodosRepository
+    + Create(string description, DateOnly dueDay, string userId):TodoItem;
+}
+TodoItemService "1" -- "1" TodosRepository
 User "1" -- "0..*" TodoItem
 TodoItem "1" -- "0..*" Modification
 @enduml
