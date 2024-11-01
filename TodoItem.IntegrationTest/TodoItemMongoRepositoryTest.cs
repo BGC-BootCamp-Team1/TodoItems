@@ -83,12 +83,12 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         var today = new DateTime(2024, 11, 1, 0,0,0,DateTimeKind.Utc);
         await _mongoCollection.InsertOneAsync(new TodoItemPo {
             Id = ObjectId.GenerateNewId().ToString(),
-            DueDate = today.AddDays(2) 
+            DueDate = today.AddDays(4) 
         });
         await _mongoCollection.InsertOneAsync(new TodoItemPo
         {
             Id = ObjectId.GenerateNewId().ToString(),
-            DueDate = today.AddDays(4)
+            DueDate = today.AddDays(5)
         });
         await _mongoCollection.InsertOneAsync(new TodoItemPo
         {
@@ -102,7 +102,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
-        Assert.Contains(result, item => item.DueDate.Date == today.AddDays(2).Date);
         Assert.Contains(result, item => item.DueDate.Date == today.AddDays(4).Date);
+        Assert.Contains(result, item => item.DueDate.Date == today.AddDays(5).Date);
     }
 }
