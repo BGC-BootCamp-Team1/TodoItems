@@ -56,4 +56,20 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e2", todoItem.Id);
         Assert.Equal("Buy groceries", todoItem.Description);
     }
+
+    [Fact]
+    public async void should_return_item_number_on_the_duedate()
+    {
+        var dueDate = new DateTime(2024, 11, 1);
+        var todoItemPo = new TodoItemPo
+        {
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
+            Description = "Buy groceries",
+            DueDate = new DateTime(2024, 11, 1)
+        };
+        await _mongoCollection.InsertOneAsync(todoItemPo);
+        var count = await _mongoRepository.CountTodoItemsOnTheSameDueDate(dueDate);
+
+        Assert.Equal(1, count);
+    }
 }
