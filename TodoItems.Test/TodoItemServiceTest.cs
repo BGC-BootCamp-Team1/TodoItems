@@ -6,7 +6,7 @@ namespace TodoItems.Test
     public class TodoItemServiceTest
     {
         [Fact]
-        public void Should_throw_exception_when_create_nineth_item()
+        public void Should_throw_exception_when_create_ninth_item()
         {
             DateTime dueDate = DateTime.Now.AddDays(7);
 
