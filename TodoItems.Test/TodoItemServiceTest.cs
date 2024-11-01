@@ -76,7 +76,7 @@ public class TodoItemServiceTest
     }
 
     [Fact]
-    public void Should_return_item_with_due_date_set_to_first_available_date()
+    public void Should_return_item_with_due_date_when_set_to_first_available_date()
     {
         var todoService = new TodoItemService(_mockRepository.Object);
         MockRepoGetCount(DateTime.Today, new List<int> { 10, 14, 4, 15, 7 });
@@ -87,7 +87,20 @@ public class TodoItemServiceTest
     }
 
     [Fact]
-    public void Should_return_item_with_due_date_set_to_most_free_available_date()
+    public void Should_throw_exception_with_no_available_due_date_when_set_to_first_available_date()
+    {
+        var todoService = new TodoItemService(_mockRepository.Object);
+        MockRepoGetCount(DateTime.Today, new List<int> { 10, 14, 14, 15, 17 });
+
+        var expectedErrMsg = "Cannot create new Todo item with due date on next five days";
+
+        var exception = Assert.Throws<NoAvailableDateInNextFiveDays>(() => todoService.Create(_description, null, DueDateSetStrategy.FirstDateOfNextFiveDays));
+        
+        Assert.Equal(expectedErrMsg, exception.Message);
+    }
+
+    [Fact]
+    public void Should_return_item_with_due_date_when_set_to_most_free_available_date()
     {
         var todoService = new TodoItemService(_mockRepository.Object);
         MockRepoGetCount(DateTime.Today, new List<int> { 10, 1, 4, 15, 7 });
@@ -95,6 +108,19 @@ public class TodoItemServiceTest
         var newItem = todoService.Create(_description, null, DueDateSetStrategy.MostFreeDateOfNextFiveDays);
 
         Assert.Equal(DateTime.Today.AddDays(1), newItem.DueDate);
+    }
+
+    [Fact]
+    public void Should_throw_exception_with_no_available_due_date_when_set_to_most_free_available_dat()
+    {
+        var todoService = new TodoItemService(_mockRepository.Object);
+        MockRepoGetCount(DateTime.Today, new List<int> { 10, 14, 14, 15, 17 });
+
+        var expectedErrMsg = "Cannot create new Todo item with due date on next five days";
+
+        var exception = Assert.Throws<NoAvailableDateInNextFiveDays>(() => todoService.Create(_description, null, DueDateSetStrategy.FirstDateOfNextFiveDays));
+
+        Assert.Equal(expectedErrMsg, exception.Message);
     }
 
     private void MockRepoGetCount(DateTime startDate, List<int> returnCounts)

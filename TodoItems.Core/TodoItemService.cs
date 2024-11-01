@@ -49,7 +49,7 @@ namespace TodoItems.Core
                         return newItem;
                     }
                 }
-                throw new Exception("cannot find available date in next five days");
+                throw new NoAvailableDateInNextFiveDays();
             }
             else if (strategy == DueDateSetStrategy.MostFreeDateOfNextFiveDays)
             {
@@ -69,7 +69,7 @@ namespace TodoItems.Core
 
                 if (smallestCountPerDay >= MAX_ITEMS_PER_DUE_DATE)
                 {
-                    throw new Exception("cannot find available date in next five days");
+                    throw new NoAvailableDateInNextFiveDays();
                 }
                 newItem.DueDate = mostFreeDate;
             }
