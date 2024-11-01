@@ -2,6 +2,7 @@
 using Moq;
 using Moq.Protected;
 using Microsoft.VisualBasic;
+using TodoItems.Core.ApplicationException;
 
 namespace TodoItems.Test;
 

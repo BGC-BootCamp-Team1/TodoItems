@@ -28,8 +28,7 @@ public class TodoItem
         }
         else
         {
-            string errMsg = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
-            throw new MaxModificationsReachedException(errMsg);
+            throw new MaxModificationsReachedException();
         }
     }
 }

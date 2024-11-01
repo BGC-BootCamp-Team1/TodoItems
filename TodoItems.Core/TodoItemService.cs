@@ -1,4 +1,6 @@
-﻿namespace TodoItems.Core
+﻿using TodoItems.Core.ApplicationException;
+
+namespace TodoItems.Core
 {
     public class TodoItemService
     {
@@ -17,14 +19,14 @@
 
             if (dueDate < newItem.CreatedTime)
             {
-                throw new DueDateEarlierThanCreationDateException("Cannot create todo item that due date earlier than creation date");
+                throw new DueDateEarlierThanCreationDateException();
             }
 
             var itemCount = _todosRepository.GetCountByDueDate(dueDate);
 
             if (itemCount >= MaxItemsPerDueDate)
             {
-                throw new MaxItemsPerDueDateReachedException($"Cannot create new Todo item completed on {dueDate}, already reach max limit({MaxItemsPerDueDate})");
+                throw new MaxItemsPerDueDateReachedException(dueDate, MaxItemsPerDueDate);
             }
             _todosRepository.Create(newItem);
             return newItem;
