@@ -4,19 +4,37 @@ using System.Collections.Generic;
 using Moq;
 using TodoItems.Core;
 using Xunit;
+using static TodoItems.Core.TodoItemService;
 
 namespace TodoServiceTest;
 
 public class TodoItemServiceTests
 {
+    private readonly Mock<ITodoRepository> _mockRepository;
+    private readonly TodoItemService _service;
+
+    public TodoItemServiceTests()
+    {
+        _mockRepository = new Mock<ITodoRepository>();
+        _service = new TodoItemService(_mockRepository.Object);
+    }
+
+    [Fact]
+    public void DetermineLastDueDate_NullDueDateAndNoneType_ReturnsNull()
+    {
+        var result = _service.DetermineLastDueDate(null, TodoItemService.DuedateType.None);
+        Assert.Null(result);
+    }
+
+
     [Fact]
     public void CreateTodoItem_ShouldCreateTodoItem_WhenDueDateIsValidAndCountIsLessThan8()
     {
         // Arrange
-        var mockRepository = new Mock<ITodoRepository>();
-        mockRepository.Setup(repo => repo.CountTodoItemsOnDueDate(It.IsAny<DateTime>())).Returns(5);
+        
+        _mockRepository.Setup(repo => repo.CountTodoItemsOnDueDate(It.IsAny<DateTime>())).Returns(5);
 
-        var service = new TodoItemService(mockRepository.Object);
+        var service = new TodoItemService(_mockRepository.Object);
         var description = "Test Todo Item";
         var dueDate = DateTime.Now.AddDays(1);
 
@@ -28,15 +46,15 @@ public class TodoItemServiceTests
         Assert.Equal(description, todoItem.Description);
         Assert.Equal(dueDate, todoItem.DueDate);
         Assert.NotNull(todoItem.Id);
-        mockRepository.Verify(repo => repo.CountTodoItemsOnDueDate(dueDate), Times.Once);
+        _mockRepository.Verify(repo => repo.CountTodoItemsOnDueDate(dueDate), Times.Once);
     }
 
     [Fact]
     public void CreateTodoItem_ShouldThrowArgumentException_WhenDueDateIsInThePast()
     {
         // Arrange
-        var mockRepository = new Mock<ITodoRepository>();
-        var service = new TodoItemService(mockRepository.Object);
+        
+        var service = new TodoItemService(_mockRepository.Object);
         var description = "Test Todo Item";
         var dueDate = DateTime.Now.AddDays(-1);
 
@@ -49,10 +67,10 @@ public class TodoItemServiceTests
     public void CreateTodoItem_ShouldThrowArgumentException_WhenCountIs8OrMore()
     {
         // Arrange
-        var mockRepository = new Mock<ITodoRepository>();
-        mockRepository.Setup(repo => repo.CountTodoItemsOnDueDate(It.IsAny<DateTime>())).Returns(8);
+      
+        _mockRepository.Setup(repo => repo.CountTodoItemsOnDueDate(It.IsAny<DateTime>())).Returns(8);
 
-        var service = new TodoItemService(mockRepository.Object);
+        var service = new TodoItemService(_mockRepository.Object);
         var description = "Test Todo Item";
         var dueDate = DateTime.Now.AddDays(1);
 
