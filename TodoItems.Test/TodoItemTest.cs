@@ -9,7 +9,7 @@ public class TodoItemTest
     public void should_return_todoItem_when_create()
     {
         TodoItem item = new TodoItem("Des", DateOnly.FromDateTime(DateTime.Now),"user1");
-        Assert.NotNull(item._id);
+        Assert.NotNull(item.Id);
         Assert.NotNull(item.Description);
         Assert.NotNull(item.ModificationList);
     }

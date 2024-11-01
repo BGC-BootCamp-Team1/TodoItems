@@ -2,7 +2,7 @@
 
 namespace TodoItems.Core.Repository
 {
-    public interface ITodosRepository
+    public interface ITodoItemsRepository
     {
         List<TodoItem> FindAllTodoItemsByUserIdAndDueDay(string userId,DateOnly dueDay);
         bool Insert(TodoItem todoItem);

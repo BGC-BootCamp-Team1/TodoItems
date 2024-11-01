@@ -4,7 +4,7 @@ namespace TodoItems.Core.Model;
 
 public class TodoItem
 {
-    public string _id;
+    public string Id;
     public string Description { get; set; }
     public DateOnly DueDay { get; set; }
     public string UserId { get; set; }
@@ -12,12 +12,21 @@ public class TodoItem
 
     public TodoItem(string description, DateOnly dueDay, string userId)
     {
-        _id = Guid.NewGuid().ToString();
+        Id = Guid.NewGuid().ToString();
         Description = description;
         DueDay = dueDay;
         UserId = userId;
         ModificationList = new List<Modification>();
     }
+    public TodoItem(string id,string description, DateOnly dueDay, string userId)
+    {
+        Id = id;
+        Description = description;
+        DueDay = dueDay;
+        UserId = userId;
+        ModificationList = new List<Modification>();
+    }
+
 
     public void Modify(string description)
     {

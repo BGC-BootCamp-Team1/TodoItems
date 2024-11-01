@@ -6,9 +6,9 @@ namespace TodoItems.Core.Service
 {
     public class TodoItemService : ITodoItemService
     {
-        private readonly ITodosRepository _repository;
+        private readonly ITodoItemsRepository _repository;
 
-        public TodoItemService(ITodosRepository repository)
+        public TodoItemService(ITodoItemsRepository repository)
         {
             _repository = repository;
         }

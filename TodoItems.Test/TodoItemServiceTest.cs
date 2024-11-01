@@ -8,10 +8,10 @@ namespace TodoItems.Test;
 public class TodoItemServiceTest
 {
     private TodoItemService _service;
-    private readonly Mock<ITodosRepository> _mockedTodosRepository;
+    private readonly Mock<ITodoItemsRepository> _mockedTodosRepository;
 
     public TodoItemServiceTest() {
-        _mockedTodosRepository= new Mock<ITodosRepository>();
+        _mockedTodosRepository= new Mock<ITodoItemsRepository>();
         _service = new TodoItemService(_mockedTodosRepository.Object);
     }
 
