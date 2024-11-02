@@ -31,15 +31,5 @@ public class TodoItem
             throw new ExceedMaxModificationException();
 
     }
-    public TodoItems.Core.TodoItem? ConvertToTodoItem()
-    {
-        if (this == null) return null;
-        return new TodoItems.Core.TodoItem(this.Description, this.DueDate)
-        {
-            Id = this.Id,
-            CreateTime = this.CreateTime,
-            IsComplete = this.IsComplete,
-        };
-    }
 }
 
