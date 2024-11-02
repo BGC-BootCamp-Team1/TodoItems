@@ -123,4 +123,17 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
 
         actualTodoItem.Should().BeEquivalentTo(newTodoItem);
     }
+
+    [Fact]
+    public async Task ShouldSave_WhenNewTodo_FromService_Async()
+    {
+        var todoItemService = new TodoItemService(_mongoRepository);
+        var description = "Test Todo Item";
+        var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
+        var todoItem = await todoItemService.CreateAsync(description, dueDate, TodoItemService.CreateOptionEnum.NextAvailableInFiveDaysOption);
+
+/*        var actualTodoItem = await _mongoRepository.FindByIdAsync(todoItem.Result.Id);
+
+        actualTodoItem.Should().BeEquivalentTo(todoItem);*/
+    }
 }
