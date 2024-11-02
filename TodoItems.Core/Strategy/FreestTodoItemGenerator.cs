@@ -3,29 +3,21 @@ using TodoItems.Core.Repository;
 
 namespace TodoItems.Core.Strategy;
 
-public class FreestTodoItemGenerator : ITodoItemGenerator
+public class FreestTodoItemGenerator(ITodoItemsRepository repository) : ITodoItemGenerator
 {
-    private readonly ITodoItemsRepository _repository;
-
-    public FreestTodoItemGenerator(ITodoItemsRepository repository)
-    {
-        _repository = repository;
-    }
-
     public TodoItem Generate(string description, DateTime? dueDay, string userId)
     {
-        var todoItems = _repository.FindTodoItemsInFiveDaysByUserId(userId);
+        var todoItems = repository.FindTodoItemsInFiveDaysByUserId(userId);
         var dueDayList = todoItems
             .GroupBy(item => item.DueDay)
             .Select(group => new { DueDay = group.Key, Count = group.Count() })
-            .OrderBy(item => item.Count)
-            .ToList();
-
-        foreach (var pair in dueDayList)
+            .OrderBy(item => item.Count);
+        
+        foreach (var dueDayCountPair in dueDayList)
         {
-            if (pair.Count < Constants.MAX_DAY_SAME_DUEDAY)
+            if (dueDayCountPair.Count < Constants.MAX_DAY_SAME_DUEDAY)
             {
-                return new TodoItem(description, (DateTime)pair.DueDay, userId);
+                return new TodoItem(description, (DateTime)dueDayCountPair.DueDay, userId);
             }
         }
 
