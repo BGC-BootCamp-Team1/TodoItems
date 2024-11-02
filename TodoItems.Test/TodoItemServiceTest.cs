@@ -133,7 +133,7 @@ public class TodoItemServiceTest
         );
         _service = new TodoItemService(_mockedTodosRepository.Object);
 
-        TodoItem todoItem = _service.Create(OptionEnum.OptionA, "Des",null,"user1");
+        TodoItem todoItem = _service.Create(OptionEnum.Latest, "Des",null,"user1");
 
         Assert.NotNull(todoItem);
         Assert.Equal(DateTime.Today.AddDays(1),todoItem.DueDay);
@@ -169,7 +169,7 @@ public class TodoItemServiceTest
 
         Assert.Throws<MaximumSameDueDayException>(() =>
         {
-            _service.Create(OptionEnum.OptionA, "Des", null, "user1");
+            _service.Create(OptionEnum.Latest, "Des", null, "user1");
         });
     }
     [Fact]
@@ -202,7 +202,7 @@ public class TodoItemServiceTest
         );
         _service = new TodoItemService(_mockedTodosRepository.Object);
 
-        TodoItem todoItem = _service.Create(OptionEnum.OptionB, "Des", null, "user1");
+        TodoItem todoItem = _service.Create(OptionEnum.Freest, "Des", null, "user1");
 
         Assert.Equal(DateTime.Today.AddDays(3), todoItem.DueDay);
 
@@ -237,7 +237,7 @@ public class TodoItemServiceTest
 
         Assert.Throws<MaximumSameDueDayException>(() =>
         {
-            _service.Create(OptionEnum.OptionB, "Des", null, "user1");
+            _service.Create(OptionEnum.Freest, "Des", null, "user1");
         });
     }
 

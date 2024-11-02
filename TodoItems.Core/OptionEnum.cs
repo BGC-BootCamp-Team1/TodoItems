@@ -3,7 +3,7 @@
     public enum OptionEnum
     {
         Manual=0,
-        OptionA=1,
-        OptionB=2,
+        Latest=1,
+        Freest=2,
     }
 }

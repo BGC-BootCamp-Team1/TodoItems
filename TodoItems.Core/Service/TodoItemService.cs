@@ -17,13 +17,13 @@ namespace TodoItems.Core.Service
             TodoItem todoItem = null;
             if (dueDay is null)
             {
-                if (option == OptionEnum.OptionA)
+                if (option == OptionEnum.Latest)
                 {
-                    todoItem = GenerateByOptionA(description, userId);
+                    todoItem = GenerateByOptionLatest(description, userId);
                 }
-                else if (option == OptionEnum.OptionB) 
+                else if (option == OptionEnum.Freest) 
                 {
-                    todoItem = GenerateByOptionB(description, dueDay, userId);
+                    todoItem = GenerateByOptionFreest(description, dueDay, userId);
                 }
             }
             else
@@ -34,7 +34,7 @@ namespace TodoItems.Core.Service
             return _repository.Save(todoItem);
         }
 
-        private TodoItem GenerateByOptionB(string description, DateTime? dueDay, string userId)
+        private TodoItem GenerateByOptionFreest(string description, DateTime? dueDay, string userId)
         {
             List<TodoItem> todoItems = _repository.FindTodoItemsInFiveDaysByUserId(userId);
             var list = todoItems
@@ -53,7 +53,7 @@ namespace TodoItems.Core.Service
             throw new MaximumSameDueDayException("to many dueDay in same day");
         }
 
-        private TodoItem GenerateByOptionA(string description, string userId)
+        private TodoItem GenerateByOptionLatest(string description, string userId)
         {
             List<TodoItem> todoItems = _repository.FindTodoItemsInFiveDaysByUserId(userId);
             var list = todoItems
