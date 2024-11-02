@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Moq;
 using TodoItem.Infrastructure;
+using TodoItems.Core;
 
 namespace TodoItem.IntegrationTest;
 
@@ -58,14 +59,27 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         Assert.Equal("Buy groceries", todoItem.Description);
     }
 
-/*    [Fact]
-    public async int ShouldReturnTodosCount_ByDueDate(DateTime dueDate)
+    [Fact]
+    public void ShouldReturnTodosCount_ByDueDate()
     {
-        var todoItemPo = new TodoItemPo
+        DateOnly dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
+        var todoItemPo_1 = new TodoItemPo
         {
-            Id = "123",
+            Id = "1",
             Description = "Des_1",
-            DueDate = DateTimeOffset
-        }
-    }*/
+            DueDate = dueDate,
+        };
+        var todoItemPo_2 = new TodoItemPo
+        {
+            Id = "2",
+            Description = "Des_2",
+            DueDate = dueDate,
+        };
+        _mongoCollection.InsertOneAsync(todoItemPo_1);
+        _mongoCollection.InsertOneAsync(todoItemPo_2);
+
+        var count = _mongoRepository.CountTodoItemsByDueDate(dueDate);
+
+        Assert.Equal(2, count);
+    }
 }
