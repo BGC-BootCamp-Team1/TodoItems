@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItems.Core", "TodoItems
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItems.Test", "TodoItems.Test\TodoItems.Test.csproj", "{812ACC5D-E44F-4BF4-918A-D7853B472150}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoServiceTest", "TodoServiceTest\TodoServiceTest.csproj", "{54441A7A-5F38-41E7-B025-F10EB998396E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoServiceTest", "TodoServiceTest\TodoServiceTest.csproj", "{54441A7A-5F38-41E7-B025-F10EB998396E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItem.Infrastructure", "TodoItem.Infrastructure\TodoItem.Infrastructure.csproj", "{E90D1311-2A1F-431C-A28C-ECB755DEAA97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{54441A7A-5F38-41E7-B025-F10EB998396E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54441A7A-5F38-41E7-B025-F10EB998396E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54441A7A-5F38-41E7-B025-F10EB998396E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E90D1311-2A1F-431C-A28C-ECB755DEAA97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E90D1311-2A1F-431C-A28C-ECB755DEAA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E90D1311-2A1F-431C-A28C-ECB755DEAA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E90D1311-2A1F-431C-A28C-ECB755DEAA97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
