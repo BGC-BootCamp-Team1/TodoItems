@@ -24,7 +24,7 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
             TodoItemsCollectionName = "Todos"
         });
 
-        // 初始化 TodoService
+
         _mongoRepository = new TodoItemMongoRepository(mockSettings.Object);
 
         var mongoClient = new MongoClient("mongodb://localhost:27017");
@@ -32,14 +32,14 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
         _mongoCollection = mongoDatabase.GetCollection<TodoItemPo>("Todos");
     }
 
-    // IAsyncLifetime 中的 InitializeAsync 方法在每个测试前运行
+
     public async Task InitializeAsync()
     {
-        // 清空集合
+
         await _mongoCollection.DeleteManyAsync(FilterDefinition<TodoItemPo>.Empty);
     }
 
-    // DisposeAsync 在测试完成后运行（如果有需要的话）
+
     public Task DisposeAsync() => Task.CompletedTask;
 
 
@@ -72,7 +72,7 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
     [Fact]
     public async Task Should_Update_Item_Description_And_ModificationTimestamps()
     {
-        // 准备测试数据
+
         var initialModifications = new List<Modification>
             {
                 new Modification(DateTime.Now.AddDays(-1)),
@@ -89,7 +89,7 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
 
         await _mongoCollection.InsertOneAsync(todoItemPo);
 
-        // 更新数据
+
         var updatedModifications = new List<Modification>
             {
                 new Modification(DateTime.Now.AddDays(-1)),
@@ -107,7 +107,7 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
 
         await _mongoRepository.Replace(updatedTodoItem);
 
-        // 验证更新结果
+
         var filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, "5f9a7d8e2d3b4a1eb8a7d8e2");
         var result = await _mongoCollection.Find(filter).FirstOrDefaultAsync();
 
@@ -120,7 +120,7 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
     [Fact]
     public async Task Should_Save_TodoItem()
     {
-        // 准备测试数据
+
         var todoItem = new TodoItemObject
         {
             Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
@@ -132,10 +132,10 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
             DueDate = DateTime.Now.AddDays(1)
         };
 
-        // 调用 Save 方法
+
         await _mongoRepository.Save(todoItem);
 
-        // 验证插入结果
+
         var filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, "5f9a7d8e2d3b4a1eb8a7d8e2");
         var result = await _mongoCollection.Find(filter).FirstOrDefaultAsync();
 

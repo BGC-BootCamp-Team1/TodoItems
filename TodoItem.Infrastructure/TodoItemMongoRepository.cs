@@ -17,8 +17,8 @@ public class TodoItemMongoRepository : ITodoRepository
 
     public int CountTodoItemsOnDueDate(DateTime dueDate)
     {
-        DateTime startOfDay = dueDate.Date; // 当天的0点
-        DateTime endOfDay = dueDate.Date.AddDays(1).AddTicks(-1); // 当天的23:59:59.9999999
+        DateTime startOfDay = dueDate.Date; 
+        DateTime endOfDay = dueDate.Date.AddDays(1).AddTicks(-1); 
 
         FilterDefinition<TodoItemPo?> filter = Builders<TodoItemPo>.Filter.And(
             Builders<TodoItemPo>.Filter.Gte(x => x.DueDate, startOfDay),
@@ -37,15 +37,15 @@ public class TodoItemMongoRepository : ITodoRepository
 
     public async Task Replace(TodoItemObject todoItem)
     {
-        // 创建过滤器以匹配要更新的文档
+       
         var filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, todoItem.Id);
 
-        // 创建更新定义
+        
         var update = Builders<TodoItemPo>.Update
             .Set(x => x.Description, todoItem.Description)
             .Set(x => x.ModificationTimestamps, todoItem.ModificationTimestamps);
 
-        // 执行更新操作
+        
         await _todosCollection.UpdateOneAsync(filter, update);
     }
 
@@ -56,7 +56,7 @@ public class TodoItemMongoRepository : ITodoRepository
         FilterDefinition<TodoItemPo?> filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, id);
         TodoItemPo? todoItemPo = await _todosCollection.Find(filter).FirstOrDefaultAsync();
 
-        // 将 TodoItemPo 转换为 TodoItem
+        
         TodoItemObject todoItem = ConvertToTodoItem(todoItemPo);
         return todoItem;
     }
