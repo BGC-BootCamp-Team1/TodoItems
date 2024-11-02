@@ -116,4 +116,32 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
         Assert.Equal(3, result.ModificationTimestamps.Count);
     }
 
+
+    [Fact]
+    public async Task Should_Save_TodoItem()
+    {
+        // 准备测试数据
+        var todoItem = new TodoItemObject
+        {
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
+            Description = "Buy groceries",
+            ModificationTimestamps = new List<Modification>
+                {
+                    new Modification(DateTime.Now)
+                },
+            DueDate = DateTime.Now.AddDays(1)
+        };
+
+        // 调用 Save 方法
+        await _mongoRepository.Save(todoItem);
+
+        // 验证插入结果
+        var filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, "5f9a7d8e2d3b4a1eb8a7d8e2");
+        var result = await _mongoCollection.Find(filter).FirstOrDefaultAsync();
+
+        Assert.NotNull(result);
+        Assert.Equal("Buy groceries", result.Description);
+        Assert.Single(result.ModificationTimestamps);
+    }
+
 }

@@ -93,10 +93,9 @@ public class TodoItemTest
         // Arrange
         var ModificationsOnDifferentDay = new List<Modification>
         {
-            new Modification(DateTime.Today.AddHours(9)),  // 今天的上午9点
-            new Modification(DateTime.Today.AddHours(9)),  // 今天的上午9点
-            new Modification(DateTime.Today.AddHours(14)), // 今天的下午2点
-            new Modification(DateTime.Today.AddHours(18)),  // 今天的下午6点
+            new Modification(DateTime.Today.AddHours(9)),  
+            new Modification(DateTime.Today.AddHours(14)), 
+            new Modification(DateTime.Today.AddHours(18)), 
             new Modification(DateTime.Now.AddDays(-1)),
             new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
         };
