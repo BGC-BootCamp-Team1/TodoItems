@@ -28,10 +28,10 @@ public class TodoItemMongoRepository : ITodoRepository
         return (int)_todosCollection.CountDocuments(filter);
     }
 
-    public void Save(TodoItemObject todoItem)
+    public async Task Save(TodoItemObject todoItem)
     {
 
-        _todosCollection.InsertOneAsync(ConvertToTodoItemPo(todoItem));
+        await _todosCollection.InsertOneAsync(ConvertToTodoItemPo(todoItem));
     }
 
 
