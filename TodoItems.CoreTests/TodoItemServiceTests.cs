@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Moq;
 using Microsoft.VisualBasic;
 using TodoItems.Core.AppException;
+using static TodoItems.Core.TodoItemService;
 
 namespace TodoItems.Core.Tests
 {
@@ -26,12 +27,12 @@ namespace TodoItems.Core.Tests
             var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
 
             // Act
-            var result = service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption);
+            var result = service.CreateAsync(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(description, result.Description);
-            Assert.AreEqual(dueDate, result.DueDate);
+            Assert.AreEqual(description, result.Result.Description);
+            Assert.AreEqual(dueDate, result.Result.DueDate);
             mockRepository.Verify(repo => repo.CountTodoItemsByDueDate(dueDate), Times.Once);
         }
 
@@ -45,7 +46,7 @@ namespace TodoItems.Core.Tests
             var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1));
 
             // Act & Assert
-            Assert.ThrowsException<InvalidDueDateException>(() => service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
+            Assert.ThrowsExceptionAsync<InvalidDueDateException>(() => service.CreateAsync(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
             
         }
 
@@ -61,7 +62,62 @@ namespace TodoItems.Core.Tests
             var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
 
             // Act & Assert
-            Assert.ThrowsException<ExceedMaxTodoItemsPerDueDateException>(() => service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
+            Assert.ThrowsExceptionAsync<ExceedMaxTodoItemsPerDueDateException>(() => service.CreateAsync(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
+        }
+
+        [TestMethod]
+        public async Task CreateAsync_ShouldCreateTodoItem_WithNextAvailableInFiveDaysOption()
+        {
+            // Arrange
+            var mockRepository = new Mock<ITodosRepository>();
+            mockRepository.SetupSequence(repo => repo.CountTodoItemsByDueDate(It.IsAny<DateOnly>()))
+                .Returns(8) // Day 0
+                .Returns(8) // Day 1
+                .Returns(5) // Day 2
+                .Returns(4) // Day 3
+                .Returns(3) // Day 4
+                .Returns(8); // Day 5
+            mockRepository.Setup(repo => repo.SaveAsync(It.IsAny<TodoItem>())).Returns(Task.CompletedTask);
+
+            var service = new TodoItemService(mockRepository.Object);
+            var description = "Test Todo Item";
+
+            // Act
+            var result = await service.CreateAsync(description, null, CreateOptionEnum.NextAvailableInFiveDaysOption);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(description, result.Description);
+            Assert.AreEqual(DateOnly.FromDateTime(DateTime.Today.AddDays(2)), result.DueDate);
+            mockRepository.Verify(repo => repo.SaveAsync(It.IsAny<TodoItem>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task CreateAsync_ShouldCreateTodoItem_WithMostAvailableInFiveDaysOption()
+        {
+            // Arrange
+            var mockRepository = new Mock<ITodosRepository>();
+            mockRepository.SetupSequence(repo => repo.CountTodoItemsByDueDate(It.IsAny<DateOnly>()))
+                .Returns(7) // Day 0
+                .Returns(6) // Day 1
+                .Returns(5) // Day 2
+                .Returns(4) // Day 3
+                .Returns(3) // Day 4
+                .Returns(8); // Day 5
+
+            mockRepository.Setup(repo => repo.SaveAsync(It.IsAny<TodoItem>())).Returns(Task.CompletedTask);
+
+            var service = new TodoItemService(mockRepository.Object);
+            var description = "Test Todo Item";
+
+            // Act
+            var result = await service.CreateAsync(description, null, CreateOptionEnum.MostAvailableInFiveDaysOption);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(description, result.Description);
+            Assert.AreEqual(DateOnly.FromDateTime(DateTime.Today.AddDays(4)), result.DueDate);
+            mockRepository.Verify(repo => repo.SaveAsync(It.IsAny<TodoItem>()), Times.Once);
         }
     }
 }
