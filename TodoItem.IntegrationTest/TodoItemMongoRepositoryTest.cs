@@ -53,7 +53,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
             IsComplete = false
         };
         await _mongoCollection.InsertOneAsync(todoItemPo);
-        var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e1");
+        var todoItem = await _mongoRepository.FindByIdAsync("5f9a7d8e2d3b4a1eb8a7d8e1");
         
         Assert.NotNull(todoItem);
         Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e1", todoItem.Id);
@@ -92,13 +92,13 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
             Description = "Buy groceries",
             IsComplete = false
         };
-        var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e4");
+        var todoItem = await _mongoRepository.FindByIdAsync("5f9a7d8e2d3b4a1eb8a7d8e4");
 
         Assert.Null(todoItem);
 
         var expectTodoItem = todoItemPo.ConvertToTodoItem();
         await _mongoRepository.SaveAsync(expectTodoItem);       
-        var actualTodoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e4");
+        var actualTodoItem = await _mongoRepository.FindByIdAsync("5f9a7d8e2d3b4a1eb8a7d8e4");
 
         actualTodoItem.Should().BeEquivalentTo(expectTodoItem);
     }
@@ -119,7 +119,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         await _mongoRepository.SaveAsync(newTodoItem);
 
 
-        var actualTodoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e5");
+        var actualTodoItem = await _mongoRepository.FindByIdAsync("5f9a7d8e2d3b4a1eb8a7d8e5");
 
         actualTodoItem.Should().BeEquivalentTo(newTodoItem);
     }

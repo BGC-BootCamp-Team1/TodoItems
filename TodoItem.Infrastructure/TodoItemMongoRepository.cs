@@ -16,7 +16,7 @@ public class TodoItemMongoRepository : ITodosRepository
         _todosCollection = mongoDatabase.GetCollection<TodoItemPo>(todoStoreDatabaseSettings.Value.TodoItemsCollectionName);
     }
 
-    public async Task<TodoItems.Core.TodoItem> FindById(string? id)
+    public async Task<TodoItems.Core.TodoItem> FindByIdAsync(string? id)
     {
         FilterDefinition<TodoItemPo?> filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, id);
         TodoItemPo? todoItemPo = await _todosCollection.Find(filter).FirstOrDefaultAsync();
