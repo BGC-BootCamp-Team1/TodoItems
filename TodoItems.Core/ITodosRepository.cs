@@ -9,5 +9,7 @@ namespace TodoItems.Core
     public interface ITodosRepository
     {
         public int CountTodoItemsByDueDate(DateOnly dueDate);
+        public Task SaveAsync(TodoItem todoItem);
+        public Task<TodoItem> FindByIdAsync(string? id);
     }
 }
