@@ -43,6 +43,7 @@ public class TodoItemMongoRepository: ITodosRepository
 
     public int CountTodoItemsByDueDate(DateOnly dueDate)
     {
-        return 2;
+        FilterDefinition<TodoItemPo> filter = Builders<TodoItemPo>.Filter.Eq(x => x.DueDate, dueDate);
+        return (int)_todosCollection.CountDocuments(filter);
     }
 }

@@ -47,12 +47,12 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     {
         //await InitializeAsync();
         var todoItemPo = new TodoItemPo{
-            Id = "5f9a7d8e2d3b4a1eb8a7d8e2", 
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e1", 
             Description = "Buy groceries",
             IsComplete = false
         };;
         await _mongoCollection.InsertOneAsync(todoItemPo);
-        var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e2");
+        var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e1");
         
         Assert.NotNull(todoItem);
         Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e2", todoItem.Id);
@@ -60,23 +60,23 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     }
 
     [Fact]
-    public void ShouldReturnTodosCount_ByDueDate()
+    public async Task ShouldReturnTodosCount_ByDueDateAsync()
     {
         DateOnly dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
         var todoItemPo_1 = new TodoItemPo
         {
-            Id = "1",
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
             Description = "Des_1",
             DueDate = dueDate,
         };
         var todoItemPo_2 = new TodoItemPo
         {
-            Id = "2",
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e3",
             Description = "Des_2",
             DueDate = dueDate,
         };
-        _mongoCollection.InsertOneAsync(todoItemPo_1);
-        _mongoCollection.InsertOneAsync(todoItemPo_2);
+        await _mongoCollection.InsertOneAsync(todoItemPo_1);
+        await _mongoCollection.InsertOneAsync(todoItemPo_2);
 
         var count = _mongoRepository.CountTodoItemsByDueDate(dueDate);
 
