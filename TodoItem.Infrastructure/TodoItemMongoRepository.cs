@@ -54,12 +54,11 @@ public class TodoItemMongoRepository: ITodoItemsRepository
 
     public async Task<List<TodoItems.Core.TodoItem>> GetTodoItemsDueInNextFiveDays()
     {
-        var utcToday = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Local).ToUniversalTime();
-        var utcFutureDate = utcToday.AddDays(5);
+        var today = DateTime.Today;
 
         var filter = Builders<TodoItemPo>.Filter.And(
-            Builders<TodoItemPo>.Filter.Gte(item => item.DueDate, utcToday),
-            Builders<TodoItemPo>.Filter.Lt(item => item.DueDate, utcFutureDate));
+            Builders<TodoItemPo>.Filter.Gte(item => item.DueDate, today),
+            Builders<TodoItemPo>.Filter.Lt(item => item.DueDate, today.AddDays(5)));
 
         var todoItemPos = await _todosCollection.Find(filter).ToListAsync();
         var todoItems = todoItemPos.Select(ConvertToTodoItem).ToList();
