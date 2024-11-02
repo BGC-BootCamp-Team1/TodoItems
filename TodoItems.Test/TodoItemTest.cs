@@ -1,4 +1,4 @@
-using TodoItems.Core;
+﻿using TodoItems.Core;
 using System;
 
 namespace TodoItems.Test;
@@ -7,21 +7,17 @@ public class TodoItemTest
 {
     [Fact]
     public void ShouldNotAddTimestamp_WhenMoreThanThreeTimestampsToday()
-
     {
         // Arrange
-
         var Modifications3TimesInOneDay = new List<Modification>
-        {
-            new Modification(DateTime.Now.AddHours(1)),
-            new Modification(DateTime.Now.AddHours(2)),
-            new Modification(DateTime.Now.AddHours(3))
-        };
+            {
+                new Modification(DateTime.Today.AddHours(9)),  // 今天的上午9点
+                new Modification(DateTime.Today.AddHours(14)), // 今天的下午2点
+                new Modification(DateTime.Today.AddHours(18))  // 今天的下午6点
+            };
 
-        var todoItem = new TodoItems.Core.TodoItemObject("Initial Description", DateTime.Now);
+        var todoItem = new TodoItemObject("Initial Description", DateTime.Today.AddDays(10));
         todoItem.ModificationTimestamps = Modifications3TimesInOneDay;
-
-
 
         // Act and Assert
         var exception = Assert.Throws<ArgumentException>(() => todoItem.ModifyDescription("bbb"));
@@ -29,9 +25,8 @@ public class TodoItemTest
         Assert.Equal(3, todoItem.ModificationTimestamps.Count);
         Assert.Equal(Modifications3TimesInOneDay, todoItem.ModificationTimestamps);
 
-
         // Verify the exception message
-        Assert.Equal("You have reached the maximum number of modifications for today. Please try agian tomorrow.", exception.Message);
+        Assert.Equal("You have reached the maximum number of modifications for today. Please try again tomorrow.", exception.Message);
     }
 
     [Fact]
@@ -85,9 +80,10 @@ public class TodoItemTest
         // Arrange
         var ModificationsOnDifferentDay = new List<Modification>
         {
-            new Modification(DateTime.Now),
-            new Modification(DateTime.Now.AddSeconds(1)),
-            new Modification(DateTime.Now.AddSeconds(2)),
+            new Modification(DateTime.Today.AddHours(9)),  // 今天的上午9点
+            new Modification(DateTime.Today.AddHours(9)),  // 今天的上午9点
+            new Modification(DateTime.Today.AddHours(14)), // 今天的下午2点
+            new Modification(DateTime.Today.AddHours(18)),  // 今天的下午6点
             new Modification(DateTime.Now.AddDays(-1)),
             new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
         };
@@ -102,7 +98,7 @@ public class TodoItemTest
         Assert.Equal("Initial Description", todoItem.Description);
         Assert.Equal(5, todoItem.ModificationTimestamps.Count);
         Assert.Equal(ModificationsOnDifferentDay, todoItem.ModificationTimestamps);
-        Assert.Equal("You have reached the maximum number of modifications for today. Please try agian tomorrow.", exception.Message);
+        Assert.Equal("You have reached the maximum number of modifications for today. Please try again tomorrow.", exception.Message);
 
     }
 
