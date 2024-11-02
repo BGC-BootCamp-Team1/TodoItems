@@ -60,6 +60,20 @@ public class TodoItemMongoRepository : ITodoItemsRepository
 
     public List<TodoItem> FindTodoItemsInFiveDaysByUserId(string userId)
     {
-        throw new NotImplementedException();
+        DateTime startDate = DateTime.Today.AddDays(1);
+        DateTime endDate = DateTime.Today.AddDays(5);
+
+        FilterDefinition<TodoItemPo> filter = Builders<TodoItemPo>
+            .Filter.And(
+                Builders<TodoItemPo>.Filter.Eq(x => x.UserId, userId),
+                Builders<TodoItemPo>.Filter.Gte(x => x.DueDay, startDate),
+                Builders<TodoItemPo>.Filter.Lte(x => x.DueDay, endDate)
+            );
+        
+        var todoItemsPoList = _todosCollection.Find(filter).ToList();
+        var todoItems = todoItemsPoList.Select(TodoMapper.ToItem).ToList();
+
+        return todoItems;
+
     }
 }
