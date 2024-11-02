@@ -1,4 +1,5 @@
 ﻿using System.Security.AccessControl;
+using TodoItems.Core.AppException;
 
 namespace TodoItems.Core;
 
@@ -27,7 +28,7 @@ public class TodoItem
             Description = modifiedDescription;
         }
         else
-            throw new Exception("Modification Limit.");
+            throw new ExceedMaxModificationException();
 
     }
     public TodoItems.Core.TodoItem? ConvertToTodoItem()

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using Microsoft.VisualBasic;
+using TodoItems.Core.AppException;
 
 namespace TodoItems.Core.Tests
 {
@@ -44,8 +45,8 @@ namespace TodoItems.Core.Tests
             var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1));
 
             // Act & Assert
-            var exception = Assert.ThrowsException<Exception>(() => service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
-            Assert.AreEqual("Invalid dueDate", exception.Message);
+            Assert.ThrowsException<InvalidDueDateException>(() => service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
+            
         }
 
         [TestMethod]
@@ -60,8 +61,7 @@ namespace TodoItems.Core.Tests
             var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
 
             // Act & Assert
-            var exception = Assert.ThrowsException<Exception>(() => service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
-            Assert.AreEqual("TodoItems count limit on dueDate", exception.Message);
+            Assert.ThrowsException<ExceedMaxTodoItemsPerDueDateException>(() => service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
         }
     }
 }

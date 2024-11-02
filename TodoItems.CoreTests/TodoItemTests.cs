@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TodoItems.Core.AppException;
 
 namespace TodoItems.Core.Tests
 {
@@ -26,7 +27,6 @@ namespace TodoItems.Core.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception), "Modification Limit.")]
         public void ModifyItem_ShouldThrowException_WhenOverLimit()
         {
             // Arrange
@@ -37,10 +37,8 @@ namespace TodoItems.Core.Tests
             todoItem.ModifyItem("Modified Description 2");
             todoItem.ModifyItem("Modified Description 3");
 
-            // Act
-            todoItem.ModifyItem("Modified Description 4");
-
             // Assert is handled by ExpectedException
+            Assert.ThrowsException<ExceedMaxModificationException>(() => todoItem.ModifyItem("Modified Description 4"));
         }
 
         [TestMethod]
