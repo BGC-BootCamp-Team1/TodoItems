@@ -42,6 +42,12 @@ public class TodoItemServiceTest
     {
         _mockedTodosRepository.Setup(
             repository =>
+                repository.Save(
+                    It.IsAny<TodoItem>()
+                )).Returns(new TodoItem("Des", DateTime.Today.AddDays(1), "user1"));
+
+        _mockedTodosRepository.Setup(
+            repository =>
                 repository.FindAllTodoItemsByUserIdAndDueDay(
                     It.IsAny<string>(), It.IsAny<DateTime>()
                 )).Returns(
