@@ -43,10 +43,8 @@ public class TodoItemService
         {
             ValidateDueDate(dueDate.Value);
 
-            if (EnsureTodoItemLimitNotExceeded(dueDate.Value))
-            {
-                lastDueDate = dueDate;
-            }
+            EnsureTodoItemLimitNotExceeded(dueDate.Value);
+            lastDueDate = dueDate;
         }
 
         return lastDueDate;
@@ -94,37 +92,36 @@ public class TodoItemService
         ValidateDueDate(dueDate);
         EnsureTodoItemLimitNotExceeded(dueDate);
 
-        var todoItem = new TodoItemObject() 
-        { 
-            Description = description, 
+        var todoItem = new TodoItemObject()
+        {
+            Description = description,
             DueDate = dueDate,
         };
         TodoItems.Add(todoItem);
         return todoItem;
     }
 
-    private bool ValidateDueDate(DateTime dueDate)
-    {
-        if (dueDate < DateTime.Now)
-        {
-            throw new ArgumentException("Due date cannot be in the past.");
-        }
-        else
-            return true;
-    }
 
-    private bool EnsureTodoItemLimitNotExceeded(DateTime dueDate)
+    private void EnsureTodoItemLimitNotExceeded(DateTime dueDate)
     {
 
         var count = _repository.CountTodoItemsOnDueDate(dueDate);
         if (count >= Constants.MaxTodoItemsPerDay)
         {
-            throw new ArgumentException("You have reached the maximum number of todo items for this due date.");
+            ApplicationException.ThrowTodoItemLimitExceededException();
         }
-        else
-            return true;
+        
     }
 
+    private void ValidateDueDate(DateTime dueDate)
+    {
+        if (dueDate < DateTime.Now)
+        {
+            ApplicationException.ThrowDuedateInPastException();
+
+        }
+       
+    }
 
 
 }

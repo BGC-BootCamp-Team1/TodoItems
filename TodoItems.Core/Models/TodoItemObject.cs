@@ -22,7 +22,7 @@ public class TodoItemObject
     public void ModifyDescription(string newDescription)
     {
        
-        const string ErrorMessage = "You have reached the maximum number of modifications for today. Please try again tomorrow.";
+        
 
         DateTime today = DateTime.Today;
         int todayCount = this.ModificationTimestamps.Count(ts => ts.ModificationTimestamp.Date == today);
@@ -34,7 +34,7 @@ public class TodoItemObject
         }
         else
         {
-            throw new ArgumentException(ErrorMessage);
+            ApplicationException.ThrowModificationsLimitTodayExceededException();
         }
     }
 }
