@@ -50,12 +50,12 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
             Id = "5f9a7d8e2d3b4a1eb8a7d8e1", 
             Description = "Buy groceries",
             IsComplete = false
-        };;
+        };
         await _mongoCollection.InsertOneAsync(todoItemPo);
         var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e1");
         
         Assert.NotNull(todoItem);
-        Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e2", todoItem.Id);
+        Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e1", todoItem.Id);
         Assert.Equal("Buy groceries", todoItem.Description);
     }
 
@@ -81,5 +81,10 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         var count = _mongoRepository.CountTodoItemsByDueDate(dueDate);
 
         Assert.Equal(2, count);
+    }
+    [Fact]
+    public void ShouldSave_WhenNewTodo()
+    {
+
     }
 }
