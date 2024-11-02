@@ -80,7 +80,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     public async Task GetTodoItemsDueInNextFiveDays_ReturnsCorrectItems()
     {
         // Arrange
-        var today = new DateTime(2024, 11, 1, 0,0,0,DateTimeKind.Utc);
+        var today = DateTime.UtcNow.Date;
         await _mongoCollection.InsertOneAsync(new TodoItemPo {
             Id = ObjectId.GenerateNewId().ToString(),
             DueDate = today.AddDays(4) 
