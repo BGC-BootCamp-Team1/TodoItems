@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using Moq;
 using TodoItem.Infrastructure;
 using TodoItems.Core;
+using FluentAssertions;
 
 namespace TodoItem.IntegrationTest;
 
@@ -83,8 +84,22 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         Assert.Equal(2, count);
     }
     [Fact]
-    public void ShouldSave_WhenNewTodo()
+    public async Task ShouldSave_WhenNewTodoAsync()
     {
+        var todoItemPo = new TodoItemPo
+        {
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e4",
+            Description = "Buy groceries",
+            IsComplete = false
+        };
+        var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e4");
 
+        Assert.Null(todoItem);
+
+        var expectTodoItem = todoItemPo.ConvertToTodoItem();
+        await _mongoRepository.SaveAsync(expectTodoItem);       
+        var actualTodoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e4");
+
+        actualTodoItem.Should().BeEquivalentTo(expectTodoItem);
     }
 }

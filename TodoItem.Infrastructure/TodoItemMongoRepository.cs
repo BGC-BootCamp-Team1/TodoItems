@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic;
 using MongoDB.Driver;
 using TodoItems.Core;
 
@@ -21,15 +22,26 @@ public class TodoItemMongoRepository: ITodosRepository
         TodoItemPo? todoItemPo = await _todosCollection.Find(filter).FirstOrDefaultAsync();
 
         // 将 TodoItemPo 转换为 TodoItem
-        TodoItems.Core.TodoItem todoItem = todoItemPo.ConvertToTodoItem();
+        TodoItems.Core.TodoItem? todoItem = todoItemPo?.ConvertToTodoItem();
         return todoItem;
     }
 
 
 
-    public void Save(TodoItems.Core.TodoItem todoItem)
+    public async Task SaveAsync(TodoItems.Core.TodoItem todoItem)
     {
-        throw new NotImplementedException();
+        if (todoItem != null)
+        {
+            var todoItemPo = new TodoItemPo
+            {
+                Id = todoItem.Id,
+                Description = todoItem.Description,
+                IsComplete = todoItem.IsComplete,
+                DueDate = todoItem.DueDate,
+                CreateTime = todoItem.CreateTime,
+            };
+            await _todosCollection.InsertOneAsync(todoItemPo);
+        }
     }
 
     public int CountTodoItemsByDueDate(DateOnly dueDate)
