@@ -16,8 +16,13 @@ public class TodoItemTest
             new Modification(DateTime.Today.AddHours(18))  // 今天的下午6点
         };
 
-        var todoItem = new TodoItemObject("Initial Description", DateTime.Today.AddDays(10));
-        todoItem.ModificationTimestamps = Modifications3TimesInOneDay;
+        var todoItem = new TodoItemObject()
+        {
+            Description = "Initial Description",
+            DueDate = DateTime.Today.AddDays(10),
+            ModificationTimestamps = Modifications3TimesInOneDay
+        };
+        
 
         // Act and Assert
         var exception = Assert.Throws<ArgumentException>(() => todoItem.ModifyDescription("bbb"));
@@ -38,8 +43,12 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddHours(-3)),
         };
 
-        var todoItem = new TodoItemObject("Initial Description", DateTime.Now);
-        todoItem.ModificationTimestamps = ModificationsOnceOneDay;
+        var todoItem = new TodoItemObject()
+        {
+            Description = "Initial Description",
+            DueDate = DateTime.Today.AddDays(10),
+            ModificationTimestamps = ModificationsOnceOneDay
+        };
         //Act
         todoItem.ModifyDescription("bbb");
         //Assert
@@ -62,8 +71,12 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
         };
 
-        var todoItem = new TodoItemObject("Initial Description", DateTime.Now);
-        todoItem.ModificationTimestamps = ModificationsOnDifferentDay;
+        var todoItem = new TodoItemObject()
+        {
+            Description = "Initial Description",
+            DueDate = DateTime.Today.AddDays(10),
+            ModificationTimestamps = ModificationsOnDifferentDay
+        };
         //Act
         todoItem.ModifyDescription("tt");
 
@@ -88,8 +101,12 @@ public class TodoItemTest
             new Modification(DateTime.Now.AddDays(-1).AddSeconds(-30))
         };
 
-        var todoItem = new TodoItemObject("Initial Description", DateTime.Now.AddDays(10));
-        todoItem.ModificationTimestamps = ModificationsOnDifferentDay;
+        var todoItem = new TodoItemObject()
+        {
+            Description = "Initial Description",
+            DueDate = DateTime.Today.AddDays(10),
+            ModificationTimestamps = ModificationsOnDifferentDay
+        };
         //Act
         var exception = Assert.Throws<ArgumentException>(() => todoItem.ModifyDescription("bbb"));
 

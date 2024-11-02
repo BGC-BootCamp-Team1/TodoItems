@@ -94,7 +94,11 @@ public class TodoItemService
         ValidateDueDate(dueDate);
         EnsureTodoItemLimitNotExceeded(dueDate);
 
-        var todoItem = new TodoItemObject(description, dueDate);
+        var todoItem = new TodoItemObject() 
+        { 
+            Description = description, 
+            DueDate = dueDate,
+        };
         TodoItems.Add(todoItem);
         return todoItem;
     }

@@ -28,6 +28,12 @@ public class TodoItemMongoRepository : ITodoRepository
         return (int)_todosCollection.CountDocuments(filter);
     }
 
+    public void Save(TodoItemObject todoItem)
+    {
+
+        _todosCollection.InsertOneAsync(ConvertToTodoItemPo(todoItem));
+    }
+
     public async Task<TodoItemObject> FindById(string? id)
     {
         FilterDefinition<TodoItemPo?> filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, id);
@@ -42,16 +48,28 @@ public class TodoItemMongoRepository : ITodoRepository
     {
         if (todoItemPo == null) return null;
 
-        return new TodoItemObject(todoItemPo.Description, todoItemPo.DueDate)
+        return new TodoItemObject()
         {
-            Id = todoItemPo.Id
-            //Description = todoItemPo.Description,
-            //DueDate = todoItemPo.DueDate
+            Id = todoItemPo.Id,
+            Description = todoItemPo.Description,
+            ModificationTimestamps = todoItemPo.ModificationTimestamps,
+            DueDate = todoItemPo.DueDate
         };
     }
 
-    public void Save(TodoItemObject todoItem)
+    private TodoItemPo ConvertToTodoItemPo(TodoItemObject todoItemObject)
     {
-        throw new NotImplementedException();
+        return new TodoItemPo
+        {
+            Id = todoItemObject.Id,
+            Description = todoItemObject.Description,
+            ModificationTimestamps = todoItemObject.ModificationTimestamps,
+            DueDate = (DateTime)todoItemObject.DueDate,
+        };
     }
+       
+
+        
+
+
 }

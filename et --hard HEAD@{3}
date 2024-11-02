@@ -1,0 +1,26 @@
+[33m22c80cf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mhtian15[m[33m, [m[1;31morigin/htian15[m[33m)[m HEAD@{0}: reset: moving to 22c80cfa0394d5b30d14fd0a61b76219bf8d80b0
+[33m22c80cf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mhtian15[m[33m, [m[1;31morigin/htian15[m[33m)[m HEAD@{1}: commit: test: add different branches of DueDate and type test
+[33m1891dc0[m HEAD@{2}: commit: test:DetermineLastDueDate_NullDueDateAndNoneType_ReturnsNull
+[33m8c1b7d7[m HEAD@{3}: commit: refactor:misterious name and magic number
+[33made63e8[m HEAD@{4}: reset: moving to ade63e8608e20f3e75171950b9e337ec3664ab9f
+[33m7f9bb63[m HEAD@{5}: commit: feat: add user and tag in UML
+[33made63e8[m HEAD@{6}: reset: moving to ade63e8608e20f3e75171950b9e337ec3664ab9f
+[33made63e8[m HEAD@{7}: commit: feat: add UML-User-TodoItem-tag
+[33m97a8a13[m HEAD@{8}: commit: feat: add UML figure
+[33m94ac293[m HEAD@{9}: commit: refactor: too long function
+[33mab346c7[m HEAD@{10}: commit: test: fix Modifications3TimesInOneDay
+[33mfdcc25a[m HEAD@{11}: commit: feat: add TodoItemService
+[33m18ee90b[m HEAD@{12}: commit: test: add TodoItemServiceTests
+[33m06b68c5[m HEAD@{13}: commit: feat: add ITodoRepository
+[33m475630c[m HEAD@{14}: commit: refactor: delete the blank lines
+[33m413c590[m HEAD@{15}: commit: test: fix UT test according to match TodoItem class
+[33m84c7824[m HEAD@{16}: commit: feat: add dutedate property
+[33m2ce8cda[m HEAD@{17}: commit: test:implement ut of todoitem class
+[33md5df159[m HEAD@{18}: commit: refactor:delete comments
+[33m5889a1c[m HEAD@{19}: commit: fix:fix ModifyDescription by todayCount
+[33m3ea1102[m HEAD@{20}: commit: test:ShouldNotAddTimestamp_WhenMoreThanThreeTimestampsInOneToday
+[33mda92816[m HEAD@{21}: commit: test: add WhenLessThanThreeTimestampsInOneToday test
+[33mbe9062f[m HEAD@{22}: commit: test: add two test
+[33m1260c9f[m HEAD@{23}: commit: feat: extract Modification class
+[33mf0221b1[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{24}: checkout: moving from main to htian15
+[33mf0221b1[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{25}: clone: from https://github.com/BGC-BootCamp-Team1/TodoItems.git

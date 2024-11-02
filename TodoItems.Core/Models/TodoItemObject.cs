@@ -9,12 +9,12 @@ public class TodoItemObject
     public DateTime? DueDate { get; init; }
 
 
-    public TodoItemObject(string description, DateTime dueDate)
+    public TodoItemObject()//(string description, DateTime dueDate)
     {
         Id = Guid.NewGuid().ToString();
-        Description = description;
+        Description = "";
         ModificationTimestamps = new List<Modification>();
-        DueDate = dueDate;
+        DueDate = null;
     }
 
 
@@ -27,14 +27,14 @@ public class TodoItemObject
         DateTime today = DateTime.Today;
         int todayCount = this.ModificationTimestamps.Count(ts => ts.ModificationTimestamp.Date == today);
 
-        if (todayCount >= Constants.MaxModifyPerDay)
-        {
-            throw new ArgumentException(ErrorMessage);
-        }
-        else
+        if (todayCount < Constants.MaxModifyPerDay)
         {
             this.Description = newDescription;
             this.ModificationTimestamps.Add(new Modification(DateTime.Now));
+        }
+        else
+        {
+            throw new ArgumentException(ErrorMessage);
         }
     }
 }
