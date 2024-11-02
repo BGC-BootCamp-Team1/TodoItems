@@ -9,7 +9,7 @@ namespace TodoItems.IntegrationTest;
 public class TodoItemMongoRepositoryTest : IAsyncLifetime
 {
     private readonly TodoItemMongoRepository _mongoRepository;
-    private IMongoCollection<TodoItemPo> _mongoCollection;
+    private readonly IMongoCollection<TodoItemPo> _mongoCollection;
     
     public TodoItemMongoRepositoryTest()
     {
@@ -69,5 +69,28 @@ public class TodoItemMongoRepositoryTest : IAsyncLifetime
         Assert.NotNull(todoItem);
         Assert.Equal(item.Id, todoItem.Id);
         Assert.Equal(item.Description, todoItem.Description);
+    }
+    
+    
+    [Fact]
+    public void FindAllTodoItemsByUserIdAndDueDay_ReturnsCorrectCount_WhenItemsExist()
+    {
+
+        List<TodoItemPo> todoItemPos = [   
+            new TodoItemPo{ Description = "des",DueDay = DateTime.Today.AddDays(3),Id = Guid.NewGuid().ToString(),UserId = "user1",ModificationList = new List<Modification>() },
+            new TodoItemPo{ Description = "des",DueDay = DateTime.Today.AddDays(3),Id = Guid.NewGuid().ToString(),UserId = "user1",ModificationList = new List<Modification>() },
+            new TodoItemPo{ Description = "des",DueDay = DateTime.Today.AddDays(3),Id = Guid.NewGuid().ToString(),UserId = "user1",ModificationList = new List<Modification>() },
+            new TodoItemPo{ Description = "des",DueDay = DateTime.Today.AddDays(3),Id = Guid.NewGuid().ToString(),UserId = "user1",ModificationList = new List<Modification>() },
+            new TodoItemPo{ Description = "des",DueDay = DateTime.Today.AddDays(3),Id = Guid.NewGuid().ToString(),UserId = "user1",ModificationList = new List<Modification>() },
+            new TodoItemPo{ Description = "des",DueDay = DateTime.Today.AddDays(3),Id = Guid.NewGuid().ToString(),UserId = "user1",ModificationList = new List<Modification>() },
+            new TodoItemPo{ Description = "des",DueDay = DateTime.Today.AddDays(3),Id = Guid.NewGuid().ToString(),UserId = "user1",ModificationList = new List<Modification>() },
+            new TodoItemPo{ Description = "des",DueDay = DateTime.Today.AddDays(3),Id = Guid.NewGuid().ToString(),UserId = "user1",ModificationList = new List<Modification>() },
+        ];
+        _mongoCollection.InsertMany(todoItemPos);
+        
+        var pos = _mongoRepository.FindAllTodoItemsByUserIdAndDueDay("user1",DateTime.Today.AddDays(3));
+        
+        Assert.Equal(todoItemPos.Count,pos.Count);
+
     }
 }
