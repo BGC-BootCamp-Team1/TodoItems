@@ -1,5 +1,64 @@
 @startuml
-class TodoItem {
-    + GetId() : string
+class User
+{
+    + userId: string
 }
+
+package Domain{
+
+    class TodoItemService{
+        - _todosRepository: ITodosRepository ;
+        + TodoItems: List<TodoItem>;
+        + Create(description: string, dueDate: DateTimeOffset): TodoItem
+    }
+
+    class TodoItem {
+        + userId: string
+        + id: string
+        + description: String
+        + createTime: Date
+        + DueDate: Date
+        + Tags: List<Tag>
+        + ModificationHistory: List<Modification>
+        + ModifyItem(description: String): void
+    }
+
+    class Modification{
+        + timestamp: Date
+    }
+    interface ITodosRepository{
+        + CountTodoItemsByDueDate(dueDate: Date): int;
+        + Save(TodoItem todoItem): void
+    }
+    class Tag{
+        - Title: string
+
+    }
+}
+
+package Controller{
+
+}
+
+
+
+package Infrastracture{
+    class TodoItemPO{
+        + Id: string
+        + Description: string
+        + IsComplete: bool
+        + DueDate: DateTimeOffset
+        + CreateTime: DateTimeOffset
+    }
+    class TodosRepository{
+
+    }
+}
+TodoItem "1" -- "0..*" Modification
+TodoItemService "1" -- "0..*" TodoItem
+TodoItemService "1" -- "1" ITodosRepository
+User "1" -- "0..*" TodoItem
+TodosRepository -- ITodosRepository
+TodosRepository -- TodoItemPO
+TodoItem -- Tag
 @enduml
