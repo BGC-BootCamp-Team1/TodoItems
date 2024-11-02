@@ -1,6 +1,8 @@
-﻿namespace TodoItems.Core;
+﻿using TodoItems.Core.AppException;
 
-public class TodoItemService
+namespace TodoItems.Core;
+
+public partial class TodoItemService
 {
     private ITodosRepository _todosRepository;
     public TodoItemService(ITodosRepository todosRepository)
@@ -11,17 +13,17 @@ public class TodoItemService
     public List<TodoItem> TodoItems { get; set; }
     public TodoItem Create(string description,
                            DateOnly dueDate,
-                           CreateOption createOption)
+                           CreateOptionEnum createOption)
     {
         if(dueDate != null)
-            createOption = CreateOption.ManualOption;
+            createOption = CreateOptionEnum.ManualOption;
         switch (createOption)
         {
-            case CreateOption.ManualOption:
+            case CreateOptionEnum.ManualOption:
                 var count = _todosRepository.CountTodoItemsByDueDate(dueDate);
                 var isValidDueDate = dueDate >= DateOnly.FromDateTime(DateTime.Today);
                 if (!isValidDueDate)
-                    throw new Exception("Invalid dueDate");
+                    throw new InvalidDueDateException();
                 if (count < 8)
                 {
                     var newTodoItem = new TodoItem(description, dueDate);
@@ -30,10 +32,10 @@ public class TodoItemService
                 }
                 else
                 {
-                    throw new Exception("TodoItems count limit on dueDate");
+                    throw new ExceedMaxTodoItemsPerDueDateException();
                 }
                 break;
-            case CreateOption.NextAvailableInFiveDaysOption:
+            case CreateOptionEnum.NextAvailableInFiveDaysOption:
                 for (int i = 0; i< 5; i++)
                 {
                     var preDueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(i));
@@ -46,9 +48,9 @@ public class TodoItemService
                         return newTodoItem;
                     }                        
                 }
-                throw new Exception("TodoItems count limit on dueDate");
+                throw new ExceedMaxTodoItemsPerDueDateException();
                 break;
-            case CreateOption.MostAvailableInFiveDaysOption:
+            case CreateOptionEnum.MostAvailableInFiveDaysOption:
                 DateOnly mostAvailableInFiveDays = DateOnly.FromDateTime(DateTime.Today);
                 int CountTodosByMostAvailableInFiveDays = _todosRepository.CountTodoItemsByDueDate(mostAvailableInFiveDays);
                 for (int i = 1; i<5; i++)
@@ -67,19 +69,13 @@ public class TodoItemService
                     _todosRepository.SaveAsync(newTodoItem);
                     return newTodoItem;
                 }
-                throw new Exception("TodoItems count limit on dueDate");
+                throw new ExceedMaxTodoItemsPerDueDateException();
                 break;
             default:
-                throw new Exception("Wrong create option");
+                throw new InvalidCreateOption();
                 break;
         }
 
-    }
-    public enum CreateOption
-    {
-        ManualOption = 0,
-        NextAvailableInFiveDaysOption,
-        MostAvailableInFiveDaysOption
     }
 }
 

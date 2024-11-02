@@ -25,7 +25,7 @@ namespace TodoItems.Core.Tests
             var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
 
             // Act
-            var result = service.Create(description, dueDate, TodoItemService.CreateOption.ManualOption);
+            var result = service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption);
 
             // Assert
             Assert.IsNotNull(result);
@@ -44,7 +44,7 @@ namespace TodoItems.Core.Tests
             var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1));
 
             // Act & Assert
-            var exception = Assert.ThrowsException<Exception>(() => service.Create(description, dueDate, TodoItemService.CreateOption.ManualOption));
+            var exception = Assert.ThrowsException<Exception>(() => service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
             Assert.AreEqual("Invalid dueDate", exception.Message);
         }
 
@@ -60,7 +60,7 @@ namespace TodoItems.Core.Tests
             var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
 
             // Act & Assert
-            var exception = Assert.ThrowsException<Exception>(() => service.Create(description, dueDate, TodoItemService.CreateOption.ManualOption));
+            var exception = Assert.ThrowsException<Exception>(() => service.Create(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
             Assert.AreEqual("TodoItems count limit on dueDate", exception.Message);
         }
     }
