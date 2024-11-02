@@ -5,11 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItems.Core", "TodoItems.Core\TodoItems.Core.csproj", "{64BA62F4-0E84-4F43-9012-9A974AC09A8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItems.CoreTests", "TodoItems.CoreTests\TodoItems.CoreTests.csproj", "{33C5039A-0D9D-4D27-B326-7CF6DB373A44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItems.Core.UnitTests", "TodoItems.CoreTests\TodoItems.Core.UnitTests.csproj", "{33C5039A-0D9D-4D27-B326-7CF6DB373A44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItem.Infrastructure", "TodoItem.Infrastructure\TodoItem.Infrastructure.csproj", "{21025E6B-16FB-4739-9550-2335AD733A8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItem.Infrastructure", "TodoItem.Infrastructure\TodoItem.Infrastructure.csproj", "{21025E6B-16FB-4739-9550-2335AD733A8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItem.IntegrationTest", "TodoItem.IntegrationTest\TodoItem.IntegrationTest.csproj", "{FEBC5B71-6EFD-462A-83AA-EEACD362C659}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoItem.IntegrationTest", "TodoItem.IntegrationTest\TodoItem.IntegrationTest.csproj", "{FEBC5B71-6EFD-462A-83AA-EEACD362C659}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
