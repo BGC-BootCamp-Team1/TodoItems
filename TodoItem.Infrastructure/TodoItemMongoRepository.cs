@@ -21,20 +21,11 @@ public class TodoItemMongoRepository: ITodosRepository
         TodoItemPo? todoItemPo = await _todosCollection.Find(filter).FirstOrDefaultAsync();
 
         // 将 TodoItemPo 转换为 TodoItem
-        TodoItems.Core.TodoItem todoItem = ConvertToTodoItem(todoItemPo);
+        TodoItems.Core.TodoItem todoItem = todoItemPo.ConvertToTodoItem();
         return todoItem;
     }
 
-    private TodoItems.Core.TodoItem ConvertToTodoItem(TodoItemPo? todoItemPo)
-    {
-        if (todoItemPo == null) return null;
-        return new TodoItems.Core.TodoItem(todoItemPo.Description, todoItemPo.DueDate)
-        {
-            Id = todoItemPo.Id,
-            CreateTime = todoItemPo.CreateTime,
-            IsComplete = todoItemPo.IsComplete,
-        };
-    }
+
 
     public void Save(TodoItems.Core.TodoItem todoItem)
     {

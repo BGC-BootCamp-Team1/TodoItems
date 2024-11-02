@@ -11,4 +11,14 @@ public class TodoItemPo{
     public bool IsComplete { get; set; }
     public DateOnly DueDate { get; set; }
     public DateOnly CreateTime { get; set; }
+    public TodoItems.Core.TodoItem ConvertToTodoItem()
+    {
+        if (this == null) return null;
+        return new TodoItems.Core.TodoItem(this.Description, this.DueDate)
+        {
+            Id = this.Id,
+            CreateTime = this.CreateTime,
+            IsComplete = this.IsComplete,
+        };
+    }
 }
