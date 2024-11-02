@@ -1,13 +1,16 @@
 ﻿using TodoItems.Core.ApplicationExcepetions;
+using TodoItems.Core.DueDateSettingStrategy;
 namespace TodoItems.Core;
 
 public class TodoItem
 {
     public string Id { get; init; }
     public string Description { get; set; }
+    public bool IsComplete { get; set; }
     public DateTime CreatedTime { get; set; }
-    private IList<Modification> Modifications { get; set; }
+    public IList<Modification> Modifications { get; private set; }
     public DateTime DueDate { get; set; }
+    public DueDateSettingOptions dueDateSettingOptions { get; set; }
 
     public TodoItem(string description, List<Modification> modifications, DateTime dueDate)
     {
