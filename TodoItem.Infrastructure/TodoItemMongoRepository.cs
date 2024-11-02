@@ -34,6 +34,23 @@ public class TodoItemMongoRepository : ITodoRepository
         _todosCollection.InsertOneAsync(ConvertToTodoItemPo(todoItem));
     }
 
+
+    public async Task Replace(TodoItemObject todoItem)
+    {
+        // 创建过滤器以匹配要更新的文档
+        var filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, todoItem.Id);
+
+        // 创建更新定义
+        var update = Builders<TodoItemPo>.Update
+            .Set(x => x.Description, todoItem.Description)
+            .Set(x => x.ModificationTimestamps, todoItem.ModificationTimestamps);
+
+        // 执行更新操作
+        await _todosCollection.UpdateOneAsync(filter, update);
+    }
+
+
+
     public async Task<TodoItemObject> FindById(string? id)
     {
         FilterDefinition<TodoItemPo?> filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, id);
