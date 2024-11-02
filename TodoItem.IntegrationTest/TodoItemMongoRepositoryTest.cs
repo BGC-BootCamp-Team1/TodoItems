@@ -102,4 +102,25 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
 
         actualTodoItem.Should().BeEquivalentTo(expectTodoItem);
     }
+    [Fact]
+    public async Task ShouldUpdate_WhenExistTodoAsync()
+    {
+        var oldTodoItemPo = new TodoItemPo
+        {
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e5",
+            Description = "Buy groceries",
+            IsComplete = false
+        };
+        var oldTodoItem = oldTodoItemPo.ConvertToTodoItem();
+        await _mongoRepository.SaveAsync(oldTodoItem);
+
+        var newTodoItem = oldTodoItem;
+        newTodoItem.Description = "New Des";
+        await _mongoRepository.SaveAsync(newTodoItem);
+
+
+        var actualTodoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e5");
+
+        actualTodoItem.Should().BeEquivalentTo(newTodoItem);
+    }
 }
