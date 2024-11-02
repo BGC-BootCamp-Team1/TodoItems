@@ -4,7 +4,7 @@ namespace TodoItems.Core;
 public class TodoItemObject
 {
     public string Id { get; init; }
-    public string Description { get; private set; }
+    public string Description { get;  set; }
     public List<Modification> ModificationTimestamps { get; set; }
     public DateTime? DueDate { get; init; }
 
@@ -21,13 +21,13 @@ public class TodoItemObject
 
     public void ModifyDescription(string newDescription)
     {
-        const int MaximumNumberInOneDay = 3;
-        const string ErrorMessage = "You have reached the maximum number of modifications for today. Please try agian tomorrow.";
+       
+        const string ErrorMessage = "You have reached the maximum number of modifications for today. Please try again tomorrow.";
 
         DateTime today = DateTime.Today;
         int todayCount = this.ModificationTimestamps.Count(ts => ts.ModificationTimestamp.Date == today);
 
-        if (todayCount >= MaximumNumberInOneDay)
+        if (todayCount >= Constants.MaxModifyPerDay)
         {
             throw new ArgumentException(ErrorMessage);
         }
