@@ -15,7 +15,7 @@ namespace TodoItems.Core.Tests
         public void ModifyItem_ShouldUpdateDescription_WhenUnderLimit()
         {
             // Arrange
-            var todoItem = new TodoItem("Initial Description", DateTimeOffset.Now.AddDays(1));
+            var todoItem = new TodoItem("Initial Description", DateOnly.FromDateTime(DateTime.Now.AddDays(1)));
 
             // Act
             todoItem.ModifyItem("Modified Description");
@@ -30,7 +30,7 @@ namespace TodoItems.Core.Tests
         public void ModifyItem_ShouldThrowException_WhenOverLimit()
         {
             // Arrange
-            var todoItem = new TodoItem("Initial Description", DateTimeOffset.Now.AddDays(1));
+            var todoItem = new TodoItem("Initial Description", DateOnly.FromDateTime(DateTime.Now.AddDays(1)));
 
             // Add three modifications for today
             todoItem.ModifyItem("Modified Description 1");
@@ -47,7 +47,7 @@ namespace TodoItems.Core.Tests
         public void ModifyItem_ShouldAllowModification_WhenNewDay()
         {
             // Arrange
-            var todoItem = new TodoItem("Initial Description", DateTimeOffset.Now.AddDays(1));
+            var todoItem = new TodoItem("Initial Description", DateOnly.FromDateTime(DateTime.Now.AddDays(1)));
 
             // Add three modifications for today
             todoItem.ModifyItem("Modified Description 1");

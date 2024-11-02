@@ -41,7 +41,7 @@ public class TodoItemMongoRepository: ITodosRepository
         throw new NotImplementedException();
     }
 
-    public int CountTodoItemsByDueDate(DateTimeOffset dueDate)
+    public int CountTodoItemsByDueDate(DateOnly dueDate)
     {
         throw new NotImplementedException();
     }

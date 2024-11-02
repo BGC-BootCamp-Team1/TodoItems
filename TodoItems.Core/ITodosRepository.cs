@@ -8,6 +8,6 @@ namespace TodoItems.Core
 {
     public interface ITodosRepository
     {
-        public int CountTodoItemsByDueDate(DateTimeOffset dueDate);
+        public int CountTodoItemsByDueDate(DateOnly dueDate);
     }
 }

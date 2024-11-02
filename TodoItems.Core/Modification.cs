@@ -2,10 +2,10 @@
 
 public class Modification
 {
-    public DateTimeOffset TimesStamp { get; set; }
+    public DateOnly TimesStamp { get; set; }
     public Modification()
     {
-        TimesStamp = DateTimeOffset.Now;
+        TimesStamp = DateOnly.FromDateTime(DateTime.Now);
     }
 }
 

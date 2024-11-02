@@ -18,11 +18,11 @@ namespace TodoItems.Core.Tests
         {
             // Arrange
             var mockRepository = new Mock<ITodosRepository>();
-            mockRepository.Setup(repo => repo.CountTodoItemsByDueDate(It.IsAny<DateTimeOffset>())).Returns(5);
+            mockRepository.Setup(repo => repo.CountTodoItemsByDueDate(It.IsAny<DateOnly>())).Returns(5);
 
             var service = new TodoItemService(mockRepository.Object);
             var description = "Test Todo Item";
-            var dueDate = DateTimeOffset.UtcNow.AddDays(1);
+            var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
 
             // Act
             var result = service.Create(description, dueDate);
@@ -41,7 +41,7 @@ namespace TodoItems.Core.Tests
             var mockRepository = new Mock<ITodosRepository>();
             var service = new TodoItemService(mockRepository.Object);
             var description = "Test Todo Item";
-            var dueDate = DateTimeOffset.UtcNow.AddDays(-1);
+            var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1));
 
             // Act & Assert
             var exception = Assert.ThrowsException<Exception>(() => service.Create(description, dueDate));
@@ -53,11 +53,11 @@ namespace TodoItems.Core.Tests
         {
             // Arrange
             var mockRepository = new Mock<ITodosRepository>();
-            mockRepository.Setup(repo => repo.CountTodoItemsByDueDate(It.IsAny<DateTimeOffset>())).Returns(8);
+            mockRepository.Setup(repo => repo.CountTodoItemsByDueDate(It.IsAny<DateOnly>())).Returns(8);
 
             var service = new TodoItemService(mockRepository.Object);
             var description = "Test Todo Item";
-            var dueDate = DateTimeOffset.UtcNow.AddDays(1);
+            var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
 
             // Act & Assert
             var exception = Assert.ThrowsException<Exception>(() => service.Create(description, dueDate));

@@ -9,6 +9,6 @@ public class TodoItemPo{
     public string? Id { get; set; }
     public string Description { get; set; }
     public bool IsComplete { get; set; }
-    public DateTimeOffset DueDate { get; set; }
-    public DateTimeOffset CreateTime { get; set; }
+    public DateOnly DueDate { get; set; }
+    public DateOnly CreateTime { get; set; }
 }

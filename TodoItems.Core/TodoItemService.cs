@@ -9,10 +9,10 @@ public class TodoItemService
         _todosRepository = todosRepository;
     }
     public List<TodoItem> TodoItems { get; set; }
-    public TodoItem Create(string description, DateTimeOffset dueDate)
+    public TodoItem Create(string description, DateOnly dueDate)
     {       
         var count = _todosRepository.CountTodoItemsByDueDate(dueDate);
-        var isValidDueDate = dueDate.Date >= DateTime.UtcNow;
+        var isValidDueDate = dueDate >= DateOnly.FromDateTime(DateTime.Now);
         if(!isValidDueDate)
             throw new Exception("Invalid dueDate");
         if (count < 8)

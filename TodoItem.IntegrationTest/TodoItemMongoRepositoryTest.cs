@@ -44,6 +44,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     [Fact]
     public async void should_return_item_by_id_1()
     {
+        //await InitializeAsync();
         var todoItemPo = new TodoItemPo{
             Id = "5f9a7d8e2d3b4a1eb8a7d8e2", 
             Description = "Buy groceries",
@@ -56,4 +57,15 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e2", todoItem.Id);
         Assert.Equal("Buy groceries", todoItem.Description);
     }
+
+/*    [Fact]
+    public async int ShouldReturnTodosCount_ByDueDate(DateTime dueDate)
+    {
+        var todoItemPo = new TodoItemPo
+        {
+            Id = "123",
+            Description = "Des_1",
+            DueDate = DateTimeOffset
+        }
+    }*/
 }
