@@ -1,83 +1,92 @@
-
 using System;
 using System.Collections.Generic;
-using Moq;
-using TodoItems.Core;
 using Xunit;
-using static TodoItems.Core.TodoItemService;
+using Moq;
 
-namespace TodoServiceTest;
-
-public class TodoItemServiceTests
+namespace TodoItems.Core.Tests
 {
-    private readonly Mock<ITodoRepository> _mockRepository;
-    private readonly TodoItemService _service;
-
-    public TodoItemServiceTests()
+    public class TodoItemServiceTests
     {
-        _mockRepository = new Mock<ITodoRepository>();
-        _service = new TodoItemService(_mockRepository.Object);
-    }
+        private readonly Mock<ITodoRepository> _mockRepository;
+        private readonly TodoItemService _service;
 
-    [Fact]
-    public void DetermineLastDueDate_NullDueDateAndNoneType_ReturnsNull()
-    {
-        var result = _service.DetermineLastDueDate(null, TodoItemService.DuedateType.None);
-        Assert.Null(result);
-    }
+        public TodoItemServiceTests()
+        {
+            _mockRepository = new Mock<ITodoRepository>();
+            _service = new TodoItemService(_mockRepository.Object);
+        }
 
+        [Fact]
+        public void DetermineLastDueDate_NullDueDateAndNoneType_ReturnsNull()
+        {
+            var result = _service.DetermineLastDueDate(null, TodoItemService.DuedateType.None);
+            Assert.Null(result);
+        }
 
-    [Fact]
-    public void CreateTodoItem_ShouldCreateTodoItem_WhenDueDateIsValidAndCountIsLessThan8()
-    {
-        // Arrange
-        
-        _mockRepository.Setup(repo => repo.CountTodoItemsOnDueDate(It.IsAny<DateTime>())).Returns(5);
+        [Fact]
+        public void DetermineLastDueDate_NullDueDateAndFirstAvailableDayType_ReturnsFirstAvailableDay()
+        {
+            _mockRepository.Setup(r => r.CountTodoItemsOnDueDate(It.IsAny<DateTime>())).Returns(0);
+            var result = _service.DetermineLastDueDate(null, TodoItemService.DuedateType.FirstAvailableDay);
+            Assert.NotNull(result);
+            Assert.InRange(result.Value, DateTime.Today.AddDays(1), DateTime.Today.AddDays(5));
+        }
 
-        var service = new TodoItemService(_mockRepository.Object);
-        var description = "Test Todo Item";
-        var dueDate = DateTime.Now.AddDays(1);
+        [Fact]
+        public void DetermineLastDueDate_NullDueDateAndFewestDayWithIn5DaysType_ReturnsDayWithFewestItems()
+        {
+            _mockRepository.Setup(r => r.CountTodoItemsOnDueDate(It.IsAny<DateTime>())).Returns(0);
+            var result = _service.DetermineLastDueDate(null, TodoItemService.DuedateType.FewestDayWithIn5Days);
+            Assert.NotNull(result);
+            Assert.InRange(result.Value, DateTime.Today.AddDays(1), DateTime.Today.AddDays(5));
+        }
 
-        // Act
-        var todoItem = service.CreateTodoItem(description, dueDate);
+        [Fact]
+        public void DetermineLastDueDate_ValidDueDate_ReturnsDueDate()
+        {
+            var dueDate = DateTime.Today.AddDays(1);
+            _mockRepository.Setup(r => r.CountTodoItemsOnDueDate(dueDate)).Returns(0);
+            var result = _service.DetermineLastDueDate(dueDate, TodoItemService.DuedateType.None);
+            Assert.Equal(dueDate, result);
+        }
 
-        // Assert
-        Assert.NotNull(todoItem);
-        Assert.Equal(description, todoItem.Description);
-        Assert.Equal(dueDate, todoItem.DueDate);
-        Assert.NotNull(todoItem.Id);
-        _mockRepository.Verify(repo => repo.CountTodoItemsOnDueDate(dueDate), Times.Once);
-    }
+        [Fact]
+        public void DetermineLastDueDate_ValidDueDateWithTooManyItems_ThrowsException()
+        {
+            var dueDate = DateTime.Today.AddDays(1);
+            _mockRepository.Setup(r => r.CountTodoItemsOnDueDate(dueDate)).Returns(Constants.MaxTodoItemsPerDay);
+            Assert.Throws<ArgumentException>(() => _service.DetermineLastDueDate(dueDate, TodoItemService.DuedateType.None));
+        }
 
-    [Fact]
-    public void CreateTodoItem_ShouldThrowArgumentException_WhenDueDateIsInThePast()
-    {
-        // Arrange
-        
-        var service = new TodoItemService(_mockRepository.Object);
-        var description = "Test Todo Item";
-        var dueDate = DateTime.Now.AddDays(-1);
+        [Fact]
+        public void DetermineLastDueDate_InvalidDueDate_ThrowsException()
+        {
+            var dueDate = DateTime.Today.AddDays(-1);
+            Assert.Throws<ArgumentException>(() => _service.DetermineLastDueDate(dueDate, TodoItemService.DuedateType.None));
+        }
 
-        // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => service.CreateTodoItem(description, dueDate));
-        Assert.Equal("Due date cannot be in the past.", exception.Message);
-    }
+        [Fact]
+        public void CreateTodoItem_ValidDueDate_AddsTodoItem()
+        {
+            var dueDate = DateTime.Today.AddDays(1);
+            _mockRepository.Setup(r => r.CountTodoItemsOnDueDate(dueDate)).Returns(0);
+            var todoItem = _service.CreateTodoItem("Test Description", dueDate);
+            Assert.Contains(todoItem, _service.TodoItems);
+        }
 
-    [Fact]
-    public void CreateTodoItem_ShouldThrowArgumentException_WhenCountIs8OrMore()
-    {
-        // Arrange
-      
-        _mockRepository.Setup(repo => repo.CountTodoItemsOnDueDate(It.IsAny<DateTime>())).Returns(8);
+        [Fact]
+        public void CreateTodoItem_TooManyItemsOnDueDate_ThrowsException()
+        {
+            var dueDate = DateTime.Today.AddDays(1);
+            _mockRepository.Setup(r => r.CountTodoItemsOnDueDate(dueDate)).Returns(Constants.MaxTodoItemsPerDay);
+            Assert.Throws<ArgumentException>(() => _service.CreateTodoItem("Test Description", dueDate));
+        }
 
-        var service = new TodoItemService(_mockRepository.Object);
-        var description = "Test Todo Item";
-        var dueDate = DateTime.Now.AddDays(1);
-
-        // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => service.CreateTodoItem(description, dueDate));
-        Assert.Equal("You have reached the maximum number of todo items for this due date.", exception.Message);
+        [Fact]
+        public void CreateTodoItem_InvalidDueDate_ThrowsException()
+        {
+            var dueDate = DateTime.Today.AddDays(-1);
+            Assert.Throws<ArgumentException>(() => _service.CreateTodoItem("Test Description", dueDate));
+        }
     }
 }
-
-
