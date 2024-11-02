@@ -13,7 +13,8 @@ public class TodoItem
     public List<Modification> ModificationHistory { get; set; }
     public TodoItem(string description, DateOnly dueDate)
     {
-        Id = Guid.NewGuid().ToString();
+        /*Id = Guid.NewGuid().ToString();*/
+        Id = Guid.NewGuid().ToString("N").Substring(0, 24);
         Description = description;
         CreateTime = DateOnly.FromDateTime(DateTime.Today);
         ModificationHistory = new List<Modification>();
