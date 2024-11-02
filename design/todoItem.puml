@@ -1,33 +1,66 @@
-@startuml TodoItem
+@startuml
+package Core <<Folder>> {
  
-class TodoItem {
-    - id : string
-    - description : string
-    - dueDay : DateTime
-    + userId : string
-    - tags : List<string>
-    - ModificationList : List<Modification> 
-    + Modify(description: String): void
+    class TodoItem {
+        + id : string
+        + description : string
+        + dueDay : DateTime
+        + userId : string
+        - tags : List<string>
+        + ModificationList : List<Modification> 
+        + Modify(description: String): void
+    }
+    
+    entity Modification{
+        + timestamp: DateTime
+    }
+    
+    interface ITodosRepository
+    {
+        + FindAllTodoItemsByUserIdAndDueDay(string userId,DateOnly dueDay) : List<TodoItem>;
+        + Insert(TodoItem todoItem):TodoItem;
+    }
+    
+    class TodoItemService
+    {
+        - _repository : ITodosRepository
+        + Create(string description, DateOnly dueDay, string userId):TodoItem;
+    }
+    enum OptionEnum
+    {
+        Manual
+        Latest
+        Freest
+    }
+    package AppException <<Folder>>
+    {
+        exception MaximumModificationException
+        exception DueDayEarlyException
+        exception MaximumSameDueDayException
+
+    }
 }
-class User{
-  + userId: string
-  - name: string
-}
-class Modification{
-    + timestamp: DateTime
-}
-class TodosRepository
-{
-    + FindAllTodoItemsByUserIdAndDueDay(string userId,DateOnly dueDay) : List<TodoItem>;
-    + Insert(TodoItem todoItem):TodoItem;
+package Infrastructure <<Folder>> {
+
+    class TodoItemMongoRepository implements Core.ITodosRepository{
+        + FindAllTodoItemsByUserIdAndDueDay(string userId,DateOnly dueDay) : List<TodoItem>;
+        + Insert(TodoItem todoItem):TodoItem;
+    }
+    
+    class TodoItemPo
+    {
+        + id : string
+        + description : string
+        + dueDay : DateTime
+        + userId : string
+        + ModificationList : List<Modification> 
+    }
+
 }
 
-class TodoItemService
-{
-    - _repository : ITodosRepository
-    + Create(string description, DateOnly dueDay, string userId):TodoItem;
-}
-TodoItemService "1" -- "1" TodosRepository
-User "1" -- "0..*" TodoItem
+
 TodoItem "1" -- "0..*" Modification
+TodoItemPo "1" -- "0..*" Modification
+
+ITodosRepository <.. TodoItemService
 @enduml
