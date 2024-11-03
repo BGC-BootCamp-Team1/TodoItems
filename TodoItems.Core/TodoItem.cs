@@ -1,5 +1,4 @@
 ﻿using TodoItems.Core.ApplicationExcepetions;
-using TodoItems.Core.DueDateSettingStrategy;
 namespace TodoItems.Core;
 
 public class TodoItem

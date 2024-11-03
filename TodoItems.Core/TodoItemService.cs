@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using TodoItems.Core.ApplicationExcepetions;
-using TodoItems.Core.DueDateSettingStrategy;
+﻿using TodoItems.Core.DueDateSettingStrategy;
 
 namespace TodoItems.Core
 {

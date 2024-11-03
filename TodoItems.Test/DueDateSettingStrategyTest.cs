@@ -1,5 +1,4 @@
 ﻿using TodoItems.Core;
-using Moq;
 using TodoItems.Core.ApplicationExcepetions;
 using TodoItems.Core.DueDateSettingStrategy;
 

@@ -1,10 +1,8 @@
 using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 using TodoItem.Infrastructure;
-using TodoItems.Core;
 
 namespace TodoItem.IntegrationTest;
 
@@ -83,17 +81,17 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         var today = DateTime.Today.Date.ToUniversalTime();
         await _mongoCollection.InsertOneAsync(new TodoItemPo {
             Id = ObjectId.GenerateNewId().ToString(),
-            DueDate = today.AddDays(4) 
+            DueDate = today.AddDays(3) 
+        });
+        await _mongoCollection.InsertOneAsync(new TodoItemPo
+        {
+            Id = ObjectId.GenerateNewId().ToString(),
+            DueDate = today.AddDays(4)
         });
         await _mongoCollection.InsertOneAsync(new TodoItemPo
         {
             Id = ObjectId.GenerateNewId().ToString(),
             DueDate = today.AddDays(5)
-        });
-        await _mongoCollection.InsertOneAsync(new TodoItemPo
-        {
-            Id = ObjectId.GenerateNewId().ToString(),
-            DueDate = today.AddDays(6)
         });
 
         // Act
@@ -102,8 +100,8 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
+        Assert.Contains(result, item => item.DueDate.Date == today.AddDays(3).Date);
         Assert.Contains(result, item => item.DueDate.Date == today.AddDays(4).Date);
-        Assert.Contains(result, item => item.DueDate.Date == today.AddDays(5).Date);
     }
 
     [Fact]

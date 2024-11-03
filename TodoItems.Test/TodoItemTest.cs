@@ -1,4 +1,3 @@
-using Microsoft.VisualBasic;
 using TodoItems.Core;
 using TodoItems.Core.ApplicationExcepetions;
 
@@ -7,7 +6,7 @@ namespace TodoItems.Test;
 public class TodoItemTest
 {
     [Fact]
-    public void Should_throw_exception_when_fourth_modification()
+    public void Modify_ShouldThrowException_WhenFourthModification()
     {
         DateTime today = DateTime.Today;
         List<Modification> threeTodayModifications =
@@ -21,7 +20,7 @@ public class TodoItemTest
     }
 
     [Fact]
-    public void Should_modify_when_third_modification()
+    public void Modify_ShouldModify_WhenThirdModification()
     {
         DateTime today = DateTime.Today;
         List<Modification> twoTodayModifications =
@@ -35,7 +34,7 @@ public class TodoItemTest
     }
 
     [Fact]
-    public void Should_modify_when_first_modification()
+    public void Modify_ShouldModify_WhenFirstModification()
     {
         List<Modification> emptyModifications = [];
         TodoItem todoItem = new TodoItem("test", emptyModifications, DateTime.Today.AddDays(7));

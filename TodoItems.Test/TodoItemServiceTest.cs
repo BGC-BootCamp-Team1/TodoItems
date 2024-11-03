@@ -2,7 +2,6 @@
 using Moq;
 using TodoItems.Core.ApplicationExcepetions;
 using TodoItems.Core.DueDateSettingStrategy;
-using System;
 
 namespace TodoItems.Test
 {

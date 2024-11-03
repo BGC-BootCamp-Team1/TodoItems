@@ -73,7 +73,7 @@ public class TodoItemMongoRepository: ITodoItemsRepository
 
         var filter = Builders<TodoItemPo>.Filter.And(
             Builders<TodoItemPo>.Filter.Gte(item => item.DueDate, today),
-            Builders<TodoItemPo>.Filter.Lte(item => item.DueDate, today.AddDays(5)));
+            Builders<TodoItemPo>.Filter.Lt(item => item.DueDate, today.AddDays(5)));
 
         var todoItemPos = await _todosCollection.Find(filter).ToListAsync();
         var todoItems = todoItemPos.Select(ConvertToTodoItem).ToList();

@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using TodoItems.Core.ApplicationExcepetions;
+﻿using TodoItems.Core.ApplicationExcepetions;
 
 namespace TodoItems.Core.DueDateSettingStrategy
 {
@@ -33,7 +32,7 @@ namespace TodoItems.Core.DueDateSettingStrategy
             {
                 DueDateSettingOption.SelectFirstAvailableDay => new FirstAvailableDayStrategy(),
                 DueDateSettingOption.SelectFewestTodoItemsDay => new FewestTodoItemsDayStrategy(),
-                _ => throw new ArgumentException("Invalid strategy type"),
+                _ => throw new ArgumentException("Invalid due date setting option"),
             };
         }
     }
