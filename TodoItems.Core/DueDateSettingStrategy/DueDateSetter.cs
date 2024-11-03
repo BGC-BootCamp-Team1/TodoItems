@@ -31,17 +31,14 @@ namespace TodoItems.Core.DueDateSettingStrategy
         }
 
         
-        public IDueDateSettingStrategy SetStrategy(DueDateSettingOption dueDateSettingOption)
+        private IDueDateSettingStrategy SetStrategy(DueDateSettingOption dueDateSettingOption)
         {
-            switch (dueDateSettingOption)
+            return dueDateSettingOption switch
             {
-                case DueDateSettingOption.SelectFirstAvailableDay:
-                    return new FirstAvailableDayStrategy();
-                case DueDateSettingOption.SelectFewestTodoItemsDay:
-                    return new FewestTodoItemsDayStrategy();
-                default:
-                    throw new ArgumentException("Invalid strategy type");
-            }
+                DueDateSettingOption.SelectFirstAvailableDay => new FirstAvailableDayStrategy(),
+                DueDateSettingOption.SelectFewestTodoItemsDay => new FewestTodoItemsDayStrategy(),
+                _ => throw new ArgumentException("Invalid strategy type"),
+            };
         }
     }
 }
