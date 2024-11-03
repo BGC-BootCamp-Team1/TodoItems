@@ -130,10 +130,13 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         var todoItemService = new TodoItemService(_mongoRepository);
         var description = "Test Todo Item";
         var dueDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1));
-        var todoItem = await todoItemService.CreateAsync(description, dueDate, TodoItemService.CreateOptionEnum.NextAvailableInFiveDaysOption);
+        var newTodoItem = await todoItemService.CreateAsync(description, dueDate, TodoItemService.CreateOptionEnum.NextAvailableInFiveDaysOption);
 
-/*        var actualTodoItem = await _mongoRepository.FindByIdAsync(todoItem.Result.Id);
-
-        actualTodoItem.Should().BeEquivalentTo(todoItem);*/
+        // Assert
+        var filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, newTodoItem.Id);
+        var savedTodoItemPo = await _mongoCollection.Find(filter).FirstOrDefaultAsync();
+        Assert.NotNull(savedTodoItemPo);
+        Assert.Equal(description, savedTodoItemPo.Description);
+        Assert.Equal(dueDate, savedTodoItemPo.DueDate);
     }
 }
