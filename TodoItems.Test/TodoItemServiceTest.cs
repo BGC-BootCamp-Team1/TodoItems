@@ -18,7 +18,7 @@ namespace TodoItems.Test
                 .ReturnsAsync(8);
 
             var service = new TodoItemService(mockRepository.Object);
-            
+
             Assert.Throws<ExceedMaxTodoItemsPerDueDateException>(() => service.CreateItem("test", dueDate));
         }
 
@@ -69,7 +69,7 @@ namespace TodoItems.Test
                 .Setup(repo => repo.GetTodoItemsDueInNextFiveDays())
                 .ReturnsAsync(todoItemsDueInNextFiveDays);
 
-            DateTime expectedDueDate = DateTime.Now.Date; 
+            DateTime expectedDueDate = DateTime.Now.Date;
 
             var service = new TodoItemService(mockRepository.Object);
 

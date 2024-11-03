@@ -64,7 +64,7 @@ namespace TodoItems.Test
         }
 
         [Fact]
-        public void FirstAvailableDayStrategy_GetDueDate_ThrowsException_WhenNoAvailableDays() 
+        public void FirstAvailableDayStrategy_GetDueDate_ThrowsException_WhenNoAvailableDays()
         {
             // Arrange
             var dueDateSettingStrategy = new FirstAvailableDayStrategy();
@@ -80,7 +80,7 @@ namespace TodoItems.Test
                     });
                 }
             }
-            
+
             // Act & Assert
             Assert.Throws<NoAvailableDaysException>(() => dueDateSettingStrategy.GetDueDate(startDate, todoItemsDueInNextFiveDays));
         }

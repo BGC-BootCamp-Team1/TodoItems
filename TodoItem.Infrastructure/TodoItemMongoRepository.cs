@@ -4,10 +4,10 @@ using TodoItems.Core;
 
 namespace TodoItem.Infrastructure;
 
-public class TodoItemMongoRepository: ITodoItemsRepository
+public class TodoItemMongoRepository : ITodoItemsRepository
 {
     private readonly IMongoCollection<TodoItemPo?> _todosCollection;
-    
+
     public TodoItemMongoRepository(IOptions<TodoStoreDatabaseSettings> todoStoreDatabaseSettings)
     {
         var mongoClient = new MongoClient(todoStoreDatabaseSettings.Value.ConnectionString);
@@ -49,7 +49,7 @@ public class TodoItemMongoRepository: ITodoItemsRepository
             Description = todoItem.Description,
             IsComplete = todoItem.IsComplete,
             CreatedTime = todoItem.CreatedTime,
-            Modifications = [..todoItem.Modifications],
+            Modifications = [.. todoItem.Modifications],
             DueDate = todoItem.DueDate
         };
     }

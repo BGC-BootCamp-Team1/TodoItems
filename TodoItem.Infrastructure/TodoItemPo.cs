@@ -4,7 +4,8 @@ using TodoItems.Core;
 
 namespace TodoItem.Infrastructure;
 
-public class TodoItemPo{
+public class TodoItemPo
+{
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }

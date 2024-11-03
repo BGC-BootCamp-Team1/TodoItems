@@ -11,7 +11,7 @@ namespace TodoItems.Core
             _todosRepository = repository;
         }
 
-        public TodoItem CreateItem(string description, DateTime? userProvidedDueDate, DueDateSettingOption dueDateSettingOption = 0) 
+        public TodoItem CreateItem(string description, DateTime? userProvidedDueDate, DueDateSettingOption dueDateSettingOption = 0)
         {
             DateTime dueDate;
             if (userProvidedDueDate.HasValue)
@@ -22,7 +22,7 @@ namespace TodoItems.Core
             else
             {
                 var todoItemsDueInNextFiveDays = _todosRepository.GetTodoItemsDueInNextFiveDays().Result;
-                dueDate = DueDateSetter.AutoSetDueDate(todoItemsDueInNextFiveDays,dueDateSettingOption);
+                dueDate = DueDateSetter.AutoSetDueDate(todoItemsDueInNextFiveDays, dueDateSettingOption);
             }
             TodoItem item = new TodoItem(description, [], dueDate);
             return item;

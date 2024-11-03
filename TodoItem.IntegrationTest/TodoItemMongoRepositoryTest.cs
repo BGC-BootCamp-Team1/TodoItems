@@ -6,7 +6,7 @@ using TodoItem.Infrastructure;
 
 namespace TodoItem.IntegrationTest;
 
-public class TodoItemMongoRepositoryTest: IAsyncLifetime
+public class TodoItemMongoRepositoryTest : IAsyncLifetime
 {
     private readonly TodoItemMongoRepository _mongoRepository;
     private IMongoCollection<TodoItemPo> _mongoCollection;
@@ -15,7 +15,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     public TodoItemMongoRepositoryTest()
     {
         var mockSettings = new Mock<IOptions<TodoStoreDatabaseSettings>>();
-        
+
         mockSettings.Setup(s => s.Value).Returns(new TodoStoreDatabaseSettings
         {
             ConnectionString = "mongodb://localhost:27017/",
@@ -25,12 +25,12 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
 
         // 初始化 TodoService
         _mongoRepository = new TodoItemMongoRepository(mockSettings.Object);
-        
+
         var mongoClient = new MongoClient("mongodb://localhost:27017/");
         var mongoDatabase = mongoClient.GetDatabase("TodoTestStore");
         _mongoCollection = mongoDatabase.GetCollection<TodoItemPo>("Todos");
     }
-    
+
     // IAsyncLifetime 中的 InitializeAsync 方法在每个测试前运行
     public async Task InitializeAsync()
     {
@@ -45,14 +45,15 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     [Fact]
     public async void FindById_ShouldReturnCorrectItem()
     {
-        var todoItemPo = new TodoItemPo {
+        var todoItemPo = new TodoItemPo
+        {
             Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
             Description = "Buy groceries",
             IsComplete = false
         }; ;
         await _mongoCollection.InsertOneAsync(todoItemPo);
         var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e2");
-        
+
         Assert.NotNull(todoItem);
         Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e2", todoItem.Id);
         Assert.Equal("Buy groceries", todoItem.Description);
@@ -79,9 +80,10 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     {
         // Arrange
         var today = DateTime.Today.Date.ToUniversalTime();
-        await _mongoCollection.InsertOneAsync(new TodoItemPo {
+        await _mongoCollection.InsertOneAsync(new TodoItemPo
+        {
             Id = ObjectId.GenerateNewId().ToString(),
-            DueDate = today.AddDays(3) 
+            DueDate = today.AddDays(3)
         });
         await _mongoCollection.InsertOneAsync(new TodoItemPo
         {
@@ -112,7 +114,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
             Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
             Description = "Buy groceries",
             IsComplete = false
-        }; 
+        };
         var exception = Record.Exception(() => _mongoRepository.Save(todoItem));
         Assert.Null(exception);
     }

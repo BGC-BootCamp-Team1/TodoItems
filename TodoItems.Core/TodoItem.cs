@@ -32,7 +32,8 @@ public class TodoItem
             Description = description;
             Modifications.Add(new Modification(DateTime.Now));
         }
-        else {
+        else
+        {
             throw new ExceedMaxModificationException();
         }
     }
