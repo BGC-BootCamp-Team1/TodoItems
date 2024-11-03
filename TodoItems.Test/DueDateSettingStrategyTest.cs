@@ -48,7 +48,7 @@ namespace TodoItems.Test
             // Arrange
             var dueDateSettingStrategy = new FirstAvailableDayStrategy();
             var startDate = new DateTime(2024, 11, 1);
-            var existingItems = new List<TodoItem>
+            var todoItemsDueInNextFiveDays = new List<TodoItem>
             {
                 new TodoItem { DueDate = new DateTime(2024, 11, 1) },
                 new TodoItem { DueDate = new DateTime(2024, 11, 1) },
@@ -58,7 +58,7 @@ namespace TodoItems.Test
             };
 
             // Act
-            var result = dueDateSettingStrategy.GetDueDate(startDate, existingItems);
+            var result = dueDateSettingStrategy.GetDueDate(startDate, todoItemsDueInNextFiveDays);
 
             // Assert
             Assert.Equal(new DateTime(2024, 11, 1), result);
@@ -70,12 +70,12 @@ namespace TodoItems.Test
             // Arrange
             var dueDateSettingStrategy = new FirstAvailableDayStrategy();
             var startDate = new DateTime(2024, 11, 1);
-            var existingItems = new List<TodoItem>();
+            var todoItemsDueInNextFiveDays = new List<TodoItem>();
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < Constants.MAX_ITEM_SAME_DUEDAY; j++)
                 {
-                    existingItems.Add(new TodoItem
+                    todoItemsDueInNextFiveDays.Add(new TodoItem
                     {
                         DueDate = startDate.AddDays(i),
                     });
@@ -83,7 +83,7 @@ namespace TodoItems.Test
             }
             
             // Act & Assert
-            Assert.Throws<NoAvailableDaysException>(() => dueDateSettingStrategy.GetDueDate(startDate, existingItems));
+            Assert.Throws<NoAvailableDaysException>(() => dueDateSettingStrategy.GetDueDate(startDate, todoItemsDueInNextFiveDays));
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace TodoItems.Test
             // Arrange
             var dueDateSettingStrategy = new FewestTodoItemsDayStrategy();
             var startDate = new DateTime(2024, 11, 1);
-            var existingItems = new List<TodoItem>
+            var todoItemsDueInNextFiveDays = new List<TodoItem>
             {
                 new TodoItem { DueDate = new DateTime(2024, 11, 1) },
                 new TodoItem { DueDate = new DateTime(2024, 11, 1) },
@@ -106,7 +106,7 @@ namespace TodoItems.Test
             };
 
             // Act
-            var result = dueDateSettingStrategy.GetDueDate(startDate, existingItems);
+            var result = dueDateSettingStrategy.GetDueDate(startDate, todoItemsDueInNextFiveDays);
 
             // Assert
             Assert.Equal(new DateTime(2024, 11, 2), result);
@@ -118,12 +118,12 @@ namespace TodoItems.Test
             // Arrange
             var dueDateSettingStrategy = new FewestTodoItemsDayStrategy();
             var startDate = new DateTime(2024, 11, 1);
-            var existingItems = new List<TodoItem>();
+            var todoItemsDueInNextFiveDays = new List<TodoItem>();
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < Constants.MAX_ITEM_SAME_DUEDAY; j++)
                 {
-                    existingItems.Add(new TodoItem
+                    todoItemsDueInNextFiveDays.Add(new TodoItem
                     {
                         DueDate = startDate.AddDays(i),
                     });
@@ -131,7 +131,7 @@ namespace TodoItems.Test
             }
 
             // Act & Assert
-            Assert.Throws<NoAvailableDaysException>(() => dueDateSettingStrategy.GetDueDate(startDate, existingItems));
+            Assert.Throws<NoAvailableDaysException>(() => dueDateSettingStrategy.GetDueDate(startDate, todoItemsDueInNextFiveDays));
         }
     }
 }
