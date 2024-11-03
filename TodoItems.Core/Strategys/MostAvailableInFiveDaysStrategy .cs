@@ -11,24 +11,21 @@ namespace TodoItems.Core.Strategy
     {
         public TodoItem Create(string description, DateOnly? dueDate, ITodosRepository todosRepository)
         {
-            DateOnly mostAvailableInFiveDays = DateOnly.FromDateTime(DateTime.Today);
-            int countTodosByMostAvailableInFiveDays = todosRepository.CountTodoItemsByDueDate(mostAvailableInFiveDays);
-            for (int i = 1; i < 5; i++)
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var days = Enumerable.Range(0, 5).Select(i => today.AddDays(i));
+
+            var mostAvailableInFiveDays = days
+                .Select(d => new { Date = d, Count = todosRepository.CountTodoItemsByDueDate(d) })
+                .OrderBy(x => x.Count)
+                .First();
+
+            if (mostAvailableInFiveDays.Count < Constant.MAX_TODOITEMS_PER_DUE_DATE)
             {
-                var preDueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(i));
-                var count = todosRepository.CountTodoItemsByDueDate(preDueDate);
-                if (count < countTodosByMostAvailableInFiveDays)
-                {
-                    mostAvailableInFiveDays = preDueDate;
-                    countTodosByMostAvailableInFiveDays = count;
-                }
+                return new TodoItem(description, mostAvailableInFiveDays.Date);
             }
-            if (countTodosByMostAvailableInFiveDays < Constant.MAX_TODOITEMS_PER_DUE_DATE)
-            {
-                var newTodoItem = new TodoItem(description, mostAvailableInFiveDays);
-                return newTodoItem;
-            }
+
             throw new ExceedMaxTodoItemsPerDueDateException();
         }
     }
+
 }
