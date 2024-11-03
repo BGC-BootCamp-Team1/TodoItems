@@ -16,7 +16,7 @@ public static class ApplicationException
 
     public static void ThrowModificationsLimitTodayExceededException()
     {
-        throw new ArgumentException("You have reached the maximum number of modifications for today.Please try again tomorrow.");
+        throw new ArgumentException("You have reached the maximum number of modifications for today. Please try again tomorrow.");
     }
 
 
