@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TodoItems.Core.ApplicationExcepetions;
+using TodoItems.Core.DueDateSettingStrategy;
 
 namespace TodoItems.Core
 {
@@ -12,15 +13,18 @@ namespace TodoItems.Core
             _todosRepository = repository;
         }
 
-        public TodoItem CreateItem(string description, DateTime dueDate) {
-            if (dueDate <= DateTime.Now.Date)
+        public TodoItem CreateItem(string description, DateTime? userProvidedDueDate, DueDateSettingOption dueDateSettingOption = 0) {
+            var dueDateSetter = new DueDateSetter();
+            DateTime dueDate;
+            if (userProvidedDueDate.HasValue)
             {
-                throw new TooEarlyDueDateException();
+                var count = _todosRepository.CountTodoItemsOnTheSameDueDate(userProvidedDueDate.Value).Result;
+                dueDate = dueDateSetter.ValidUserDueDate(userProvidedDueDate.Value, count);
             }
-            var count = _todosRepository.CountTodoItemsOnTheSameDueDate(dueDate).Result;
-            if (count >= Constants.MAX_ITEM_SAME_DUEDAY)
+            else
             {
-                throw new ExceedMaxTodoItemsPerDueDateException();
+                var todoItemsDueInNextFiveDays = _todosRepository.GetTodoItemsDueInNextFiveDays().Result;
+                dueDate = dueDateSetter.AutoSetDueDate(todoItemsDueInNextFiveDays,dueDateSettingOption);
             }
             TodoItem item = new TodoItem(description, [], dueDate);
             return item;

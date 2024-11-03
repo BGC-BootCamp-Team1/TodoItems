@@ -1,6 +1,6 @@
 ﻿namespace TodoItems.Core.DueDateSettingStrategy
 {
-    public enum DueDateSettingOptions
+    public enum DueDateSettingOption
     {
         SelectFirstAvailableDay,
         SelectFewestTodoItemsDay

@@ -10,7 +10,6 @@ public class TodoItem
     public DateTime CreatedTime { get; set; }
     public IList<Modification> Modifications { get; private set; }
     public DateTime DueDate { get; set; }
-    public DueDateSettingOptions dueDateSettingOptions { get; set; }
 
     public TodoItem(string description, List<Modification> modifications, DateTime dueDate)
     {
