@@ -1,6 +1,6 @@
 ﻿namespace TodoItems.Core
 {
-    public class Constants
+    public class ConstantsAndEnums
     {
         public const int MAX_ITEMS_PER_DUE_DATE = 8;
 

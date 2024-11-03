@@ -1,10 +1,10 @@
 ﻿namespace TodoItems.Core;
-using static TodoItems.Core.Constants;
+using static TodoItems.Core.ConstantsAndEnums;
 
 public class TodoItem
 {
     public string Id { get; init; }
-    public DateTime? DueDate { get; set; }
+    public DateOnly? DueDate { get; set; }
     public string Description { get; set; }
     public DateTime CreatedTime { get; init; }
     public List<Modification> ModificationRecords { get; private set; }
@@ -15,7 +15,7 @@ public class TodoItem
         this.CreatedTime = DateTime.Now;
     }
 
-    public TodoItem(string description, DateTime? dueDate)
+    public TodoItem(string description, DateOnly? dueDate)
     {
         this.Description = description;
         this.Id = Guid.NewGuid().ToString();

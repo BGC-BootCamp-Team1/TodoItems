@@ -1,18 +1,18 @@
 ﻿
-using static TodoItems.Core.Constants;
+using static TodoItems.Core.ConstantsAndEnums;
 using TodoItems.Core.ApplicationException;
 
 namespace TodoItems.Core
 {
     public static class TodoItemFactory
     {
-        public static TodoItem CreateItem(ITodosRepository _todosRepository, string description, DateTime? manualSetDueDate, Constants.DueDateSetStrategy strategy)
+        public static TodoItem CreateItem(ITodosRepository _todosRepository, string description, DateOnly? manualSetDueDate, ConstantsAndEnums.DueDateSetStrategy strategy)
         {
             var newItem = new TodoItem(description, manualSetDueDate);
 
             if (manualSetDueDate != null)
             {
-                ValidateSpecifiedDueDate(newItem, (DateTime)manualSetDueDate, _todosRepository);
+                ValidateSpecifiedDueDate(newItem, (DateOnly)manualSetDueDate, _todosRepository);
             }
             else if (strategy == DueDateSetStrategy.FirstDateOfNextFiveDays)
             {
@@ -28,8 +28,8 @@ namespace TodoItems.Core
 
         private static void CreateItemWithMostFreeDueDateOfNextFiveDays(ITodosRepository _todosRepository, TodoItem newItem)
         {
-            var createdDate = newItem.CreatedTime.Date;
-            DateTime mostFreeDate = createdDate;
+            var createdDate = DateOnly.FromDateTime(newItem.CreatedTime.Date);
+            DateOnly mostFreeDate = createdDate;
             int smallestCountPerDay = int.MaxValue;
             for (var day = 0; day < 5; day++)
             {
@@ -51,7 +51,7 @@ namespace TodoItems.Core
 
         private static void CreateItemWithFirstDateOfNextFiveDays(TodoItem newItem, ITodosRepository _todosRepository)
         {
-            var createdDate = newItem.CreatedTime.Date;
+            var createdDate = DateOnly.FromDateTime(newItem.CreatedTime.Date);
             for (var day = 0; day < 5; day++)
             {
                 var dueDate = createdDate.AddDays(day);
@@ -67,18 +67,18 @@ namespace TodoItems.Core
             throw new NoAvailableDateInNextFiveDays();
         }
 
-        private static void ValidateSpecifiedDueDate(TodoItem newItem, DateTime manualSetDueDate, ITodosRepository _todosRepository)
+        private static void ValidateSpecifiedDueDate(TodoItem newItem, DateOnly manualSetDueDate, ITodosRepository _todosRepository)
         {
-            if (manualSetDueDate < newItem.CreatedTime.Date)
+            if (manualSetDueDate < DateOnly.FromDateTime(newItem.CreatedTime.Date))
             {
                 throw new DueDateEarlierThanCreationDateException();
             }
 
-            var itemCount = _todosRepository.GetCountByDueDate((DateTime)manualSetDueDate);
+            var itemCount = _todosRepository.GetCountByDueDate(manualSetDueDate);
 
             if (itemCount >= MAX_ITEMS_PER_DUE_DATE)
             {
-                throw new MaxItemsPerDueDateReachedException((DateTime)manualSetDueDate, MAX_ITEMS_PER_DUE_DATE);
+                throw new MaxItemsPerDueDateReachedException(manualSetDueDate, MAX_ITEMS_PER_DUE_DATE);
             }
         }
     }

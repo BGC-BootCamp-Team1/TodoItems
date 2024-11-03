@@ -1,8 +1,7 @@
-﻿using Microsoft.VisualBasic;
-using Moq;
-using static TodoItems.Core.Constants;
-using TodoItems.Core.ApplicationException;
+﻿using Moq;
 using TodoItems.Core;
+using TodoItems.Core.ApplicationException;
+using static TodoItems.Core.ConstantsAndEnums;
 
 namespace TodoItems.Test
 {
@@ -10,7 +9,8 @@ namespace TodoItems.Test
     {
         private readonly Mock<ITodosRepository> _mockRepository = new Mock<ITodosRepository>();
         private const string _description = "test description";
-        private readonly DateTime _dueDate = DateTime.Today.AddDays(10);
+        private readonly DateOnly _dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+        private readonly DateOnly _today = DateOnly.FromDateTime(DateTime.Today);
 
         [Fact]
         public void Should_throw_exception_when_exceed_due_date_limit()
@@ -26,7 +26,7 @@ namespace TodoItems.Test
         [Fact]
         public void Should_not_create_item_when_due_date_earlier_than_creation_date()
         {
-            var earlyDueDate = DateTime.Today.AddDays(-5);
+            DateOnly earlyDueDate = _today.AddDays(-5);
             var expectedErrMsg = "Cannot create todo item that due date earlier than creation date";
 
             var exception = Assert.Throws<DueDateEarlierThanCreationDateException>(() => TodoItemFactory.CreateItem(_mockRepository.Object, _description, earlyDueDate, DueDateSetStrategy.Manual));
@@ -45,7 +45,7 @@ namespace TodoItems.Test
         [Fact]
         public void Should_return_item_when_due_date_set_to_today()
         {
-            var newItem = TodoItemFactory.CreateItem(_mockRepository.Object, _description, DateTime.Today, DueDateSetStrategy.Manual);
+            var newItem = TodoItemFactory.CreateItem(_mockRepository.Object, _description, _today, DueDateSetStrategy.Manual);
 
             Assert.Equal(_description, newItem.Description);
         }
@@ -53,17 +53,17 @@ namespace TodoItems.Test
         [Fact]
         public void Should_return_item_with_correct_due_date_when_set_to_first_available_date()
         {
-            MockRepoGetCount(DateTime.Today, new List<int> { 10, 14, 4, 15, 7 });
+            MockRepoGetCount(_today, new List<int> { 10, 14, 4, 15, 7 });
 
             var newItem = TodoItemFactory.CreateItem(_mockRepository.Object, _description, null, DueDateSetStrategy.FirstDateOfNextFiveDays);
 
-            Assert.Equal(DateTime.Today.AddDays(2), newItem.DueDate);
+            Assert.Equal(_today.AddDays(2), newItem.DueDate);
         }
 
         [Fact]
         public void Should_throw_exception_with_no_available_due_date_when_set_to_first_available_date()
         {
-            MockRepoGetCount(DateTime.Today, new List<int> { 10, 14, 14, 15, 17 });
+            MockRepoGetCount(_today, new List<int> { 10, 14, 14, 15, 17 });
 
             var expectedErrMsg = "Cannot create new Todo item with due date on next five days";
 
@@ -75,17 +75,17 @@ namespace TodoItems.Test
         [Fact]
         public void Should_return_item_with_correct_due_date_when_set_to_most_free_available_date()
         {
-            MockRepoGetCount(DateTime.Today, new List<int> { 10, 1, 4, 15, 7 });
+            MockRepoGetCount(_today, new List<int> { 10, 1, 4, 15, 7 });
 
             var newItem = TodoItemFactory.CreateItem(_mockRepository.Object, _description, null, DueDateSetStrategy.MostFreeDateOfNextFiveDays);
 
-            Assert.Equal(DateTime.Today.AddDays(1), newItem.DueDate);
+            Assert.Equal(_today.AddDays(1), newItem.DueDate);
         }
 
         [Fact]
         public void Should_throw_exception_with_no_available_due_date_when_set_to_most_free_available_dat()
         {
-            MockRepoGetCount(DateTime.Today, new List<int> { 10, 14, 14, 15, 17 });
+            MockRepoGetCount(_today, new List<int> { 10, 14, 14, 15, 17 });
 
             var expectedErrMsg = "Cannot create new Todo item with due date on next five days";
 
@@ -94,7 +94,7 @@ namespace TodoItems.Test
             Assert.Equal(expectedErrMsg, exception.Message);
         }
 
-        private void MockRepoGetCount(DateTime startDate, List<int> returnCounts)
+        private void MockRepoGetCount(DateOnly startDate, List<int> returnCounts)
         {
             for (int i = 0; i < returnCounts.Count; i++)
             {

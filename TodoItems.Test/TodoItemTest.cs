@@ -5,7 +5,7 @@ namespace TodoItems.Test;
 public class TodoItemTest
 {
     private readonly string _description = "this is description";
-    private readonly DateTime _dueDate = DateTime.Now.Date.AddDays(5);
+    private readonly DateOnly _dueDate = DateOnly.FromDateTime(DateTime.Now.Date.AddDays(5));
 
     [Fact]
     public void Should_get_return_todo_item_description_and_due_date()

@@ -3,6 +3,6 @@
     public interface ITodosRepository
     {
         TodoItem Create(TodoItem item);
-        int GetCountByDueDate(DateTime date);
+        int GetCountByDueDate(DateOnly date);
     }
 }
