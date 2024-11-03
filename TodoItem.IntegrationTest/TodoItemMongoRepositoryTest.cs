@@ -22,7 +22,6 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
             TodoItemsCollectionName = "ToDoItems"
         });
 
-        // 初始化 TodoService
         _mongoRepository = new TodoItemMongoRepository(mockSettings.Object);
         
         var mongoClient = new MongoClient("mongodb://localhost:27017");
@@ -33,21 +32,26 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     // IAsyncLifetime 中的 InitializeAsync 方法在每个测试前运行
     public async Task InitializeAsync()
     {
-        // 清空集合
         await _mongoCollection.DeleteManyAsync(FilterDefinition<TodoItemPo>.Empty);
     }
 
     // DisposeAsync 在测试完成后运行（如果有需要的话）
     public Task DisposeAsync() => Task.CompletedTask;
 
+    private TodoItems.Core.TodoItem _todoItem = new TodoItems.Core.TodoItem
+    {
+        Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
+        Description = "test description",
+        CreatedTime = DateTime.Now,
+    };
 
-    [Fact]
-    public async void should_return_item_by_id_1()
+[Fact]
+    public async void Should_return_item_by_id()
     {
         var todoItemPo = new TodoItemPo{
             Id = "5f9a7d8e2d3b4a1eb8a7d8e2", 
             Description = "Buy groceries",
-        };;
+        };
         await _mongoCollection.InsertOneAsync(todoItemPo);
         var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e2");
         
@@ -55,4 +59,56 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         Assert.Equal("5f9a7d8e2d3b4a1eb8a7d8e2", todoItem.Id);
         Assert.Equal("Buy groceries", todoItem.Description);
     }
+
+    [Fact]
+    public async void Should_create_item()
+    {
+        _mongoRepository.Create(_todoItem);
+
+        var item = await _mongoRepository.FindById(_todoItem.Id);
+
+        Assert.NotNull(item);
+        Assert.Equal(_todoItem.Description, item.Description);
+    }
+
+    [Fact]
+    public void Should_get_count_by_due_date()
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var items = new List<TodoItemPo>
+        {
+            new() {
+                Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
+                Description = "test description",
+                CreatedTime = DateTime.Now,
+                DueDate = today.AddDays(1)
+            },
+            new()
+            {
+                Id = "5f9a7d8e2d3b4a1eb8a7d8e3",
+                Description = "test description 2",
+                CreatedTime = DateTime.Now,
+                DueDate = today.AddDays(1)
+            },
+            new()
+            {
+                Id = "5f9a7d8e2d3b4a1eb8a7d8e4",
+                Description = "test description 3",
+                CreatedTime = DateTime.Now,
+                DueDate = today.AddDays(2)
+            },
+            new()
+            {
+                Id = "5f9a7d8e2d3b4a1eb8a7d8e5",
+                Description = "test description 4",
+                CreatedTime = DateTime.Now,
+                DueDate = today.AddDays(1)
+            }
+        };
+        _mongoCollection.InsertMany(items);
+
+        var count = _mongoRepository.GetCountByDueDate(today.AddDays(1));
+        Assert.Equal(3, count);
+    }
+
 }

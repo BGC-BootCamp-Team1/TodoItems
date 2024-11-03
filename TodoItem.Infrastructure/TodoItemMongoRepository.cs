@@ -15,40 +15,55 @@ public class TodoItemMongoRepository: ITodosRepository
         _todosCollection = mongoDatabase.GetCollection<TodoItemPo>(todoStoreDatabaseSettings.Value.TodoItemsCollectionName);
     }
 
-    public async Task<TodoItems.Core.TodoItem> FindById(string? id)
+    public async Task<TodoItems.Core.TodoItem?> FindById(string? id)
     {
         FilterDefinition<TodoItemPo?> filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, id);
         TodoItemPo? todoItemPo = await _todosCollection.Find(filter).FirstOrDefaultAsync();
 
-        // 将 TodoItemPo 转换为 TodoItem
         TodoItems.Core.TodoItem todoItem = ConvertToTodoItem(todoItemPo);
         return todoItem;
     }
 
-    private TodoItems.Core.TodoItem ConvertToTodoItem(TodoItemPo? todoItemPo)
-    {
-        if (todoItemPo == null) return null;
-
-        return new TodoItems.Core.TodoItem()
-        {
-            // need to add created time in todoItemPo
-            Id = todoItemPo.Id,
-            Description = todoItemPo.Description
-        };
-    }
 
     public void Save(TodoItems.Core.TodoItem todoItem)
     {
         throw new NotImplementedException();
     }
 
-    public TodoItems.Core.TodoItem Create(TodoItems.Core.TodoItem item)
+    public void Create(TodoItems.Core.TodoItem item)
     {
-        throw new NotImplementedException();
+        _todosCollection.InsertOne(ConvertFromTodoItem(item));
     }
 
     public int GetCountByDueDate(DateOnly date)
     {
-        throw new NotImplementedException();
+        var query = _todosCollection.Find(itemPo => itemPo.DueDate == date);
+        return query.ToList().Count;
+    }
+
+    private TodoItems.Core.TodoItem? ConvertToTodoItem(TodoItemPo? todoItemPo)
+    {
+        if (todoItemPo == null) return null;
+
+        return new TodoItems.Core.TodoItem()
+        {
+            Id = todoItemPo.Id,
+            Description = todoItemPo.Description,
+            CreatedTime = todoItemPo.CreatedTime,
+            DueDate = todoItemPo.DueDate,
+            ModificationRecords = todoItemPo.ModificationRecords
+        };
+    }
+
+    private TodoItemPo ConvertFromTodoItem(TodoItems.Core.TodoItem todoItem)
+    {
+        return new TodoItemPo
+        {
+            Id = todoItem.Id,
+            Description = todoItem.Description,
+            CreatedTime = todoItem.CreatedTime,
+            DueDate = todoItem.DueDate,
+            ModificationRecords = todoItem.ModificationRecords
+        };
     }
 }

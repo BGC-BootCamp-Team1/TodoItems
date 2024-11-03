@@ -7,7 +7,7 @@ public class TodoItem
     public DateOnly? DueDate { get; set; }
     public string Description { get; set; }
     public DateTime CreatedTime { get; init; }
-    public List<Modification> ModificationRecords { get; private set; }
+    public List<Modification> ModificationRecords { get; set; }
 
     public TodoItem()
     {

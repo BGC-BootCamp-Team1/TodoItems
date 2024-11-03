@@ -2,7 +2,7 @@
 {
     public interface ITodosRepository
     {
-        TodoItem Create(TodoItem item);
+        void Create(TodoItem item);
         int GetCountByDueDate(DateOnly date);
     }
 }
