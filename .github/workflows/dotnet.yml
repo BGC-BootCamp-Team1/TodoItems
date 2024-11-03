@@ -13,7 +13,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -25,4 +29,8 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
+      env:
+        ConnectionStrings__TodoStoreDatabase: "mongodb://localhost:27017"
+        DatabaseName: "TodoTestStore"
+        TodoItemsCollectionName: "Todos"
       run: dotnet test --no-build --verbosity normal
