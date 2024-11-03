@@ -6,9 +6,9 @@ public class TodoItem
 {
     public string Id { get; init; }
     public string Description { get; set; }
-    public bool IsComplete { get; set; }
-    public DateTime CreatedTime { get; set; }
-    public IList<Modification> Modifications { get; private set; }
+    public bool IsComplete { get; set; } = false;
+    public DateTime CreatedTime { get; set; } = DateTime.Now;
+    public IList<Modification> Modifications { get; set; } = [];
     public DateTime DueDate { get; set; }
 
     public TodoItem(string description, List<Modification> modifications, DateTime dueDate)

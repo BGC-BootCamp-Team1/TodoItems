@@ -45,13 +45,13 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
 
 
     [Fact]
-    public async void should_return_item_by_id_1()
+    public async void FindById_ShouldReturnCorrectItem()
     {
-        var todoItemPo = new TodoItemPo{
-            Id = "5f9a7d8e2d3b4a1eb8a7d8e2", 
+        var todoItemPo = new TodoItemPo {
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
             Description = "Buy groceries",
             IsComplete = false
-        };;
+        }; ;
         await _mongoCollection.InsertOneAsync(todoItemPo);
         var todoItem = await _mongoRepository.FindById("5f9a7d8e2d3b4a1eb8a7d8e2");
         
@@ -61,7 +61,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     }
 
     [Fact]
-    public async void should_return_item_number_on_the_duedate()
+    public async void CountTodoItemsOnTheSameDueDate_ShouldReturnCorrectNumber()
     {
         var dueDate = new DateTime(2024, 11, 1);
         var todoItemPo = new TodoItemPo
@@ -77,7 +77,7 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
     }
 
     [Fact]
-    public async Task GetTodoItemsDueInNextFiveDays_ReturnsCorrectItems()
+    public async Task GetTodoItemsDueInNextFiveDays_ShouldReturnCorrectItems()
     {
         // Arrange
         var today = DateTime.Today.Date.ToUniversalTime();
@@ -104,5 +104,18 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         Assert.Equal(2, result.Count);
         Assert.Contains(result, item => item.DueDate.Date == today.AddDays(4).Date);
         Assert.Contains(result, item => item.DueDate.Date == today.AddDays(5).Date);
+    }
+
+    [Fact]
+    public async void Save_ShouldNotThrowException()
+    {
+        var todoItem = new TodoItems.Core.TodoItem
+        {
+            Id = "5f9a7d8e2d3b4a1eb8a7d8e2",
+            Description = "Buy groceries",
+            IsComplete = false
+        }; 
+        var exception = Record.Exception(() => _mongoRepository.Save(todoItem));
+        Assert.Null(exception);
     }
 }

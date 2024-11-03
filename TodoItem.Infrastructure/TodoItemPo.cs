@@ -11,6 +11,6 @@ public class TodoItemPo{
     public string Description { get; set; }
     public bool IsComplete { get; set; }
     public DateTime CreatedTime { get; set; } = DateTime.Now;
-    private IList<Modification> Modifications { get; set; }
+    public IList<Modification> Modifications { get; set; } = [];
     public DateTime DueDate { get; set; }
 }

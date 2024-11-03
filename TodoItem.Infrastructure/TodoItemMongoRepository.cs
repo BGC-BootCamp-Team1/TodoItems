@@ -33,15 +33,30 @@ public class TodoItemMongoRepository: ITodoItemsRepository
         {
             Id = todoItemPo.Id,
             Description = todoItemPo.Description,
+            IsComplete = todoItemPo.IsComplete,
             DueDate = todoItemPo.DueDate,
-            CreatedTime = todoItemPo.CreatedTime
-
+            CreatedTime = todoItemPo.CreatedTime,
+            Modifications = [.. todoItemPo.Modifications]
         };
     }
 
-    public void Save(TodoItems.Core.TodoItem todoItem)
+    private TodoItemPo ConvertToTodoItemPo(TodoItems.Core.TodoItem? todoItem)
     {
-        throw new NotImplementedException();
+        if (todoItem == null) return null;
+        return new TodoItemPo
+        {
+            Id = todoItem.Id,
+            Description = todoItem.Description,
+            IsComplete = todoItem.IsComplete,
+            CreatedTime = todoItem.CreatedTime,
+            Modifications = [..todoItem.Modifications],
+            DueDate = todoItem.DueDate
+        };
+    }
+
+    public async void Save(TodoItems.Core.TodoItem todoItem)
+    {
+        await _todosCollection.InsertOneAsync(ConvertToTodoItemPo(todoItem));
     }
 
     public async Task<long> CountTodoItemsOnTheSameDueDate(DateTime dueDate)
