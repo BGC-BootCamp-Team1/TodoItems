@@ -1,5 +1,5 @@
 @startuml
-package SUT{
+package Domain{
 class User{
     - TodoItems: List<TodoItem>
 }
@@ -10,11 +10,13 @@ class TodoItem {
     - Modifications: List<Modification> 
     - DueDate: DateTime
     - UserId: string
+    - IsComplete: bool
+    - CreatedTime: DateTime
     + ModifyItem(description: string): void
 }
 
 class TodoItemService {
-    + CreateItem(description: string, dueDate: DateTime): TodoItem
+    + CreateItem(description: string, userProvidedDueDate: DateTime, dueDateSettingOption: DueDateSettingOption): TodoItem
 }
 class Tag{
     - Title: string
@@ -22,39 +24,62 @@ class Tag{
 class Modification{
     - Timestamp: DateTime
 }
-interface IDueDateSetter{
-    + SetDueDate(List<TodoItem>): TodoItem
+class  ApplicationExceptions{}
+
+
+class DueDateSetter{
+    + AutoSetDueDate(itemsDueInNextFiveDays: List<TodoItem>, dueDateSettingOption: DueDateSettingOption): DateTime
+    + ValidUserDueDate(userProvidedDueDate DateTime, count: long): DateTime
+}
+
+interface IDueDateSettingStrategy{
+    + GetDueDate(startDate: DateTime, itemsDueInNextFiveDays: List<TodoItem>): DateTime
     }
-class UserSpecify{
+
+class FewestTodoItemsDayStrategy{
     + SetDueDate(List<TodoItem>): TodoItem
 }
-class SelectAvailableDueDateWithinFiveDays{
+class FirstAvailableDayStrategy{
     + SetDueDate(List<TodoItem>): TodoItem
 }
-class SelectLeastItemsDueDate{
-    + SetDueDate(List<TodoItem>): TodoItem
-}
-enum DueDateSetStrategy{
-    + UserSpecify
-    + SelectAvailableDueDateWithinFiveDays
-    + SelectLeastItemsDueDate
+
+enum DueDateSettingOption{
+    + SelectFirstAvailableDay
+    + SelectFewestTodoItemsDay
     }
-}
-package DOC{
+
+
 interface ITodosRepository{
     + CountTodoItemsOnTheSameDueDate(dueDate: DateTime): int
     + Save(Description: string): TodoItem
     + FindTodoItemsInNextFiveDays(): List<TodoItem>
     }
 }
+package Infrastructure{
+class TodoItemMongoRepository {
+    - _todosCollection: IMongoCollection<TodoItemPo?>
+}
+
+class TodoItemPo {
+    - Id: string
+    - Description: string
+    - IsComplete: bool
+    - CreatedTime: DateTime
+    - Modifications: List<Modification> 
+    - DueDate: DateTime
+}
+}
+
 
 User"1" -- "0..*" TodoItem
 TodoItem "1" *-- "0..*" Modification
 TodoItem "0..*" -- "0..*" Tag
-TodoItemService --> ITodosRepository
-TodoItemService --> TodoItem
-TodoItem --> IDueDateSetter
-IDueDateSetter <|.. UserSpecify
-IDueDateSetter <|.. SelectAvailableDueDateWithinFiveDays
-IDueDateSetter <|.. SelectLeastItemsDueDate
+TodoItemService ..> ITodosRepository
+TodoItemService ..> DueDateSetter
+TodoItemService ..> TodoItem
+DueDateSetter..> IDueDateSettingStrategy
+DueDateSetter..> TodoItem
+IDueDateSettingStrategy <|.. FewestTodoItemsDayStrategy
+IDueDateSettingStrategy <|.. FirstAvailableDayStrategy
+TodoItemMongoRepository ..|> ITodosRepository
 @enduml
