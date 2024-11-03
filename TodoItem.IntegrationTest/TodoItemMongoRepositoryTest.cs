@@ -111,4 +111,41 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         Assert.Equal(3, count);
     }
 
+    [Fact]
+    public async Task Should_save_item_when_have_existing_id()
+    {
+        _mongoRepository.Create(_todoItem);
+        var updateItem = new TodoItems.Core.TodoItem
+        {
+            Id = _todoItem.Id,
+            Description = "test update",
+            CreatedTime = _todoItem.CreatedTime,
+            DueDate = _todoItem.DueDate,
+            ModificationRecords = _todoItem.ModificationRecords
+        };
+
+        _mongoRepository.Save(updateItem);
+
+        var resultItem = await _mongoRepository.FindById(updateItem.Id);
+        Assert.Equal(updateItem.Description, resultItem.Description);
+    }
+
+
+    [Fact]
+    public async Task Should_save_item_when_not_existing()
+    {
+        var updateItem = new TodoItems.Core.TodoItem
+        {
+            Id = _todoItem.Id,
+            Description = "test update",
+            CreatedTime = _todoItem.CreatedTime,
+            DueDate = _todoItem.DueDate,
+            ModificationRecords = _todoItem.ModificationRecords
+        };
+
+        _mongoRepository.Save(updateItem);
+
+        var resultItem = await _mongoRepository.FindById(updateItem.Id);
+        Assert.Equal(updateItem.Description, resultItem.Description);
+    }
 }

@@ -24,10 +24,17 @@ public class TodoItemMongoRepository: ITodosRepository
         return todoItem;
     }
 
-
     public void Save(TodoItems.Core.TodoItem todoItem)
     {
-        throw new NotImplementedException();
+        var filter = Builders<TodoItemPo>.Filter.Eq(x => x.Id, todoItem.Id);
+        var update = Builders<TodoItemPo>.Update
+            .Set(x => x.Description, todoItem.Description)
+            .Set(x => x.DueDate, todoItem.DueDate)
+            .Set(x => x.ModificationRecords, todoItem.ModificationRecords);
+
+        var options = new UpdateOptions { IsUpsert = true };
+
+        _todosCollection.UpdateOne(filter, update, options);
     }
 
     public void Create(TodoItems.Core.TodoItem item)
