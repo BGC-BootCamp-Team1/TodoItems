@@ -20,7 +20,11 @@ namespace TodoItems.Core
             return newItem;
         }
 
-        // todo: write update
+        public void Modify(TodoItem todoItem, string description)
+        {
+            todoItem.ModifyItem(description);
+            _todosRepository.Save(todoItem);
+        }
         
     }
 }

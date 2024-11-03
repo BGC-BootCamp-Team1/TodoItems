@@ -24,4 +24,17 @@ public class TodoItemServiceTest
         _mockRepository.Verify(repo => repo.Create(It.IsAny<TodoItem>()), Times.Once);
     }
 
+
+    [Fact]
+    public void Should_update_item_when_modify()
+    {
+        var todoService = new TodoItemService(_mockRepository.Object);
+        var newItem = todoService.Create(_description, _dueDate, DueDateSetStrategy.Manual);
+        var updateDescription = "test update";
+
+        todoService.Modify(newItem, updateDescription);
+        
+        Assert.Equal(updateDescription, newItem.Description);
+        _mockRepository.Verify(repo => repo.Save(newItem), Times.Once);
+    }
 }
