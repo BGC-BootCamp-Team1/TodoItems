@@ -8,7 +8,7 @@ namespace TodoItems.Test
     public class TodoItemServiceTest
     {
         [Fact]
-        public void Should_throw_exception_when_create_ninth_item()
+        public void CreateItem_ShouldThrowException_WhenCreateNinthItem()
         {
             DateTime dueDate = DateTime.Now.AddDays(7);
 
@@ -23,7 +23,7 @@ namespace TodoItems.Test
         }
 
         [Fact]
-        public void Should_create_when_create_second_item()
+        public void CreateItem_ShouldCreate_WhenCreateSecondItem()
         {
             DateTime dueDate = DateTime.Now.AddDays(7);
 
@@ -39,7 +39,7 @@ namespace TodoItems.Test
         }
 
         [Fact]
-        public void Should_throw_exception_when_earlier_due_date()
+        public void CreateItem_ShouldThrowEexceptionWhenEarlierDueDate()
         {
             DateTime dueDate = DateTime.Now.AddDays(-10);
 

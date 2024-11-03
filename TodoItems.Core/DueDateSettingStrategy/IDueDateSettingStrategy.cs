@@ -8,6 +8,6 @@ namespace TodoItems.Core.DueDateSettingStrategy
 {
     public interface IDueDateSettingStrategy
     {
-        public DateTime GetDueDate(DateTime startDate, List<TodoItem> existingItems);
+        public DateTime GetDueDate(DateTime startDate, List<TodoItem> itemsDueInNextFiveDays);
     }
 }
