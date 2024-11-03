@@ -13,18 +13,18 @@ namespace TodoItems.Core
             _todosRepository = repository;
         }
 
-        public TodoItem CreateItem(string description, DateTime? userProvidedDueDate, DueDateSettingOption dueDateSettingOption = 0) {
-            var dueDateSetter = new DueDateSetter();
+        public TodoItem CreateItem(string description, DateTime? userProvidedDueDate, DueDateSettingOption dueDateSettingOption = 0) 
+        {
             DateTime dueDate;
             if (userProvidedDueDate.HasValue)
             {
                 var count = _todosRepository.CountTodoItemsOnTheSameDueDate(userProvidedDueDate.Value).Result;
-                dueDate = dueDateSetter.ValidUserDueDate(userProvidedDueDate.Value, count);
+                dueDate = DueDateSetter.ValidUserDueDate(userProvidedDueDate.Value, count);
             }
             else
             {
                 var todoItemsDueInNextFiveDays = _todosRepository.GetTodoItemsDueInNextFiveDays().Result;
-                dueDate = dueDateSetter.AutoSetDueDate(todoItemsDueInNextFiveDays,dueDateSettingOption);
+                dueDate = DueDateSetter.AutoSetDueDate(todoItemsDueInNextFiveDays,dueDateSettingOption);
             }
             TodoItem item = new TodoItem(description, [], dueDate);
             return item;

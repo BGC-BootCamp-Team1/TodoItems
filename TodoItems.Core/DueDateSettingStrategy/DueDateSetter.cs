@@ -3,13 +3,9 @@ using TodoItems.Core.ApplicationExcepetions;
 
 namespace TodoItems.Core.DueDateSettingStrategy
 {
-    public class DueDateSetter
+    public static class DueDateSetter
     {
-        public DueDateSetter()
-        {
-        }
-
-        public DateTime AutoSetDueDate(
+        public static DateTime AutoSetDueDate(
             List<TodoItem> itemsDueInNextFiveDays, 
             DueDateSettingOption dueDateSettingOption)
         {
@@ -17,7 +13,7 @@ namespace TodoItems.Core.DueDateSettingStrategy
             return strategy.GetDueDate(DateTime.Today, itemsDueInNextFiveDays);
         }
 
-        public DateTime ValidUserDueDate(DateTime userProvidedDueDate, long count)
+        public static DateTime ValidUserDueDate(DateTime userProvidedDueDate, long count)
         {
             if (userProvidedDueDate <= DateTime.Now.Date)
             {
@@ -31,7 +27,7 @@ namespace TodoItems.Core.DueDateSettingStrategy
         }
 
         
-        private IDueDateSettingStrategy SetStrategy(DueDateSettingOption dueDateSettingOption)
+        private static IDueDateSettingStrategy SetStrategy(DueDateSettingOption dueDateSettingOption)
         {
             return dueDateSettingOption switch
             {

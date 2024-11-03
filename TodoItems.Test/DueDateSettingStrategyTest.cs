@@ -7,8 +7,6 @@ namespace TodoItems.Test
 {
     public class DueDateSettingStrategyTest
     {
-        private DueDateSetter _dueDateSetter = new DueDateSetter();
-
         [Fact]
         public void ValidUserDueDate_ShouldThrowTooEarlyDueDateException_WhenDueDateIsInThePast()
         {
@@ -16,7 +14,7 @@ namespace TodoItems.Test
             DateTime pastDate = DateTime.Now.Date.AddDays(-1);
 
             // Act & Assert
-            Assert.Throws<TooEarlyDueDateException>(() => _dueDateSetter.ValidUserDueDate(pastDate, 0));
+            Assert.Throws<TooEarlyDueDateException>(() => DueDateSetter.ValidUserDueDate(pastDate, 0));
         }
 
         [Fact]
@@ -27,7 +25,7 @@ namespace TodoItems.Test
             long countExceedsMax = Constants.MAX_ITEM_SAME_DUEDAY;
 
             // Act & Assert
-            Assert.Throws<ExceedMaxTodoItemsPerDueDateException>(() => _dueDateSetter.ValidUserDueDate(futureDate, countExceedsMax));
+            Assert.Throws<ExceedMaxTodoItemsPerDueDateException>(() => DueDateSetter.ValidUserDueDate(futureDate, countExceedsMax));
         }
 
         [Fact]
@@ -38,7 +36,7 @@ namespace TodoItems.Test
             long validCount = Constants.MAX_ITEM_SAME_DUEDAY - 1;
 
             // Act
-            DateTime result = _dueDateSetter.ValidUserDueDate(futureDate, validCount);
+            DateTime result = DueDateSetter.ValidUserDueDate(futureDate, validCount);
 
             // Assert
             Assert.Equal(futureDate, result);
