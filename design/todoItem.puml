@@ -1,0 +1,87 @@
+@startuml
+package Core <<Folder>> {
+ 
+    class TodoItem {
+        + id : string
+        + description : string
+        + dueDay : DateTime
+        + userId : string
+        - tags : List<string>
+        + ModificationList : List<Modification> 
+        + Modify(description: String): void
+    }
+    
+    entity Modification{
+        + timestamp: DateTime
+    }
+    
+    interface ITodosRepository
+    {
+         + FindAllTodoItemsByUserIdAndDueDay(string userId, DateTime dueDay):List<TodoItem> ;
+         + FindTodoItemsInFiveDaysByUserId(string userId):List<TodoItem> ;
+         + Save(TodoItem todoItem):TodoItem;
+    }
+    
+    class TodoItemService
+    {
+        - _repository : ITodosRepository
+        + Create(string description, DateOnly dueDay, string userId):TodoItem;
+    }
+    enum OptionEnum
+    {
+        Manual
+        Latest
+        Freest
+    }
+    package AppException <<Folder>>
+    {
+        exception MaximumModificationException
+        exception DueDayEarlyException
+        exception MaximumSameDueDayException
+    }
+        package Strategy <<Folder>>
+        {
+            interface ITodoItemGenerator{
+                 + Generate(string description, DateTime? dueDay, string userId):TodoItem;
+            }
+            class FreestTodoItemGenerator implements ITodoItemGenerator{
+                 + Generate(string description, DateTime? dueDay, string userId):TodoItem;
+            }
+            class LatestTodoItemGenerator implements ITodoItemGenerator{
+                 + Generate(string description, DateTime? dueDay, string userId):TodoItem;
+            }
+            class ManualTodoItemGenerator implements ITodoItemGenerator{
+                 + Generate(string description, DateTime? dueDay, string userId):TodoItem;
+            }
+    
+        }
+}
+package Infrastructure <<Folder>> {
+
+    class TodoItemMongoRepository implements Core.ITodosRepository{
+         + FindAllTodoItemsByUserIdAndDueDay(string userId, DateTime dueDay):List<TodoItem> ;
+         + FindTodoItemsInFiveDaysByUserId(string userId):List<TodoItem> ;
+         + Save(TodoItem todoItem):TodoItem;
+    }
+    
+    class TodoItemPo
+    {
+        + id : string
+        + description : string
+        + dueDay : DateTime
+        + userId : string
+        + ModificationList : List<Modification> 
+    }
+
+}
+
+
+TodoItem "1" -- "0..*" Modification
+TodoItem ..> FreestTodoItemGenerator
+TodoItem ..> LatestTodoItemGenerator
+TodoItem ..> ManualTodoItemGenerator
+TodoItemService o..> ITodoItemGenerator
+TodoItemPo "1" -- "0..*" Modification
+
+ITodosRepository <.. TodoItemService
+@enduml
