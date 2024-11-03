@@ -23,7 +23,7 @@ namespace TodoItems.Core.Strategy
                     countTodosByMostAvailableInFiveDays = count;
                 }
             }
-            if (countTodosByMostAvailableInFiveDays < 8)
+            if (countTodosByMostAvailableInFiveDays < Constant.MAX_TODOITEMS_PER_DUE_DATE)
             {
                 var newTodoItem = new TodoItem(description, mostAvailableInFiveDays);
                 return newTodoItem;

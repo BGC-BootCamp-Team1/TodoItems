@@ -15,7 +15,7 @@ namespace TodoItems.Core.Strategy
             var isValidDueDate = dueDate >= DateOnly.FromDateTime(DateTime.Today);
             if (!isValidDueDate)
                 throw new InvalidDueDateException();
-            if (count < 8)
+            if (count < Constant.MAX_TODOITEMS_PER_DUE_DATE)
             {
                 var newTodoItem = new TodoItem(description, dueDate.Value);
                 return newTodoItem;

@@ -15,7 +15,7 @@ namespace TodoItems.Core.Strategy
             {
                 var preDueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(i));
                 var count = todosRepository.CountTodoItemsByDueDate(preDueDate);
-                if (count < 8)
+                if (count < Constant.MAX_TODOITEMS_PER_DUE_DATE)
                 {
                     var newTodoItem = new TodoItem(description, preDueDate);
                     return newTodoItem;

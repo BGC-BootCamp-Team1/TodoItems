@@ -35,6 +35,7 @@ namespace TodoItems.Core.AppException
         {
         }
     }
+    //havn't used
     public class InvalidCreateOption : Exception
     {
         private static readonly string DefaultMessage =  "" +
