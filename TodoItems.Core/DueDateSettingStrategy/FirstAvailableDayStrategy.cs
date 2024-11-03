@@ -1,4 +1,6 @@
-﻿namespace TodoItems.Core.DueDateSettingStrategy
+﻿using TodoItems.Core.ApplicationExcepetions;
+
+namespace TodoItems.Core.DueDateSettingStrategy
 {
     public class FirstAvailableDayStrategy : IDueDateSettingStrategy
     {
@@ -13,7 +15,7 @@
                     return targetDate;
                 }
             }
-            throw new Exception("No available days in the next 5 days.");
+            throw new NoAvailableDaysException();
         }
     }
 }
