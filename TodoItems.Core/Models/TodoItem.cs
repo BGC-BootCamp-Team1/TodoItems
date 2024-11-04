@@ -1,4 +1,5 @@
-﻿using System.Security.AccessControl;
+﻿using Microsoft.VisualBasic;
+using System.Security.AccessControl;
 using TodoItems.Core.AppException;
 
 namespace TodoItems.Core;
@@ -19,6 +20,12 @@ public class TodoItem
         CreateTime = DateOnly.FromDateTime(DateTime.Today);
         ModificationHistory = new List<Modification>();
         DueDate = dueDate;
+        IsComplete = false;
+    }
+    public TodoItem() {
+        Id = Guid.NewGuid().ToString("N").Substring(0, 24);
+        CreateTime = DateOnly.FromDateTime(DateTime.Today);
+        ModificationHistory = new List<Modification>();
         IsComplete = false;
     }
     public void ModifyItem(string modifiedDescription)
