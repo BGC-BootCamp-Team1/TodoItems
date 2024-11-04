@@ -70,13 +70,8 @@ namespace TodoItems.Core.Tests
         {
             // Arrange
             var mockRepository = new Mock<ITodosRepository>();
-            mockRepository.SetupSequence(repo => repo.CountTodoItemsByDueDate(It.IsAny<DateOnly>()))
-                .Returns(8) // Day 0
-                .Returns(8) // Day 1
-                .Returns(5) // Day 2
-                .Returns(4) // Day 3
-                .Returns(3) // Day 4
-                .Returns(8); // Day 5
+            mockRepository.Setup(repo => repo.CountTodoItemsInFiveDays())
+                          .Returns(new List<int> { 8, 6, 5, 4, 3, 8 });
             mockRepository.Setup(repo => repo.SaveAsync(It.IsAny<TodoItem>())).Returns(Task.CompletedTask);
 
             var service = new TodoItemService(mockRepository.Object);
@@ -88,7 +83,7 @@ namespace TodoItems.Core.Tests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(description, result.Description);
-            Assert.AreEqual(DateOnly.FromDateTime(DateTime.Today.AddDays(2)), result.DueDate);
+            Assert.AreEqual(DateOnly.FromDateTime(DateTime.Today.AddDays(1)), result.DueDate);
             mockRepository.Verify(repo => repo.SaveAsync(It.IsAny<TodoItem>()), Times.Once);
         }
 
@@ -97,13 +92,8 @@ namespace TodoItems.Core.Tests
         {
             // Arrange
             var mockRepository = new Mock<ITodosRepository>();
-            mockRepository.SetupSequence(repo => repo.CountTodoItemsByDueDate(It.IsAny<DateOnly>()))
-                .Returns(7) // Day 0
-                .Returns(6) // Day 1
-                .Returns(5) // Day 2
-                .Returns(4) // Day 3
-                .Returns(3) // Day 4
-                .Returns(8); // Day 5
+            mockRepository.Setup(repo => repo.CountTodoItemsInFiveDays())
+                          .Returns(new List<int> { 8, 6, 5, 4, 3, 8 });
 
             mockRepository.Setup(repo => repo.SaveAsync(It.IsAny<TodoItem>())).Returns(Task.CompletedTask);
 
@@ -119,6 +109,7 @@ namespace TodoItems.Core.Tests
             Assert.AreEqual(DateOnly.FromDateTime(DateTime.Today.AddDays(4)), result.DueDate);
             mockRepository.Verify(repo => repo.SaveAsync(It.IsAny<TodoItem>()), Times.Once);
         }
+
     }
 }
 

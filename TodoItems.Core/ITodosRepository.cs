@@ -8,6 +8,7 @@ namespace TodoItems.Core
 {
     public interface ITodosRepository
     {
+        public List<int> CountTodoItemsInFiveDays();
         public int CountTodoItemsByDueDate(DateOnly dueDate);
         public Task SaveAsync(TodoItem todoItem);
         public Task<TodoItem> FindByIdAsync(string? id);

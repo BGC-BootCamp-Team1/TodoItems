@@ -139,4 +139,28 @@ public class TodoItemMongoRepositoryTest: IAsyncLifetime
         Assert.Equal(description, savedTodoItemPo.Description);
         Assert.Equal(dueDate, savedTodoItemPo.DueDate);
     }
+
+    [Fact]
+    public async Task CountTodoItemsInFiveDays_ShouldReturnCorrectCountsAsync()
+    {
+        // Arrange
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var todos = new List<TodoItemPo>
+        {
+            new TodoItemPo { DueDate = today },
+            new TodoItemPo { DueDate = today.AddDays(1) },
+            new TodoItemPo { DueDate = today.AddDays(1) },
+            new TodoItemPo { DueDate = today.AddDays(2) },
+            new TodoItemPo { DueDate = today.AddDays(4) }
+        };
+
+        await _mongoCollection.InsertManyAsync(todos);
+
+        // Act
+        var result = _mongoRepository.CountTodoItemsInFiveDays();
+
+        // Assert
+        Assert.Equal(new List<int> { 1, 2, 1, 0, 1 }, result);
+    }
+
 }

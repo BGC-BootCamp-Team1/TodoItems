@@ -30,7 +30,6 @@ public class TodoItemMongoRepository : ITodosRepository
 
     public async Task SaveAsync(TodoItems.Core.TodoItem todoItem)
     {
-        if (todoItem == null) return;
 
         var todoItemPo = new TodoItemPo
         {
@@ -62,4 +61,28 @@ public class TodoItemMongoRepository : ITodosRepository
         FilterDefinition<TodoItemPo> filter = Builders<TodoItemPo>.Filter.Eq(x => x.DueDate, dueDate);
         return (int)_todosCollection.CountDocuments(filter);
     }
+
+    public List<int> CountTodoItemsInFiveDays()
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var endDate = today.AddDays(5);
+
+        var filter = Builders<TodoItemPo>.Filter.And(
+            Builders<TodoItemPo>.Filter.Gte(item => item.DueDate, today),
+            Builders<TodoItemPo>.Filter.Lt(item => item.DueDate, endDate)
+        );
+
+        var todos = _todosCollection.Find(filter).ToList();
+
+        var counts = todos
+            .GroupBy(todo => todo.DueDate)
+            .Select(g => new { Date = g.Key, Count = g.Count() })
+            .ToDictionary(x => x.Date, x => x.Count);
+
+        return Enumerable.Range(0, 5)
+            .Select(i => today.AddDays(i))
+            .Select(date => counts.ContainsKey(date) ? counts[date] : 0)
+            .ToList();
+    }
+
 }

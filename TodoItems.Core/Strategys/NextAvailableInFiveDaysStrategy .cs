@@ -11,14 +11,13 @@ namespace TodoItems.Core.Strategy
     {
         public TodoItem Create(string description, DateOnly? dueDate, ITodosRepository todosRepository)
         {
-            var today = DateOnly.FromDateTime(DateTime.Today);
-            var availableDate = Enumerable.Range(0, 5)
-                .Select(i => today.AddDays(i))
-                .FirstOrDefault(d => todosRepository.CountTodoItemsByDueDate(d) < Constant.MAX_TODOITEMS_PER_DUE_DATE);
-
+            var availableDate = todosRepository
+                .CountTodoItemsInFiveDays()
+                .Select((count, index) => new { Count = count, Index = index })
+                .FirstOrDefault(pair => pair.Count < Constant.MAX_TODOITEMS_PER_DUE_DATE);
             if (availableDate != default)
             {
-                return new TodoItem(description, availableDate);
+                return new TodoItem(description, DateOnly.FromDateTime(DateTime.Today.AddDays(availableDate.Index)));
             }
 
             throw new ExceedMaxTodoItemsPerDueDateException();
