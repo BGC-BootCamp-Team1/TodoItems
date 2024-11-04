@@ -15,6 +15,15 @@ namespace TodoItems.Core.Tests
     [TestClass()]
     public class TodoItemServiceTests
     {
+        private Mock<ITodosRepository> _mockRepository;
+        private TodoItemService _service;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _mockRepository = new Mock<ITodosRepository>();
+            _service = new TodoItemService(_mockRepository.Object);
+        }
         [TestMethod]
         public void Create_ShouldReturnNewTodoItem_WhenDueDateIsValidAndCountIsLessThan8()
         {
@@ -47,7 +56,7 @@ namespace TodoItems.Core.Tests
 
             // Act & Assert
             Assert.ThrowsExceptionAsync<InvalidDueDateException>(() => service.CreateAsync(description, dueDate, TodoItemService.CreateOptionEnum.ManualOption));
-            
+
         }
 
         [TestMethod]
@@ -110,6 +119,81 @@ namespace TodoItems.Core.Tests
             mockRepository.Verify(repo => repo.SaveAsync(It.IsAny<TodoItem>()), Times.Once);
         }
 
+
+        [TestMethod]
+        public async Task Modify_ShouldReturnNull_WhenDescriptionAndDueDateAreNull()
+        {
+            // Act
+            var result = await _service.Modify("1", null, null);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public async Task Modify_ShouldReturnNull_WhenTodoItemNotFound()
+        {
+            // Arrange
+            _mockRepository.Setup(repo => repo.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((TodoItem)null);
+
+            // Act
+            var result = await _service.Modify("1", "New Description", DateOnly.FromDateTime(DateTime.Now));
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public async Task Modify_ShouldUpdateDescription_WhenDescriptionIsNotNull()
+        {
+            // Arrange
+            var todoItem = new TodoItem { Id = "1", Description = "Old Description", DueDate = DateOnly.FromDateTime(DateTime.Now) };
+            _mockRepository.Setup(repo => repo.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(todoItem);
+
+            // Act
+            var result = await _service.Modify("1", "New Description", null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("New Description", result.Description);
+            _mockRepository.Verify(repo => repo.SaveAsync(todoItem), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task Modify_ShouldUpdateDueDate_WhenDueDateIsNotNull()
+        {
+            // Arrange
+            var todoItem = new TodoItem { Id = "1", Description = "Description", DueDate = DateOnly.FromDateTime(DateTime.Now) };
+            _mockRepository.Setup(repo => repo.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(todoItem);
+
+            // Act
+            var newDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
+            var result = await _service.Modify("1", null, newDueDate);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(newDueDate, result.DueDate);
+            _mockRepository.Verify(repo => repo.SaveAsync(todoItem), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task Modify_ShouldUpdateBothDescriptionAndDueDate_WhenBothAreNotNull()
+        {
+            // Arrange
+            var todoItem = new TodoItem { Id = "1", Description = "Old Description", DueDate = DateOnly.FromDateTime(DateTime.Now) };
+            _mockRepository.Setup(repo => repo.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(todoItem);
+
+            // Act
+            var newDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
+            var result = await _service.Modify("1", "New Description", newDueDate);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("New Description", result.Description);
+            Assert.AreEqual(newDueDate, result.DueDate);
+            _mockRepository.Verify(repo => repo.SaveAsync(todoItem), Times.Once);
+        }
     }
+
 }
 
