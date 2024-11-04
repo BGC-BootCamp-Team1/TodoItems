@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItems.Core", "TodoItems
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItems.Test", "TodoItems.Test\TodoItems.Test.csproj", "{812ACC5D-E44F-4BF4-918A-D7853B472150}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItem.Infrastructure", "TodoItem.Infrastructure\TodoItem.Infrastructure.csproj", "{D6031B95-3DE7-468F-B7F1-8657ABBA3B86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoItem.IntegrationTest", "TodoItem.IntegrationTest\TodoItem.IntegrationTest.csproj", "{226F6AF1-7374-4D3B-8D4B-F950DF6D17E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{812ACC5D-E44F-4BF4-918A-D7853B472150}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{812ACC5D-E44F-4BF4-918A-D7853B472150}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{812ACC5D-E44F-4BF4-918A-D7853B472150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6031B95-3DE7-468F-B7F1-8657ABBA3B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6031B95-3DE7-468F-B7F1-8657ABBA3B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6031B95-3DE7-468F-B7F1-8657ABBA3B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6031B95-3DE7-468F-B7F1-8657ABBA3B86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{226F6AF1-7374-4D3B-8D4B-F950DF6D17E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{226F6AF1-7374-4D3B-8D4B-F950DF6D17E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{226F6AF1-7374-4D3B-8D4B-F950DF6D17E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{226F6AF1-7374-4D3B-8D4B-F950DF6D17E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
