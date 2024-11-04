@@ -29,6 +29,20 @@ public partial class TodoItemService
 */        await _todosRepository.SaveAsync(newTodoItem);
         return newTodoItem;
     }
-    public async Modify()
+    public async Task<TodoItem>? Modify(string id, string? description, DateOnly? dueDate)
+    {
+        if (description == null && dueDate == null) 
+            return null;
+        var todoItem =  await _todosRepository.FindByIdAsync(id);
+        if(todoItem == null)
+            return null;
+        if(dueDate != null)
+            todoItem.DueDate = dueDate.Value;
+        if(description != null)
+            todoItem.ModifyItem(description);
+        await _todosRepository.SaveAsync(todoItem);
+        return todoItem;
+
+    }
 }
 
