@@ -1,0 +1,39 @@
+@startuml
+actor User
+participant "TodoItemService" as TIS
+participant "ITodosRepository" as TR
+participant "DueDateSetter" as DDS
+participant "TodoItem" as TI
+
+User -> TIS: CreateItem(description, userProvidedDueDate, dueDateSettingOption)
+activate TIS
+
+alt userProvidedDueDate.HasValue
+    TIS -> TR : CountTodoItemsOnTheSameDueDate(userProvidedDueDate.Value)
+    activate TR
+    TR --> TIS : count
+    deactivate TR
+
+    TIS -> DDS : ValidUserDueDate(userProvidedDueDate.Value, count)
+    activate DDS
+    DDS --> TIS : dueDate
+    deactivate DDS
+else
+    TIS -> TR : GetTodoItemsDueInNextFiveDays()
+    activate TR
+    TR --> TIS : todoItemsDueInNextFiveDays
+    deactivate TR
+
+    TIS -> DDS : AutoSetDueDate(todoItemsDueInNextFiveDays, dueDateSettingOption)
+    activate DDS
+    DDS --> TIS : dueDate
+    deactivate DDS
+end
+
+TIS -> TI : new TodoItem(description, [], dueDate)
+activate TI
+TI --> TIS: todoItem
+deactivate TI
+TIS --> User : todoItem
+deactivate TIS
+@enduml

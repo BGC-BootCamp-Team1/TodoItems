@@ -1,5 +1,0 @@
-@startuml
-class TodoItem {
-    + GetId() : string
-}
-@enduml

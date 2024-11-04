@@ -1,0 +1,83 @@
+@startuml
+package Domain{
+    class User{
+        - TodoItems: List<TodoItem>
+    }
+
+    class TodoItem {
+        - Id: string
+        - Description: string
+        - Modifications: List<Modification> 
+        - DueDate: DateTime
+        - UserId: string
+        - IsComplete: bool
+        - CreatedTime: DateTime
+        + ModifyItem(description: string): void
+    }
+
+    class TodoItemService {
+        + CreateItem(description: string, userProvidedDueDate: DateTime, dueDateSettingOption: DueDateSettingOption): TodoItem
+    }
+    class Tag{
+        - Title: string
+    }
+    class Modification{
+        - Timestamp: DateTime
+    }
+    class  ApplicationExceptions{}
+
+
+    class DueDateSetter{
+        + AutoSetDueDate(itemsDueInNextFiveDays: List<TodoItem>, dueDateSettingOption: DueDateSettingOption): DateTime
+        + ValidUserDueDate(userProvidedDueDate DateTime, count: long): DateTime
+    }
+
+    interface IDueDateSettingStrategy{
+        + GetDueDate(startDate: DateTime, itemsDueInNextFiveDays: List<TodoItem>): DateTime
+        }
+
+    class FewestTodoItemsDayStrategy{
+        + SetDueDate(List<TodoItem>): TodoItem
+    }
+    class FirstAvailableDayStrategy{
+        + SetDueDate(List<TodoItem>): TodoItem
+    }
+
+    enum DueDateSettingOption{
+        + SelectFirstAvailableDay
+        + SelectFewestTodoItemsDay
+        }
+
+    interface ITodosRepository{
+        + CountTodoItemsOnTheSameDueDate(dueDate: DateTime): int
+        + Save(Description: string): TodoItem
+        + FindTodoItemsInNextFiveDays(): List<TodoItem>
+        }
+}
+package Infrastructure{
+    class TodoItemMongoRepository {
+        - _todosCollection: IMongoCollection<TodoItemPo?>
+    }
+
+    class TodoItemPo {
+        - Id: string
+        - Description: string
+        - IsComplete: bool
+        - CreatedTime: DateTime
+        - Modifications: List<Modification> 
+        - DueDate: DateTime
+    }
+}
+
+User"1" -- "0..*" TodoItem
+TodoItem "1" *-- "0..*" Modification
+TodoItem "0..*" -- "0..*" Tag
+TodoItemService ..> ITodosRepository
+TodoItemService ..> DueDateSetter
+TodoItemService ..> TodoItem
+DueDateSetter..> IDueDateSettingStrategy
+DueDateSetter..> TodoItem
+IDueDateSettingStrategy <|.. FewestTodoItemsDayStrategy
+IDueDateSettingStrategy <|.. FirstAvailableDayStrategy
+TodoItemMongoRepository ..|> ITodosRepository
+@enduml
