@@ -32,7 +32,7 @@ namespace TodoItems.Core.DueDateSettingStrategy
             {
                 DueDateSettingOption.SelectFirstAvailableDay => new FirstAvailableDayStrategy(),
                 DueDateSettingOption.SelectFewestTodoItemsDay => new FewestTodoItemsDayStrategy(),
-                _ => throw new ArgumentException("Invalid due date setting option"),
+                _ => throw new InvalidDueDateSettingOptionException(),
             };
         }
     }
